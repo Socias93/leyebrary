@@ -1,9 +1,10 @@
 import "./App.css";
 
 function App() {
+  const eye = <i className="fa-solid fa-eye"></i>;
   return (
     <>
-      <h1>App</h1>
+      <h1>L{eye}brary </h1>
     </>
   );
 }
