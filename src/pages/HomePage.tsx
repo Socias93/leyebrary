@@ -2,9 +2,7 @@ import { useState } from "react";
 import { Category, getCategories } from "../services/fakeCategoryService";
 import { getItems } from "../services/fakeFoodService";
 import { paginate } from "../components/utils";
-import Listgroup from "../components/Listgroup";
-import ItemsGroup from "../components/ItemsGroup";
-import Pagination from "../components/Pagination";
+import { ItemsGroup, ListGroup, Pagination, Navbar } from "../components/index";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const PAGE_SIZE = 5;
@@ -25,14 +23,15 @@ function HomePage() {
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
 
-  const eye = <i className="fa-solid fa-eye"></i>;
+  const eye = <i className="fa-solid fa-eye text-info"></i>;
 
   return (
     <>
+      <Navbar />
       <div className="d-grid justify-content-center">
         <h1 className="text-center">L{eye}brary </h1>
         <div className="d-flex">
-          <Listgroup
+          <ListGroup
             items={[DEFAULT_CATEGORY, ...getCategories()]}
             onCategorySelect={handleCategorySelect}
             selectedCategory={selectedCategory}
