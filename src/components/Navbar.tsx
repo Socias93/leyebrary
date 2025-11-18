@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 function Navbar() {
   const eye = <i className="fa-solid fa-eye text-info"></i>;
 
@@ -5,7 +7,9 @@ function Navbar() {
     <>
       <nav className="navbar navbar-expand-lg bg-body-tertiary">
         <div className="container-fluid">
-          <a className="clickable navbar-brand">L{eye}brary</a>
+          <NavLink to={""} className="clickable navbar-brand">
+            L{eye}brary
+          </NavLink>
           <button
             className="navbar-toggler"
             type="button"
@@ -19,12 +23,17 @@ function Navbar() {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <a className=" clickable nav-link" aria-current="page">
+                <NavLink
+                  to={"home"}
+                  className=" clickable nav-link"
+                  aria-current="page">
                   Home
-                </a>
+                </NavLink>
               </li>
               <li className="nav-item">
-                <a className="clickable nav-link">All items</a>
+                <NavLink to={"all"} className="clickable nav-link">
+                  All items
+                </NavLink>
               </li>
               <li className="nav-item dropdown">
                 <a
@@ -36,10 +45,18 @@ function Navbar() {
                 </a>
                 <ul className="dropdown-menu">
                   <li>
-                    <a className="clickable dropdown-item">New Item</a>
+                    <NavLink
+                      to={"new-item"}
+                      className="clickable dropdown-item">
+                      New Item
+                    </NavLink>
                   </li>
                   <li>
-                    <a className="clickable dropdown-item">New Category</a>
+                    <NavLink
+                      to={"new-category"}
+                      className="clickable dropdown-item">
+                      New Category
+                    </NavLink>
                   </li>
                 </ul>
               </li>
