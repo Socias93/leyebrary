@@ -1,12 +1,9 @@
 // fakeLibraryService.ts
 import { Category, getCategories } from "./fakeCategoryService";
 
-type ItemType = "Bok" | "DVD" | "Ljudbok" | "Uppslagsbok";
-
 interface BaseItem {
   _id: string;
   title: string;
-  type: ItemType;
   isBorrowable: boolean;
   category: Category;
   // if checked out:
@@ -44,7 +41,6 @@ export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
 export interface LibraryFormData {
   _id?: string;
   title: string;
-  type: ItemType;
   isBorrowable: boolean;
   categoryId: string;
 
@@ -64,10 +60,9 @@ const items: LibraryItem[] = [
     title: "Svenska sagor",
     author: "A. Författare",
     nbrPages: 320,
-    type: "Bok",
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Bok") || {
-      _id: "unknown",
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
       name: "Bok",
     },
   } as Book,
@@ -75,10 +70,9 @@ const items: LibraryItem[] = [
     _id: "lib-0002",
     title: "Action Movie I",
     runTimeMinutes: 125,
-    type: "DVD",
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "DVD") || {
-      _id: "unknown",
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
       name: "DVD",
     },
   } as DVD,
@@ -86,10 +80,9 @@ const items: LibraryItem[] = [
     _id: "lib-0003",
     title: "Storytelling - Ljudbok",
     runTimeMinutes: 400,
-    type: "Ljudbok",
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Ljudbok") || {
-      _id: "unknown",
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Ljudbok",
     },
   } as Audiobook,
@@ -98,10 +91,82 @@ const items: LibraryItem[] = [
     title: "Nationalencyklopedin Volym 1",
     author: "NE",
     nbrPages: 1200,
-    type: "Uppslagsbok",
     isBorrowable: false,
     category: getCategories().find((c) => c.name === "Uppslagsbok") || {
-      _id: "unknown",
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
+      name: "Uppslagsbok",
+    },
+  } as ReferenceBook,
+
+  {
+    _id: "lib-0005",
+    title: "Svenska sagor - Volym 2",
+    author: "A. Författare",
+    nbrPages: 288,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Bok" },
+  } as Book,
+  {
+    _id: "lib-0006",
+    title: "Moderna noveller",
+    author: "B. Författare",
+    nbrPages: 214,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Bok" },
+  } as Book,
+
+  // Två extra DVD
+  {
+    _id: "lib-0007",
+    title: "Action Movie II",
+    runTimeMinutes: 132,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+  } as DVD,
+  {
+    _id: "lib-0008",
+    title: "Drama Anthology",
+    runTimeMinutes: 98,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+  } as DVD,
+
+  // Två extra ljudböcker
+  {
+    _id: "lib-0009",
+    title: "Storytelling - Ljudbok Vol. 2",
+    runTimeMinutes: 360,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003", name: "Ljudbok" },
+  } as Audiobook,
+  {
+    _id: "lib-0010",
+    title: "Berättelser för natten",
+    runTimeMinutes: 240,
+    isBorrowable: true,
+    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003", name: "Ljudbok" },
+  } as Audiobook,
+
+  // Två extra uppslagsböcker
+  {
+    _id: "lib-0011",
+    title: "Nationalencyklopedin Volym 2",
+    author: "NE",
+    nbrPages: 1184,
+    isBorrowable: false,
+    category: {
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
+      name: "Uppslagsbok",
+    },
+  } as ReferenceBook,
+  {
+    _id: "lib-0012",
+    title: "Nationalencyklopedin Volym 3",
+    author: "NE",
+    nbrPages: 1220,
+    isBorrowable: false,
+    category: {
+      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Uppslagsbok",
     },
   } as ReferenceBook,
@@ -126,7 +191,7 @@ export function saveItem(form: LibraryFormData) {
   if (!categoryInDb) throw new Error("Category was not found");
 
   // Validate fields depending on type
-  const type = form.type;
+  const type = form.categoryId;
   if (!form.title) throw new Error("Title is required");
   if (type === "Bok") {
     if (!form.author) throw new Error("author is required for Bok");
@@ -145,17 +210,17 @@ export function saveItem(form: LibraryFormData) {
 
   // common assignments
   (itemInDb as any).title = form.title;
-  (itemInDb as any).type = form.type;
+  (itemInDb as any).type = form.categoryId;
   // Uppslagsbok can never be borrowable
   (itemInDb as any).isBorrowable =
-    form.type === "Uppslagsbok" ? false : form.isBorrowable;
+    form.categoryId === "Uppslagsbok" ? false : form.isBorrowable;
   (itemInDb as any).category = categoryInDb;
 
   // type-specific assignments
-  if (form.type === "Bok") {
+  if (form.categoryId === "Bok") {
     (itemInDb as any).author = form.author!;
     (itemInDb as any).nbrPages = form.nbrPages!;
-  } else if (form.type === "Uppslagsbok") {
+  } else if (form.categoryId === "Uppslagsbok") {
     (itemInDb as any).author = form.author!;
     (itemInDb as any).nbrPages = form.nbrPages!;
     // make sure it's not borrowable
@@ -163,9 +228,9 @@ export function saveItem(form: LibraryFormData) {
     // remove borrower fields if accidentally set
     delete (itemInDb as any).borrower;
     delete (itemInDb as any).borrowDate;
-  } else if (form.type === "DVD") {
+  } else if (form.categoryId === "DVD") {
     (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
-  } else if (form.type === "Ljudbok") {
+  } else if (form.categoryId === "Ljudbok") {
     (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
   }
 
