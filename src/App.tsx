@@ -14,6 +14,11 @@ function App() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
 
+  function handleCategorySelect(category: Category) {
+    setSelectedCategory(category);
+    setSelectedPage(1);
+  }
+
   let filtredItems = selectedCategory._id
     ? items.filter((item) => item.category._id === selectedCategory._id)
     : items;
@@ -28,7 +33,7 @@ function App() {
         <div className="d-flex">
           <Listgroup
             items={[DEFAULT_CATEGORY, ...getCategories()]}
-            onCategorySelect={setSelectedCategory}
+            onCategorySelect={handleCategorySelect}
             selectedCategory={selectedCategory}
           />
         </div>
