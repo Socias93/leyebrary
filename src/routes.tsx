@@ -6,6 +6,7 @@ import {
   NewCategoryPage,
   NewItemPage,
 } from "./pages/index";
+import CreateItemPage from "./pages/CreateItemPage";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ const router = createBrowserRouter([
         path: "new-category",
         element: <NewCategoryPage />,
       },
+      { path: "new-item/:id", element: <CreateItemPage /> },
     ],
   },
 ]);

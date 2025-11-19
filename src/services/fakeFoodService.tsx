@@ -4,7 +4,7 @@ import { Category, getCategories } from "./fakeCategoryService";
 interface BaseItem {
   _id: string;
   title: string;
-  isBorrowable: boolean;
+  isBorrowable?: boolean;
   category: Category;
   // if checked out:
   borrower?: string;
@@ -41,7 +41,7 @@ export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
 export interface LibraryFormData {
   _id?: string;
   title: string;
-  isBorrowable: boolean;
+  isBorrowable?: boolean;
   categoryId: string;
 
   // depending on type:
