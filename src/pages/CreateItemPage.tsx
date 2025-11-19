@@ -6,14 +6,16 @@ import {
   isTimeBasedSchema,
   TimeBasedFormData,
 } from "./schemas/TimeBasedSchema";
+import { getCategories } from "../services/fakeCategoryService";
+import { saveItem } from "../services/fakeFoodService";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
 type LibraryFormData = BookishFormData | TimeBasedFormData;
 
 function CreateItemPage() {
+  const categories = getCategories();
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
   const type = (searchParams.get("type") as ItemType) ?? "Book";
 
@@ -31,6 +33,7 @@ function CreateItemPage() {
   function onSubmit(data: LibraryFormData) {
     console.log("Submitted", data);
     navigate("/all");
+    saveItem(data);
   }
 
   return (
@@ -48,9 +51,16 @@ function CreateItemPage() {
                 <p className="text-danger"> {errors.title.message} </p>
               )}
             </div>
-            <div className="mb-3">
-              <label className="form-label">Category</label>
-              <input className="form-control" {...register("categoryId")} />
+
+            <div className="mb-3 mt-4">
+              <select className="form-select" {...register("categoryId")}>
+                <option value={""}>Category</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category._id}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
               {errors.categoryId && (
                 <p className="text-danger"> {errors.categoryId.message} </p>
               )}
@@ -71,7 +81,7 @@ function CreateItemPage() {
                   <input
                     type="number"
                     className="form-control"
-                    {...register("nbrPages")}
+                    {...register("nbrPages", { valueAsNumber: true })}
                   />
                   {isBookish && (errors as any).nbrPages && (
                     <p className="text-danger">
