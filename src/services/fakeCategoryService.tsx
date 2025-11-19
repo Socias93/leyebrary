@@ -8,10 +8,10 @@ export interface Category {
  * Kategorierna som ska finnas (unika _id)
  */
 export const categories: Category[] = [
-  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Bok" },
+  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
   { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
-  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003", name: "Ljudbok" },
-  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004", name: "Uppslagsbok" },
+  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003", name: "Audiobook" },
+  { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004", name: "Referencebook" },
 ];
 
 export function getCategories(): Category[] {
@@ -24,7 +24,7 @@ export function getCategories(): Category[] {
 export interface BaseItem {
   _id: string;
   title: string;
-  type: "Bok" | "DVD" | "Ljudbok" | "Uppslagsbok";
+  type: "Book" | "DVD" | "Audiobook" | "Referencebook";
   isBorrowable: boolean;
   categoryId: string; // ska peka på en Category._id
   // fält som sätts när utlånad:
@@ -36,10 +36,10 @@ export interface BaseItem {
  * Specifika obligatoriska fält per typ
  */
 export interface Book extends BaseItem {
-  type: "Bok";
+  type: "Book";
   author: string;
   nbrPages: number;
-  // isBorrowable true => kan lånas; uppslagsbok kommer ha isBorrowable=false
+  // isBorrowable true => kan lånas; Referencebook kommer ha isBorrowable=false
 }
 
 export interface DVD extends BaseItem {
@@ -48,15 +48,15 @@ export interface DVD extends BaseItem {
 }
 
 export interface Audiobook extends BaseItem {
-  type: "Ljudbok";
+  type: "Audiobook";
   runTimeMinutes: number;
 }
 
 export interface ReferenceBook extends BaseItem {
-  type: "Uppslagsbok";
+  type: "Referencebook";
   author: string;
   nbrPages: number;
-  // enligt regeln: uppslagsbok kan INTE lånas => isBorrowable should be false
+  // enligt regeln: Referencebook kan INTE lånas => isBorrowable should be false
 }
 
 /**
@@ -66,11 +66,11 @@ export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
 
 /**
  * Hjälpfunktion: kolla om en item kan lånas (enligt regler)
- * - En bok/DVD/ljudbok kan lånas endast om isBorrowable === true
- * - En uppslagsbok (type === "Uppslagsbok") kan aldrig lånas (returnerar false)
+ * - En Book/DVD/Audiobook kan lånas endast om isBorrowable === true
+ * - En Referencebook (type === "Referencebook") kan aldrig lånas (returnerar false)
  */
 export function canBorrow(item: LibraryItem): boolean {
-  if (item.type === "Uppslagsbok") return false;
+  if (item.type === "Referencebook") return false;
   return item.isBorrowable === true && !item.borrower;
 }
 
@@ -119,9 +119,9 @@ export const sampleItems: LibraryItem[] = [
     title: "Svenska sagor",
     author: "A. Författare",
     nbrPages: 320,
-    type: "Bok",
+    type: "Book",
     isBorrowable: true,
-    categoryId: categories.find((c) => c.name === "Bok")!._id,
+    categoryId: categories.find((c) => c.name === "Book")!._id,
   },
   {
     _id: "item-0002",
@@ -133,20 +133,20 @@ export const sampleItems: LibraryItem[] = [
   },
   {
     _id: "item-0003",
-    title: "Storytelling - Ljudbok",
+    title: "Storytelling - Audiobook",
     runTimeMinutes: 400,
-    type: "Ljudbok",
+    type: "Audiobook",
     isBorrowable: true,
-    categoryId: categories.find((c) => c.name === "Ljudbok")!._id,
+    categoryId: categories.find((c) => c.name === "Audiobook")!._id,
   },
   {
     _id: "item-0004",
     title: "Nationalencyklopedin Volym 1",
     author: "NE",
     nbrPages: 1200,
-    type: "Uppslagsbok",
+    type: "Referencebook",
     isBorrowable: false, // får inte lånas
-    categoryId: categories.find((c) => c.name === "Uppslagsbok")!._id,
+    categoryId: categories.find((c) => c.name === "Referencebook")!._id,
   },
 ];
 

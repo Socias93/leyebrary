@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { deleteItem, getItems } from "../services/fakeFoodService";
+import { useNavigate } from "react-router-dom";
 
 function AllItemsPage() {
   const [items, setItems] = useState(getItems());
+  const navigate = useNavigate();
 
   function handleDelete(id: string) {
     const newItem = items.filter((item) => item._id !== id);
@@ -27,7 +29,11 @@ function AllItemsPage() {
               <td>{item.title} </td>
               <td>{item.category.name} </td>
               <td>
-                <button className="btn btn-outline-info">Edit</button>
+                <button
+                  onClick={() => navigate(`/edit-item/${item._id}`)}
+                  className="btn btn-outline-info">
+                  Edit
+                </button>
               </td>
               <td>
                 <button
