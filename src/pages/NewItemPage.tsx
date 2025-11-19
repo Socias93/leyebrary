@@ -10,10 +10,10 @@ function NewItemPage() {
   );
 
   const mapCategoryToType = (categoryName: string) => {
-    if (categoryName.toLowerCase().includes("bok")) return "Bok";
-    if (categoryName.toLowerCase().includes("uppslags")) return "Uppslagsbok";
-    if (categoryName.toLowerCase().includes("dvd")) return "DVD";
-    if (categoryName.toLowerCase().includes("audio")) return "Audiobook";
+    if (categoryName.includes("Reference")) return "Referencebook";
+    if (categoryName.includes("Dvd")) return "DVD";
+    if (categoryName.includes("Audio")) return "Audiobook";
+    if (categoryName.includes("Book")) return "Book";
     return "DVD";
   };
 
@@ -26,9 +26,7 @@ function NewItemPage() {
           return (
             <button
               key={i._id}
-              onClick={() =>
-                navigate(`/new-item/${i._id}?type=${encodeURIComponent(type)}`)
-              }
+              onClick={() => navigate(`/new-item/${i._id}?type=${type}`)}
               className="btn btn-outline-info col-2 mt-4 ms-1 w-25">
               {i.name}
             </button>

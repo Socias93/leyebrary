@@ -7,4 +7,4 @@ export const bookishSchema = z.object({
   nbrPages: z.number().min(1, { message: "Pages cant be less than 1" }),
 });
 
-export type Formdata = z.infer<typeof bookishSchema>;
+export type BookishFormData = z.infer<typeof bookishSchema>;

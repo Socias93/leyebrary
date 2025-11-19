@@ -8,4 +8,4 @@ export const isTimeBasedSchema = z.object({
     .min(1, { message: "Time cant be less than 1 minute" }),
 });
 
-export type Formdata = z.infer<typeof isTimeBasedSchema>;
+export type TimeBasedFormData = z.infer<typeof isTimeBasedSchema>;
