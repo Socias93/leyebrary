@@ -95,7 +95,7 @@ const items: LibraryItem[] = [
     title: "Nationalencyklopedin Volym 1",
     author: "NE",
     nbrPages: 1200,
-    isBorrowable: true,
+    isBorrowable: false,
     category: getCategories().find((c) => c.name === "Referencebook") || {
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
@@ -171,7 +171,7 @@ const items: LibraryItem[] = [
     title: "Nationalencyklopedin Volym 2",
     author: "NE",
     nbrPages: 1184,
-    isBorrowable: true,
+    isBorrowable: false,
     category: {
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
@@ -183,7 +183,7 @@ const items: LibraryItem[] = [
     title: "Nationalencyklopedin Volym 3",
     author: "NE",
     nbrPages: 1220,
-    isBorrowable: true,
+    isBorrowable: false,
     category: {
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",

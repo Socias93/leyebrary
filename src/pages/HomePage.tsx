@@ -9,6 +9,7 @@ const PAGE_SIZE = 5;
 
 function HomePage() {
   const [items, setItems] = useState(getItems());
+
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
 
