@@ -3,7 +3,6 @@ import App from "./App";
 import {
   AllItemsPage,
   HomePage,
-  NewCategoryPage,
   NewItemPage,
   CreateCategoryPage,
   CreateItemPage,
@@ -35,14 +34,11 @@ const router = createBrowserRouter([
         path: "new-item",
         element: <NewItemPage />,
       },
-      {
-        path: "new-category",
-        element: <NewCategoryPage />,
-      },
+
       { path: "edit-item/:id", element: <CreateItemPage /> },
       { path: "new-item/:id", element: <CreateItemPage /> },
 
-      { path: "new-category/:id", element: <CreateCategoryPage /> },
+      { path: "new-category", element: <CreateCategoryPage /> },
     ],
   },
 ]);

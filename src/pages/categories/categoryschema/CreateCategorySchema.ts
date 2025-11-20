@@ -1,6 +1,6 @@
 // schemas/CategorySchema.ts
 import { z } from "zod";
-import { getCategories } from "../../services/fakeCategoryService";
+import { getCategories } from "../../../services/fakeCategoryService";
 
 export const categorySchema = z.object({
   name: z

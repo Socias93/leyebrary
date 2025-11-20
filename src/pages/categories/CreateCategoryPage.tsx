@@ -1,5 +1,8 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { CategoryFormData, categorySchema } from "./CreateCategorySchema";
+import {
+  CategoryFormData,
+  categorySchema,
+} from "./categoryschema/CreateCategorySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { saveCategory } from "../../services/fakeCategoryService";
