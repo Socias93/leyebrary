@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { getItems } from "../services/fakeFoodService";
+import { getItems } from "../../services/fakeFoodService";
 
 function NewItemPage() {
   const items = getItems();

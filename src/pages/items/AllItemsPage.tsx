@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteItem, getItems } from "../services/fakeFoodService";
+import { deleteItem, getItems } from "../../services/fakeFoodService";
 import { useNavigate } from "react-router-dom";
 
 function AllItemsPage() {

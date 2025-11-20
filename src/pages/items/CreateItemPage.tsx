@@ -6,8 +6,8 @@ import {
   isTimeBasedSchema,
   TimeBasedFormData,
 } from "./schemas/TimeBasedSchema";
-import { getCategories } from "../services/fakeCategoryService";
-import { saveItem } from "../services/fakeFoodService";
+import { getCategories } from "../../services/fakeCategoryService";
+import { saveItem } from "../../services/fakeFoodService";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 

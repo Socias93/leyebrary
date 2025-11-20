@@ -4,6 +4,10 @@ export interface Category {
   name: string;
 }
 
+export interface NewCategoryData {
+  name: string;
+}
+
 /**
  * Kategorierna som ska finnas (unika _id)
  */
@@ -16,6 +20,27 @@ export const categories: Category[] = [
 
 export function getCategories(): Category[] {
   return categories;
+}
+
+export function saveCategory(newCategory: NewCategoryData): Category | null {
+  // Kontrollera om category redan finns
+  const exists = categories.find(
+    (c) => c.name.toLowerCase() === newCategory.name.toLowerCase()
+  );
+  if (exists) {
+    return null; // returnera null om den redan finns
+  }
+
+  // Skapa nytt Category-objekt
+  const category: Category = {
+    _id: crypto.randomUUID(), // eller valfri metod för unik _id
+    name: newCategory.name,
+  };
+
+  // Lägg till i categories-arrayen
+  categories.push(category);
+
+  return category;
 }
 
 /**
