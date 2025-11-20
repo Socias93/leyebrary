@@ -30,7 +30,11 @@ function AllItemsPage() {
               <td>{item.category.name} </td>
               <td>
                 <button
-                  onClick={() => navigate(`/edit-item/${item._id}`)}
+                  onClick={() =>
+                    navigate(
+                      `/edit-item/${item._id}?type=${item.category.name}`
+                    )
+                  }
                   className="btn btn-outline-info">
                   Edit
                 </button>
