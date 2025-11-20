@@ -4,22 +4,30 @@ import { BookishFormData, bookishSchema } from "./schemas/BookisSchema";
 import { useForm } from "react-hook-form";
 import { getCategories } from "../../services/fakeCategoryService";
 import { getItem, LibraryItem, saveItem } from "../../services/fakeItemService";
+import { LibraryFormData } from "../utils";
+import { useEffect, useState } from "react";
 import {
   isTimeBasedSchema,
   TimeBasedFormData,
 } from "./schemas/TimeBasedSchema";
-import { ItemType, LibraryFormData } from "../utils";
-import { useEffect } from "react";
 
 function CreateItemPage() {
-  const categories = getCategories();
-  const navigate = useNavigate();
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-  const type = (searchParams.get("type") as ItemType) ?? "Book";
+  const [itemData, setItemData] = useState<LibraryItem | null>(null);
+  const categories = getCategories();
+  const navigate = useNavigate();
 
-  const isBookish = type === "Book" || type === "Referencebook";
-  const isTimeBased = type === "DVD" || type === "Audiobook";
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
+    searchParams.get("type") ?? ""
+  );
+
+  const selectedCategory = categories.find((c) => c._id === selectedCategoryId);
+  const isBookish =
+    selectedCategory?.name === "Book" ||
+    selectedCategory?.name === "Referencebook";
+  const isTimeBased =
+    selectedCategory?.name === "DVD" || selectedCategory?.name === "Audiobook";
 
   const {
     reset,
@@ -33,8 +41,10 @@ function CreateItemPage() {
   useEffect(() => {
     if (!id || id === "new") return;
     const item = getItem(id);
-
     if (!item) return;
+
+    setItemData(item);
+    setSelectedCategoryId(item.category._id);
 
     reset(mapToFormData(item));
 
@@ -44,22 +54,13 @@ function CreateItemPage() {
         title: item.title,
         categoryId: item.category._id,
       };
-
       if (item.type === "Book" || item.type === "Referencebook")
-        return {
-          ...base,
-          author: item.author,
-          nbrPages: item.nbrPages,
-        };
-
+        return { ...base, author: item.author, nbrPages: item.nbrPages };
       if (item.type === "DVD" || item.type === "Audiobook")
-        return {
-          ...base,
-          runTimeMinutes: item.runTimeMinutes,
-        };
+        return { ...base, runTimeMinutes: item.runTimeMinutes };
       return base;
     }
-  }, [id]);
+  }, [id, reset]);
 
   function onSubmit(data: LibraryFormData) {
     console.log("Submitted", data);
@@ -71,7 +72,7 @@ function CreateItemPage() {
     <>
       <div className="vh-100 d-grid justify-content-center align-content-center">
         <h4 className="text-center">
-          Create new <small>{type} </small>
+          Create new <small>{"type"} </small>
         </h4>
         <div className="p-3 shadow rounded-4 mt-3" style={{ width: 350 }}>
           <form onSubmit={handleSubmit(onSubmit)}>
@@ -84,7 +85,11 @@ function CreateItemPage() {
             </div>
 
             <div className="mb-3 mt-4">
-              <select className="form-select" {...register("categoryId")}>
+              <select
+                className="form-select"
+                {...register("categoryId")}
+                value={selectedCategoryId}
+                onChange={(e) => setSelectedCategoryId(e.target.value)}>
                 <option value={""}>Category</option>
                 {categories.map((category) => (
                   <option key={category._id} value={category._id}>
