@@ -31,8 +31,13 @@ function Navbar() {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to={"all"} className="clickable nav-link">
+                <NavLink to={"all/items"} className="clickable nav-link">
                   All items
+                </NavLink>
+              </li>
+              <li className="nav-item">
+                <NavLink to={"all/categories"} className="clickable nav-link">
+                  All Categories
                 </NavLink>
               </li>
               <li className="nav-item dropdown">

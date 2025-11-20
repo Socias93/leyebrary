@@ -7,6 +7,7 @@ import {
   NewItemPage,
   CreateCategoryPage,
   CreateItemPage,
+  AllCategoriesPage,
 } from "./pages/index";
 
 const router = createBrowserRouter([
@@ -23,8 +24,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "all",
+        path: "all/items",
         element: <AllItemsPage />,
+      },
+      {
+        path: "all/categories",
+        element: <AllCategoriesPage />,
       },
       {
         path: "new-item",
