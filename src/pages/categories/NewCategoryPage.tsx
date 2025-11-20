@@ -8,7 +8,7 @@ function NewCategoryPage() {
   return (
     <>
       <div className="d-grid justify-content-center">
-        <h1>What item would you like to create ?</h1>
+        <h1>What Category would you like to create ?</h1>
         <div className="d-flex">
           {category.map((c) => (
             <button

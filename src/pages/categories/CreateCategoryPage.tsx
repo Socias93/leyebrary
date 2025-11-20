@@ -1,9 +1,9 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ItemType } from "../../items/CreateItemPage";
-import { CategoryFormData, categorySchema } from "../CreateCategorySchema";
+import { CategoryFormData, categorySchema } from "./CreateCategorySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { saveCategory } from "../../../services/fakeCategoryService";
+import { saveCategory } from "../../services/fakeCategoryService";
+import { ItemType } from "../utils";
 
 function CreateCategoryPage() {
   const [searchParams] = useSearchParams();

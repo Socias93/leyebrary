@@ -1,4 +1,4 @@
-import { LibraryItem } from "../services/fakeFoodService";
+import { LibraryItem } from "../services/fakeItemService";
 
 interface Props {
   items: LibraryItem[];
@@ -13,6 +13,7 @@ function ItemsGroup({ items }: Props) {
             <div className="position-relative"></div>
             <h5 className="mt-2 mb-1">{i.title}</h5>
             <p className="small mb-0">{i.category.name}</p>
+
             <div className="d-flex justify-content-between m-4"></div>
           </div>
         </div>

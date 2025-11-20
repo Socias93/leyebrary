@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Category, getCategories } from "../services/fakeCategoryService";
-import { getItems } from "../services/fakeFoodService";
+import { getItems } from "../services/fakeItemService";
 import { paginate } from "../components/utils";
-import { ItemsGroup, ListGroup, Pagination, Navbar } from "../components/index";
+import { ItemsGroup, ListGroup, Pagination } from "../components/index";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const PAGE_SIZE = 5;

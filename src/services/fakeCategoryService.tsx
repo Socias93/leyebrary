@@ -1,12 +1,14 @@
+import { ItemType } from "../pages/utils";
+
 // library.ts
 export interface Category {
   _id: string;
-  name: string;
+  name: ItemType | string;
   imageUrl?: string;
 }
 
 export interface NewCategoryData {
-  name: string;
+  name: ItemType | string;
 }
 
 /**

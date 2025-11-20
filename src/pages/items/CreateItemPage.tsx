@@ -1,21 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { BookishFormData, bookishSchema } from "./schemas/BookisSchema";
 import { useForm } from "react-hook-form";
+import { getCategories } from "../../services/fakeCategoryService";
+import { getItem, LibraryItem, saveItem } from "../../services/fakeItemService";
 import {
   isTimeBasedSchema,
   TimeBasedFormData,
 } from "./schemas/TimeBasedSchema";
-import { getCategories } from "../../services/fakeCategoryService";
-import { saveItem } from "../../services/fakeFoodService";
-
-export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
-
-type LibraryFormData = BookishFormData | TimeBasedFormData;
+import { ItemType, LibraryFormData } from "../utils";
+import { useEffect } from "react";
 
 function CreateItemPage() {
   const categories = getCategories();
   const navigate = useNavigate();
+  const { id } = useParams();
   const [searchParams] = useSearchParams();
   const type = (searchParams.get("type") as ItemType) ?? "Book";
 
@@ -23,6 +22,7 @@ function CreateItemPage() {
   const isTimeBased = type === "DVD" || type === "Audiobook";
 
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -30,9 +30,40 @@ function CreateItemPage() {
     resolver: zodResolver(isBookish ? bookishSchema : isTimeBasedSchema),
   });
 
+  useEffect(() => {
+    if (!id || id === "new") return;
+    const item = getItem(id);
+
+    if (!item) return;
+
+    reset(mapToFormData(item));
+
+    function mapToFormData(item: LibraryItem): LibraryFormData {
+      const base: LibraryFormData = {
+        _id: item._id,
+        title: item.title,
+        categoryId: item.category._id,
+      };
+
+      if (item.type === "Book" || item.type === "Referencebook")
+        return {
+          ...base,
+          author: item.author,
+          nbrPages: item.nbrPages,
+        };
+
+      if (item.type === "DVD" || item.type === "Audiobook")
+        return {
+          ...base,
+          runTimeMinutes: item.runTimeMinutes,
+        };
+      return base;
+    }
+  }, [id]);
+
   function onSubmit(data: LibraryFormData) {
     console.log("Submitted", data);
-    navigate("/all");
+    navigate("/all/items");
     saveItem(data);
   }
 
@@ -97,7 +128,7 @@ function CreateItemPage() {
                 <label className="form-label">Run time (minutes)</label>
                 <input
                   className="form-control"
-                  {...register("runTimeMinutes")}
+                  {...register("runTimeMinutes", { valueAsNumber: true })}
                 />
                 {isTimeBased && (errors as any).runTimeMinutes && (
                   <p className="text-danger">

@@ -3,5 +3,5 @@ export { default as HomePage } from "./HomePage";
 export { default as NewCategoryPage } from "./categories/NewCategoryPage";
 export { default as NewItemPage } from "./items/NewItemPage";
 export { default as CreateItemPage } from "./items/CreateItemPage";
-export { default as CreateCategoryPage } from "./categories/categoryschema/CreateCategoryPage";
+export { default as CreateCategoryPage } from "./categories/CreateCategoryPage";
 export { default as AllCategoriesPage } from "./categories/AllCategoriesPage";

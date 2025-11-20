@@ -1,11 +1,12 @@
 // fakeLibraryService.ts
 import { Category, getCategories } from "./fakeCategoryService";
 
-interface BaseItem {
+export interface BaseItem {
   _id: string;
   title: string;
   isBorrowable?: boolean;
   category: Category;
+  type: string;
   // if checked out:
   borrower?: string;
   borrowDate?: string; // ISO string
@@ -59,12 +60,14 @@ const items: LibraryItem[] = [
     _id: "lib-0001",
     title: "Svenska sagor",
     author: "A. Författare",
+
     nbrPages: 320,
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Book") || {
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
       name: "Book",
     },
+    type: "Book",
   } as Book,
   {
     _id: "lib-0002",
@@ -75,6 +78,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
       name: "DVD",
     },
+    type: "DVD",
   } as DVD,
   {
     _id: "lib-0003",
@@ -85,6 +89,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
+    type: "Audiobook",
   } as Audiobook,
   {
     _id: "lib-0004",
@@ -96,6 +101,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
+    type: "Referencebook",
   } as ReferenceBook,
 
   {
@@ -105,6 +111,7 @@ const items: LibraryItem[] = [
     nbrPages: 288,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
+    type: "Book",
   } as Book,
   {
     _id: "lib-0006",
@@ -113,6 +120,7 @@ const items: LibraryItem[] = [
     nbrPages: 214,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
+    type: "Book",
   } as Book,
 
   // Två extra DVD
@@ -122,13 +130,16 @@ const items: LibraryItem[] = [
     runTimeMinutes: 132,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+    type: "DVD",
   } as DVD,
+
   {
     _id: "lib-0008",
     title: "Drama Anthology",
     runTimeMinutes: 98,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+    type: "DVD",
   } as DVD,
 
   // Två extra ljudböcker
@@ -141,6 +152,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
+    type: "Audiobook",
   } as Audiobook,
   {
     _id: "lib-0010",
@@ -151,6 +163,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
+    type: "Audiobook",
   } as Audiobook,
 
   // Två extra uppslagsböcker
@@ -164,6 +177,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
+    type: "Referencebook",
   } as ReferenceBook,
   {
     _id: "lib-0012",
@@ -175,6 +189,7 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
+    type: "Referencebook",
   } as ReferenceBook,
 ];
 
@@ -196,57 +211,76 @@ export function saveItem(form: LibraryFormData) {
   const categoryInDb = getCategories().find((c) => c._id === form.categoryId);
   if (!categoryInDb) throw new Error("Category was not found");
 
-  // Validate fields depending on type
-  const type = form.categoryId;
+  // Bestäm typ utifrån category.name
+  const typeName = categoryInDb.name; // "Book" | "DVD" | "Audiobook" | "Referencebook"
+
+  // Basic validation
   if (!form.title) throw new Error("Title is required");
-  if (type === "Book") {
-    if (!form.author) throw new Error("author is required for Book");
-    if (form.nbrPages == null) throw new Error("nbrPages is required for Book");
-  } else if (type === "Referencebook") {
-    if (!form.author) throw new Error("author is required for Referencebook");
+
+  // Validera beroende på typeName
+  if (typeName === "Book" || typeName === "Referencebook") {
+    if (!form.author)
+      throw new Error("author is required for Book/Referencebook");
     if (form.nbrPages == null)
-      throw new Error("nbrPages is required for Referencebook");
-  } else if (type === "DVD" || type === "Audiobook") {
+      throw new Error("nbrPages is required for Book/Referencebook");
+  } else if (typeName === "DVD" || typeName === "Audiobook") {
     if (form.runTimeMinutes == null)
       throw new Error("runTimeMinutes is required for DVD/Audiobook");
   }
 
-  // If updating existing item
-  const itemInDb = items.find((i) => i._id === form._id) || ({} as LibraryItem);
+  // Hitta existerande item eller skapa nytt partial
+  let itemInDb = items.find((i) => i._id === form._id) as
+    | Partial<LibraryItem>
+    | undefined;
 
-  // common assignments
-  (itemInDb as any).title = form.title;
-  (itemInDb as any).type = form.categoryId;
-  // Referencebook can never be borrowable
-  (itemInDb as any).isBorrowable =
-    form.categoryId === "Referencebook" ? false : form.isBorrowable;
-  (itemInDb as any).category = categoryInDb;
+  if (!itemInDb) {
+    itemInDb = {
+      _id: form._id ?? Date.now().toString(),
+      title: "",
+      isBorrowable: true,
+      category: categoryInDb,
+      type: typeName,
+    } as Partial<LibraryItem>;
+  }
 
-  // type-specific assignments
-  if (form.categoryId === "Book") {
+  // Common assignments
+  itemInDb._id = itemInDb._id ?? form._id ?? Date.now().toString();
+  itemInDb.title = form.title;
+  itemInDb.isBorrowable =
+    typeName === "Referencebook" ? false : !!form.isBorrowable;
+  itemInDb.category = categoryInDb;
+
+  // Type-specific assignments (sätt och ta bort felaktiga fält)
+  if (typeName === "Book") {
     (itemInDb as any).author = form.author!;
     (itemInDb as any).nbrPages = form.nbrPages!;
-  } else if (form.categoryId === "Referencebook") {
+    delete (itemInDb as any).runTimeMinutes;
+  } else if (typeName === "Referencebook") {
     (itemInDb as any).author = form.author!;
     (itemInDb as any).nbrPages = form.nbrPages!;
-    // make sure it's not borrowable
-    (itemInDb as any).isBorrowable = false;
-    // remove borrower fields if accidentally set
+    itemInDb.isBorrowable = false;
+    delete (itemInDb as any).runTimeMinutes;
     delete (itemInDb as any).borrower;
     delete (itemInDb as any).borrowDate;
-  } else if (form.categoryId === "DVD") {
+  } else if (typeName === "DVD") {
     (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
-  } else if (form.categoryId === "Audiobook") {
+    delete (itemInDb as any).author;
+    delete (itemInDb as any).nbrPages;
+  } else if (typeName === "Audiobook") {
     (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
+    delete (itemInDb as any).author;
+    delete (itemInDb as any).nbrPages;
   }
 
-  // if new -> assign id and push
-  if (!(itemInDb as any)._id) {
-    (itemInDb as any)._id = Date.now().toString();
-    items.push(itemInDb);
+  // Persist: push eller ersätt
+  const idx = items.findIndex((i) => i._id === itemInDb!._id);
+  if (idx === -1) {
+    items.push(itemInDb as LibraryItem);
+    return itemInDb;
+  } else {
+    items[idx] = itemInDb as LibraryItem;
+    return items[idx];
   }
-
-  return itemInDb;
 }
 
 /**
