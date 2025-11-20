@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@hookform/resolvers": "^5.2.2",
     "bootstrap": "^5.3.8",
+    "lodash": "^4.17.21",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router-dom": "^7.9.6",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",
+    "@types/lodash": "^4.17.20",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
