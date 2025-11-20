@@ -12,7 +12,7 @@ function NewCategoryPage() {
         <div className="d-flex">
           {category.map((c) => (
             <button
-              onClick={() => navigate(`/new-category/${c._id}`)}
+              onClick={() => navigate(`/new-category/${c._id}?type=${c.name}`)}
               key={c._id}
               className="btn btn-outline-info col-2 mt-4 ms-1 w-25 ">
               {c.name}
