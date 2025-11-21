@@ -29,7 +29,7 @@ function Pagination({
                 <a
                   onClick={() => onPageSelect(page)}
                   className={`clickable page-link text-black ${
-                    page === selectedPage ? "bg-black text-white" : ""
+                    page === selectedPage ? "bg-info text-white" : ""
                   } `}>
                   {page}
                 </a>

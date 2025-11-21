@@ -14,10 +14,8 @@ function ItemsGroup({ items }: Props) {
       prev.map((item) => {
         if (item._id === id) {
           if (item.borrower) {
-            // Returnerar item
             return { ...item, borrower: undefined, isBorrowable: true };
           } else {
-            // Hyr item
             return {
               ...item,
               borrower: "You",

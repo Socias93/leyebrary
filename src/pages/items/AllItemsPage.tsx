@@ -2,6 +2,7 @@ import { JSX, useState } from "react";
 import { BaseItem, deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import { th } from "zod/locales";
+import _ from "lodash";
 
 interface TextColumn {
   path: string;
@@ -36,16 +37,6 @@ function AllItemsPage() {
       label: "Category",
     },
     {
-      key: "delete",
-      content: (item) => (
-        <button
-          onClick={() => handleDelete(item._id)}
-          className="btn btn-outline-dark">
-          Delete
-        </button>
-      ),
-    },
-    {
       key: "edit",
       content: (item) => (
         <button
@@ -54,6 +45,16 @@ function AllItemsPage() {
           }
           className="btn btn-outline-info">
           Edit
+        </button>
+      ),
+    },
+    {
+      key: "delete",
+      content: (item) => (
+        <button
+          onClick={() => handleDelete(item._id)}
+          className="btn btn-outline-dark">
+          Delete
         </button>
       ),
     },
@@ -78,8 +79,13 @@ function AllItemsPage() {
         <tbody>
           {items.map((item) => (
             <tr key={item._id}>
-              <td>{item.title} </td>
-              <td> </td>
+              {columns.map((column) =>
+                "path" in column ? (
+                  <td key={column.path}>{_.get(item, column.path)} </td>
+                ) : (
+                  <td key={column.key}> {column.content(item)} </td>
+                )
+              )}
             </tr>
           ))}
         </tbody>
