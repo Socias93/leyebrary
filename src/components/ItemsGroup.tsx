@@ -76,14 +76,14 @@ function ItemsGroup({ items }: Props) {
               style={{ width: 400, height: 30 }}>
               {i.isBorrowable ? (
                 <span
-                  className="clickable badge bg-info rounded-pill w-50 p-2 shadow"
+                  className="clickable badge bg-info rounded-pill p-2 shadow"
                   onClick={() => handleBorrowToggle(i._id)}>
                   Borrow
                 </span>
               ) : (
                 <div className="d-grid justify-content-center">
                   <span
-                    className="clickable badge bg-danger rounded-pill p-2 shadow"
+                    className="clickable badge bg-dark rounded-pill p-2 shadow"
                     onClick={() => handleBorrowToggle(i._id)}>
                     Return
                   </span>

@@ -3,6 +3,7 @@ import { deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { Columns } from "../utils";
+import Table from "../../components/Table";
 
 export interface SortColumn {
   path: string;
@@ -57,49 +58,14 @@ function AllItemsPage() {
     },
   ];
 
-  function handleSort(path: string) {
-    if (sortColumn.path === path) {
-      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
-    } else {
-      sortColumn.path = path;
-      sortColumn.order = "asc";
-    }
-    setSortColumn({ ...sortColumn });
-  }
-
   return (
     <>
-      <table className="table">
-        <thead className="table-info">
-          <tr>
-            {columns.map((column) =>
-              "path" in column ? (
-                <th
-                  onClick={() => handleSort(column.path)}
-                  scope="col"
-                  key={column.path}>
-                  {column.label}
-                </th>
-              ) : (
-                <th key={column.key} />
-              )
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {sortedItems.map((item) => (
-            <tr key={item._id}>
-              {columns.map((column) =>
-                "path" in column ? (
-                  <td key={column.path}>{_.get(item, column.path)} </td>
-                ) : (
-                  <td key={column.key}> {column.content(item)} </td>
-                )
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Table
+        columns={columns}
+        items={sortedItems}
+        onSort={setSortColumn}
+        sortColumn={sortColumn}
+      />
     </>
   );
 }
