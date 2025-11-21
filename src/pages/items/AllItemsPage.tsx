@@ -1,24 +1,19 @@
-import { JSX, useState } from "react";
-import { BaseItem, deleteItem, getItems } from "../../services/fakeItemService";
+import { useState } from "react";
+import { deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
-import { th } from "zod/locales";
 import _ from "lodash";
+import { Columns } from "../utils";
 
-interface TextColumn {
+export interface SortColumn {
   path: string;
-  label: string;
+  order: "asc" | "desc";
 }
 
-interface ContentColumn {
-  key: string;
-  content: (item: BaseItem) => JSX.Element;
-}
-
-type Columns = TextColumn | ContentColumn;
+const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
 function AllItemsPage() {
   const [items, setItems] = useState(getItems());
-  const [sortColumn, setSortColumn] = useState();
+  const [sortColumn, setSortColumn] = useState(SORT_ITEM);
   const navigate = useNavigate();
 
   function handleDelete(id: string) {
@@ -26,6 +21,8 @@ function AllItemsPage() {
     setItems(newItem);
     deleteItem(id);
   }
+
+  const sortedItems = _.orderBy(items, sortColumn.path, sortColumn.order);
 
   const columns: Columns[] = [
     {
@@ -60,6 +57,16 @@ function AllItemsPage() {
     },
   ];
 
+  function handleSort(path: string) {
+    if (sortColumn.path === path) {
+      sortColumn.order = sortColumn.order === "asc" ? "desc" : "asc";
+    } else {
+      sortColumn.path = path;
+      sortColumn.order = "asc";
+    }
+    setSortColumn({ ...sortColumn });
+  }
+
   return (
     <>
       <table className="table">
@@ -67,7 +74,10 @@ function AllItemsPage() {
           <tr>
             {columns.map((column) =>
               "path" in column ? (
-                <th scope="col" key={column.path}>
+                <th
+                  onClick={() => handleSort(column.path)}
+                  scope="col"
+                  key={column.path}>
                   {column.label}
                 </th>
               ) : (
@@ -77,7 +87,7 @@ function AllItemsPage() {
           </tr>
         </thead>
         <tbody>
-          {items.map((item) => (
+          {sortedItems.map((item) => (
             <tr key={item._id}>
               {columns.map((column) =>
                 "path" in column ? (
