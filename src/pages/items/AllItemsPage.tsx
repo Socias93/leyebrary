@@ -1,14 +1,9 @@
 import { useState } from "react";
 import { deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
+import { Columns, SortColumn } from "../utils";
+import { Table } from "../../components";
 import _ from "lodash";
-import { Columns } from "../utils";
-import Table from "../../components/Table";
-
-export interface SortColumn {
-  path: string;
-  order: "asc" | "desc";
-}
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 

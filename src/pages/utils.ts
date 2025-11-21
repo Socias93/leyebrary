@@ -18,3 +18,8 @@ export interface ContentColumn {
 }
 
 export type Columns = TextColumn | ContentColumn;
+
+export interface SortColumn {
+  path: string;
+  order: "asc" | "desc";
+}
