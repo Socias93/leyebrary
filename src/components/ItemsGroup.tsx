@@ -74,7 +74,11 @@ function ItemsGroup({ items }: Props) {
             <div
               className="d-flex justify-content-center"
               style={{ width: 400, height: 30 }}>
-              {i.isBorrowable ? (
+              {i.type === "Referencebook" ? (
+                <span className="badge bg-secondary rounded-pill p-2 shadow">
+                  Not borrowable
+                </span>
+              ) : i.isBorrowable ? (
                 <span
                   className="clickable badge bg-info rounded-pill p-2 shadow"
                   onClick={() => handleBorrowToggle(i._id)}>

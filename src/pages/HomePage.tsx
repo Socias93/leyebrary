@@ -3,6 +3,7 @@ import { Category, getCategories } from "../services/fakeCategoryService";
 import { getItems } from "../services/fakeItemService";
 import { paginate } from "../components/utils";
 import { ItemsGroup, ListGroup, Pagination } from "../components/index";
+import HeaderImg from "../components/HeaderImg";
 
 const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const PAGE_SIZE = 5;
@@ -28,6 +29,8 @@ function HomePage() {
 
   return (
     <>
+      <HeaderImg />
+
       <div className="d-grid justify-content-center">
         <h1 className="text-center">L{eye}brary </h1>
         <div className="d-flex">
