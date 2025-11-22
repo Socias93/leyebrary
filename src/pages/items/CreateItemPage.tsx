@@ -18,8 +18,10 @@ function CreateItemPage() {
   const categories = getCategories();
   const navigate = useNavigate();
 
+  const initialCategoryFromQuery = searchParams.get("category") ?? "";
+
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
-    searchParams.get("type") ?? ""
+    initialCategoryFromQuery
   );
 
   const selectedCategory = categories.find((c) => c._id === selectedCategoryId);
@@ -33,13 +35,20 @@ function CreateItemPage() {
     reset,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<BookishFormData | TimeBasedFormData>({
     resolver: zodResolver(isBookish ? bookishSchema : isTimeBasedSchema),
+    defaultValues: { categoryId: initialCategoryFromQuery || "" },
   });
 
   useEffect(() => {
+    setValue("categoryId", selectedCategoryId);
+  }, [selectedCategoryId, setValue]);
+
+  useEffect(() => {
     if (!id || id === "new") return;
+
     const item = getItem(id);
     if (!item) return;
 
@@ -64,8 +73,8 @@ function CreateItemPage() {
 
   function onSubmit(data: LibraryFormData) {
     console.log("Submitted", data);
-    navigate("/all/items");
     saveItem(data);
+    navigate("/all/items");
   }
 
   return (
@@ -88,7 +97,6 @@ function CreateItemPage() {
               <select
                 className="form-select"
                 {...register("categoryId")}
-                value={selectedCategoryId}
                 onChange={(e) => setSelectedCategoryId(e.target.value)}>
                 <option value={""}>Category</option>
                 {categories.map((category) => (
