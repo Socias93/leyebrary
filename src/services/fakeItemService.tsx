@@ -81,7 +81,7 @@ const items: LibraryItem[] = [
   } as DVD,
   {
     _id: "lib-0003",
-    title: "Storytelling - Audiobook",
+    title: "Storytelling",
     runTimeMinutes: 400,
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Audiobook") || {
@@ -143,7 +143,7 @@ const items: LibraryItem[] = [
   // Två extra ljudböcker
   {
     _id: "lib-0009",
-    title: "Storytelling - Audiobook Vol. 2",
+    title: "Storytelling - Vol. 2",
     runTimeMinutes: 360,
     isBorrowable: true,
     category: {

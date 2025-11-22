@@ -7,6 +7,13 @@ import _ from "lodash";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
+function getAbbreviation(title: string) {
+  return title
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase());
+}
+
 function AllItemsPage() {
   const [items, setItems] = useState(getItems());
   const [sortColumn, setSortColumn] = useState(SORT_ITEM);
@@ -19,10 +26,12 @@ function AllItemsPage() {
     deleteItem(id);
   }
 
+  const query = searchQuery.toLowerCase();
+
   const filtredItems = items.filter(
     (item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.name.toLowerCase().includes(searchQuery.toLowerCase())
+      item.title.toLowerCase().includes(query) ||
+      item.category.name.toLowerCase().includes(query)
   );
 
   const sortedItems = _.orderBy(
@@ -35,6 +44,15 @@ function AllItemsPage() {
     {
       path: "title",
       label: "Title",
+      content: (item) => {
+        const abbr = getAbbreviation(item.title);
+        return (
+          <>
+            {item.title}
+            {abbr ? <span className="text-muted ms-2">({abbr})</span> : null}
+          </>
+        );
+      },
     },
     {
       path: "category.name",
