@@ -21,7 +21,7 @@ function Pagination({
 
   return (
     <>
-      <div className="d-flex justify-content-center mt-2">
+      <div className="d-flex justify-content-center mt-4">
         <nav aria-label="...">
           <ul className="pagination">
             {pages.map((page) => (
