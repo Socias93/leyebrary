@@ -113,8 +113,10 @@ function ItemsGroup({ items }: Props) {
                     {i.borrower && timeLeft[i._id] !== undefined && (
                       <div className="text-center small text-muted">
                         <div>Borrowed by: {i.borrower}</div>
+                        <span>{new Date(i.borrowDate!).toDateString()}</span>
+
                         <div>
-                          Time left: {Math.floor(timeLeft[i._id] / 3600)}h
+                          Return within : {Math.floor(timeLeft[i._id] / 3600)}h
                           {Math.floor((timeLeft[i._id] % 3600) / 60)}m
                           {timeLeft[i._id] % 60}s
                         </div>
