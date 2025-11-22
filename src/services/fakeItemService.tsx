@@ -225,8 +225,8 @@ export function saveItem(form: LibraryFormData) {
   // Common assignments
   itemInDb._id = itemInDb._id ?? form._id ?? Date.now().toString();
   itemInDb.title = form.title;
-  itemInDb.isBorrowable =
-    typeName === "Referencebook" ? false : !!form.isBorrowable;
+  itemInDb.isBorrowable = categoryInDb.name === "Referencebook" ? false : true;
+
   itemInDb.category = categoryInDb;
 
   // Type-specific assignments (sätt och ta bort felaktiga fält)
