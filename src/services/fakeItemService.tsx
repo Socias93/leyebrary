@@ -6,30 +6,25 @@ export interface BaseItem {
   title: string;
   isBorrowable?: boolean;
   category: Category;
-  type: string;
   // if checked out:
   borrower?: string;
   borrowDate?: string; // ISO string
 }
 
 export interface Book extends BaseItem {
-  type: "Book";
   author: string;
   nbrPages: number;
 }
 
 export interface DVD extends BaseItem {
-  type: "DVD";
   runTimeMinutes: number;
 }
 
 export interface Audiobook extends BaseItem {
-  type: "Audiobook";
   runTimeMinutes: number;
 }
 
 export interface ReferenceBook extends BaseItem {
-  type: "Referencebook";
   author: string;
   nbrPages: number;
 }
@@ -66,7 +61,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
       name: "Book",
     },
-    type: "Book",
   } as Book,
   {
     _id: "lib-0002",
@@ -77,7 +71,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
       name: "DVD",
     },
-    type: "DVD",
   } as DVD,
   {
     _id: "lib-0003",
@@ -88,7 +81,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
-    type: "Audiobook",
   } as Audiobook,
   {
     _id: "lib-0004",
@@ -99,7 +91,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
-    type: "Referencebook",
   } as ReferenceBook,
 
   {
@@ -109,7 +100,6 @@ const items: LibraryItem[] = [
     nbrPages: 288,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
-    type: "Book",
   } as Book,
   {
     _id: "lib-0006",
@@ -118,7 +108,6 @@ const items: LibraryItem[] = [
     nbrPages: 214,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
-    type: "Book",
   } as Book,
 
   // Två extra DVD
@@ -128,7 +117,6 @@ const items: LibraryItem[] = [
     runTimeMinutes: 132,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
-    type: "DVD",
   } as DVD,
 
   {
@@ -137,7 +125,6 @@ const items: LibraryItem[] = [
     runTimeMinutes: 98,
     isBorrowable: true,
     category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
-    type: "DVD",
   } as DVD,
 
   // Två extra ljudböcker
@@ -150,7 +137,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
-    type: "Audiobook",
   } as Audiobook,
   {
     _id: "lib-0010",
@@ -161,7 +147,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
-    type: "Audiobook",
   } as Audiobook,
 
   // Två extra uppslagsböcker
@@ -174,7 +159,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
-    type: "Referencebook",
   } as ReferenceBook,
   {
     _id: "lib-0012",
@@ -185,7 +169,6 @@ const items: LibraryItem[] = [
       _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
-    type: "Referencebook",
   } as ReferenceBook,
 ];
 
@@ -293,7 +276,7 @@ export function deleteItem(id: string) {
  * Extra helpers you may find useful (not required but handy)
  */
 export function canBorrow(item: LibraryItem): boolean {
-  if (item.type === "Referencebook") return false;
+  if (item.category.name === "Referencebook") return false;
   return item.isBorrowable === true && !item.borrower;
 }
 

@@ -1,11 +1,34 @@
 import { JSX } from "react";
 import { BaseItem } from "../services/fakeItemService";
-import { BookishFormData } from "./items/schemas/BookisSchema";
-import { TimeBasedFormData } from "./items/schemas/TimeBasedSchema";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
-export type LibraryFormData = BookishFormData | TimeBasedFormData;
+export interface BookishFormData {
+  _id?: string;
+  title: string;
+  categoryId: string;
+  author: string;
+  nbrPages: number;
+  isBorrowable?: boolean;
+}
+
+export interface TimeBasedFormData {
+  _id?: string;
+  title: string;
+  categoryId: string;
+  runTimeMinutes: number;
+  isBorrowable?: boolean;
+}
+
+export interface LibraryFormData {
+  _id?: string;
+  title: string;
+  categoryId: string;
+  author?: string;
+  nbrPages?: number;
+  runTimeMinutes?: number;
+  isBorrowable?: boolean;
+}
 
 export interface TextColumn {
   path: string;

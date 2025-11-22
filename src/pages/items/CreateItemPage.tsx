@@ -1,15 +1,20 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { BookishFormData, bookishSchema } from "./schemas/BookisSchema";
+import { bookishSchema } from "./schemas/BookisSchema";
 import { useForm } from "react-hook-form";
 import { getCategories } from "../../services/fakeCategoryService";
-import { getItem, LibraryItem, saveItem } from "../../services/fakeItemService";
+import {
+  Audiobook,
+  Book,
+  DVD,
+  getItem,
+  LibraryItem,
+  ReferenceBook,
+  saveItem,
+} from "../../services/fakeItemService";
 import { LibraryFormData } from "../utils";
 import { useEffect, useState } from "react";
-import {
-  isTimeBasedSchema,
-  TimeBasedFormData,
-} from "./schemas/TimeBasedSchema";
+import { isTimeBasedSchema } from "./schemas/TimeBasedSchema";
 
 function CreateItemPage() {
   const { id } = useParams();
@@ -32,12 +37,12 @@ function CreateItemPage() {
     selectedCategory?.name === "DVD" || selectedCategory?.name === "Audiobook";
 
   const {
-    reset,
     register,
     handleSubmit,
+    reset,
     setValue,
     formState: { errors },
-  } = useForm<BookishFormData | TimeBasedFormData>({
+  } = useForm<LibraryFormData>({
     resolver: zodResolver(isBookish ? bookishSchema : isTimeBasedSchema),
     defaultValues: { categoryId: initialCategoryFromQuery || "" },
   });
@@ -63,10 +68,23 @@ function CreateItemPage() {
         title: item.title,
         categoryId: item.category._id,
       };
-      if (item.type === "Book" || item.type === "Referencebook")
-        return { ...base, author: item.author, nbrPages: item.nbrPages };
-      if (item.type === "DVD" || item.type === "Audiobook")
-        return { ...base, runTimeMinutes: item.runTimeMinutes };
+      if (
+        item.category.name === "Book" ||
+        item.category.name === "Referencebook"
+      ) {
+        const bookItem = item as Book | ReferenceBook;
+        return {
+          ...base,
+          author: bookItem.author,
+          nbrPages: bookItem.nbrPages,
+        };
+      }
+
+      if (item.category.name === "DVD" || item.category.name === "Audiobook") {
+        const timeItem = item as DVD | Audiobook;
+        return { ...base, runTimeMinutes: timeItem.runTimeMinutes };
+      }
+
       return base;
     }
   }, [id, reset]);

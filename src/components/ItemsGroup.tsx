@@ -78,7 +78,8 @@ function ItemsGroup({ items }: Props) {
                 <h5 className="card-title">{i.title}</h5>
                 <p className="card-subtitle text-muted">{i.category.name}</p>
 
-                {i.type === "Book" || i.type === "Referencebook" ? (
+                {i.category.name === "Book" ||
+                i.category.name === "Referencebook" ? (
                   <>
                     <p className="mb-1">Author: {(i as Book).author}</p>
                     <p className="mb-1">Pages: {(i as Book).nbrPages}</p>
@@ -91,7 +92,7 @@ function ItemsGroup({ items }: Props) {
               </div>
 
               <div className="d-flex flex-column align-items-center mt-3">
-                {i.type === "Referencebook" ? (
+                {i.category.name === "Referencebook" ? (
                   <span className="badge bg-secondary rounded-pill px-3 py-2 shadow-sm">
                     Not borrowable
                   </span>

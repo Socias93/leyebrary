@@ -23,6 +23,7 @@ function TableHeader({ columns, onSort, sortColumn }: Props) {
         {columns.map((column) =>
           "path" in column ? (
             <th
+              className="clickable"
               onClick={() => handleSort(column.path)}
               scope="col"
               key={column.path}>
