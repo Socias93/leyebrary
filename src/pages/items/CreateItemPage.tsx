@@ -6,6 +6,7 @@ import { getItem, saveItem } from "../../services/fakeItemService";
 import { LibraryFormData } from "../utils";
 import { getDynamicSchema } from "../index";
 import { getCategories, Category, LibraryItem } from "../../services/Utils";
+import { FieldInput } from "../../components/index";
 import z from "zod";
 
 function CreateItemPage() {
@@ -49,23 +50,23 @@ function CreateItemPage() {
 
     setSelectedCategoryId(item.category.id);
     reset(mapToFormData(item));
-
-    function mapToFormData(item: LibraryItem): DynamicFormData {
-      const base: DynamicFormData = {
-        id: item.id,
-        title: item.title,
-        categoryId: item.category.id,
-      };
-
-      item.category.fields?.forEach((field) => {
-        if (field in item) {
-          (base as any)[field] = (item as any)[field];
-        }
-      });
-
-      return base;
-    }
   }, [id, reset]);
+
+  function mapToFormData(item: LibraryItem): DynamicFormData {
+    const base: DynamicFormData = {
+      id: item.id,
+      title: item.title,
+      categoryId: item.category.id,
+    };
+
+    item.category.fields?.forEach((field) => {
+      if (field in item) {
+        (base as any)[field] = (item as any)[field];
+      }
+    });
+
+    return base;
+  }
 
   function onSubmit(data: DynamicFormData) {
     console.log("Submitted", data);
@@ -76,7 +77,7 @@ function CreateItemPage() {
   return (
     <div className="vh-100 d-grid justify-content-center align-content-center">
       <h4 className="text-center">
-        Create new <small>{"type"}</small>
+        Create new <small>{selectedCategory?.name || "Item"}</small>
       </h4>
       <div className="p-3 shadow rounded-4 mt-3" style={{ width: 350 }}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -105,45 +106,14 @@ function CreateItemPage() {
             )}
           </div>
 
-          {selectedCategory?.fields?.map((field) => {
-            let label = "";
-            let type: "text" | "number" = "text";
-
-            switch (field) {
-              case "author":
-                label = "Author";
-                type = "text";
-                break;
-              case "nbrPages":
-                label = "Number of Pages";
-                type = "number";
-                break;
-              case "runTimeMinutes":
-                label = "Run time (minutes)";
-                type = "number";
-                break;
-              default:
-                label = field;
-            }
-
-            return (
-              <div key={field} className="mb-3">
-                <label className="form-label">{label}</label>
-                <input
-                  type={type}
-                  className="form-control"
-                  {...register(field as keyof DynamicFormData, {
-                    valueAsNumber: type === "number",
-                  })}
-                />
-                {errors[field as keyof DynamicFormData] && (
-                  <p className="text-danger">
-                    {(errors[field as keyof DynamicFormData] as any)?.message}
-                  </p>
-                )}
-              </div>
-            );
-          })}
+          {selectedCategory?.fields?.map((field) => (
+            <FieldInput
+              key={field}
+              field={field}
+              register={register}
+              errors={errors}
+            />
+          ))}
 
           <div className="text-center">
             <button className="btn btn-outline-info" type="submit">
