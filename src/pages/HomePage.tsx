@@ -9,7 +9,7 @@ const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
 const PAGE_SIZE = 5;
 
 function HomePage() {
-  const [items, setItems] = useState(getItems());
+  const items = getItems();
 
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
