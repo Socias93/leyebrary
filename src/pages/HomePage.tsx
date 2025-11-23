@@ -14,6 +14,18 @@ const PAGE_SIZE = 5;
 
 function HomePage() {
   const items = getItems();
+  const categories = getCategories();
+
+  const itemsWithFields = items.map((item) => {
+    const category = categories.find((c) => c.id === item.category.id);
+    return {
+      ...item,
+      category: {
+        ...item.category,
+        fields: category?.fields || [],
+      },
+    };
+  });
 
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
@@ -24,8 +36,8 @@ function HomePage() {
   }
 
   let filtredItems = selectedCategory.id
-    ? items.filter((item) => item.category.id === selectedCategory.id)
-    : items;
+    ? itemsWithFields.filter((item) => item.category.id === selectedCategory.id)
+    : itemsWithFields;
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
 

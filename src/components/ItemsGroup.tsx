@@ -100,8 +100,10 @@ function ItemsGroup({ items }: Props) {
                       value = (i as any)[field];
                   }
 
+                  if (value === undefined || value === null) return null;
+
                   return (
-                    <p className="mb-1" key={field}>
+                    <p className="mb-1" key={i.id + "_" + field}>
                       {label}: {value}
                     </p>
                   );

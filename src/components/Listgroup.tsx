@@ -1,4 +1,4 @@
-import { Category } from "../services/Utils";
+import { Category } from "../services/utils";
 
 interface Props {
   items: Category[];
