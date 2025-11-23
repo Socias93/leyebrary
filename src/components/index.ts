@@ -8,3 +8,4 @@ export { default as TableBody } from "./TableBody";
 export { default as SearchBox } from "./SearchBox";
 export { default as HeaderImg } from "./HeaderImg";
 export { default as FieldInput } from "./FieldInput";
+export { default as FormField } from "./FormField";
