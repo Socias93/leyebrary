@@ -9,4 +9,6 @@ export { default as SearchBox } from "./SearchBox";
 export { default as HeaderImg } from "./HeaderImg";
 export { default as FieldInput } from "./FieldInput";
 export { default as FormField } from "./FormField";
+export { default as DropDown } from "./DropDown";
+
 export { default as CategoryFieldInput } from "./CategoryFieldInput";

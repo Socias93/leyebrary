@@ -7,9 +7,11 @@ import {
   CreateCategoryPage,
   CreateItemPage,
   AllCategoriesPage,
+  NotFound,
 } from "./pages/index";
 
 const router = createBrowserRouter([
+  { path: "*", element: <NotFound /> },
   {
     path: "/",
     element: <App />,
