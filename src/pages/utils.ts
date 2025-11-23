@@ -1,5 +1,5 @@
 import { JSX } from "react";
-import { BaseItem } from "../services/fakeItemService";
+import { BaseItem } from "../services/Utils";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 

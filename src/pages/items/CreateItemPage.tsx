@@ -2,11 +2,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { getCategories } from "../../services/fakeCategoryService";
-import { getItem, saveItem, LibraryItem } from "../../services/fakeItemService";
-import { Category } from "../../services/fakeCategoryService";
+import { getItem, saveItem } from "../../services/fakeItemService";
 import { LibraryFormData } from "../utils";
-import { getDynamicSchema } from "./schemas/DynamicSchema";
+import { getDynamicSchema } from "../index";
+import { getCategories, Category, LibraryItem } from "../../services/Utils";
 import z from "zod";
 
 function CreateItemPage() {

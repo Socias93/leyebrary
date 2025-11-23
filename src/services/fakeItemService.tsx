@@ -1,50 +1,13 @@
 // fakeLibraryService.ts
-import { Category, getCategories } from "./fakeCategoryService";
-
-export interface BaseItem {
-  _id: string;
-  title: string;
-  isBorrowable?: boolean;
-  category: Category;
-  // if checked out:
-  borrower?: string;
-  borrowDate?: string; // ISO string
-}
-
-export interface Book extends BaseItem {
-  author: string;
-  nbrPages: number;
-}
-
-export interface DVD extends BaseItem {
-  runTimeMinutes: number;
-}
-
-export interface Audiobook extends BaseItem {
-  runTimeMinutes: number;
-}
-
-export interface ReferenceBook extends BaseItem {
-  author: string;
-  nbrPages: number;
-}
-
-export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
-
-/**
- * Data shape expected from forms / client when creating/updating
- */
-export interface LibraryFormData {
-  _id?: string;
-  title: string;
-  isBorrowable?: boolean;
-  categoryId: string;
-
-  // depending on type:
-  author?: string;
-  nbrPages?: number;
-  runTimeMinutes?: number;
-}
+import {
+  Audiobook,
+  Book,
+  DVD,
+  LibraryFormData,
+  LibraryItem,
+  ReferenceBook,
+  getCategories,
+} from "./Utils";
 
 /**
  * In-memory items (example data)

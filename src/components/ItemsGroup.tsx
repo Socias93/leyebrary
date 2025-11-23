@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Audiobook, Book, DVD, LibraryItem } from "../services/fakeItemService";
+import { LibraryItem, Book, DVD, Audiobook } from "../services/Utils";
 
 interface Props {
   items: LibraryItem[];

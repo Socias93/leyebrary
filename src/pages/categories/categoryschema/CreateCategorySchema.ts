@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { getCategories } from "../../../services/fakeCategoryService";
+import { getCategories } from "../../../services/Utils";
 
 export const categorySchema = z.object({
   name: z

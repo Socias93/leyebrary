@@ -1,17 +1,4 @@
-import { ItemType } from "../pages/utils";
-
-// library.ts
-export interface Category {
-  _id: string;
-  name: ItemType | string;
-  imageUrl?: string;
-  fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
-}
-
-export interface NewCategoryData {
-  name: ItemType | string;
-  fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
-}
+import { Category, NewCategoryData } from "./Utils";
 
 /**
  * Kategorierna som ska finnas (unika _id)
@@ -46,10 +33,6 @@ export const categories: Category[] = [
     fields: ["author", "nbrPages"],
   },
 ];
-
-export function getCategories(): Category[] {
-  return categories;
-}
 
 export function saveCategory(newCategory: NewCategoryData): Category | null {
   // Kontrollera om category redan finns
@@ -222,7 +205,6 @@ export const sampleItems: LibraryItem[] = [
 
 export default {
   categories,
-  getCategories,
   sampleItems,
   canBorrow,
   checkoutItem,

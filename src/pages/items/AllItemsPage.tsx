@@ -2,7 +2,7 @@ import { useState } from "react";
 import { deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import { Columns, SortColumn } from "../utils";
-import { Table, SearchBox } from "../../components";
+import { SearchBox, Table } from "../../components/index";
 import _ from "lodash";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
