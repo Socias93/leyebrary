@@ -3,7 +3,7 @@ import { categories } from "./fakeCategoryService";
 
 // library.ts
 export interface Category {
-  _id: string;
+  id: string;
   name: ItemType | string;
   imageUrl?: string;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
@@ -19,7 +19,7 @@ export function getCategories(): Category[] {
 }
 
 export interface BaseItem {
-  _id: string;
+  id: string;
   title: string;
   isBorrowable?: boolean;
   category: Category;
@@ -52,7 +52,7 @@ export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
  * Data shape expected from forms / client when creating/updating
  */
 export interface LibraryFormData {
-  _id?: string;
+  id?: string;
   title: string;
   isBorrowable?: boolean;
   categoryId: string;

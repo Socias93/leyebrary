@@ -3,7 +3,7 @@ import { Category } from "../../../services/Utils";
 
 export function getDynamicSchema(category?: Category) {
   const shape: Record<string, any> = {
-    _id: z.string().optional(),
+    id: z.string().optional(),
     title: z.string().min(1, { message: "Title is mandatory" }),
     categoryId: z.string().min(1, { message: "Category is required" }),
   };

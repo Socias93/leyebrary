@@ -10,13 +10,13 @@ function ItemsGroup({ items }: Props) {
   const [timeLeft, setTimeLeft] = useState<Record<string, number>>({});
 
   const handleBorrowToggle = (id: string) => {
-    const item = localItems.find((i) => i._id === id);
+    const item = localItems.find((i) => i.id === id);
     if (!item) return;
 
     if (item.borrower) {
       setLocalItems((prev) =>
         prev.map((i) =>
-          i._id === id
+          i.id === id
             ? {
                 ...i,
                 borrower: undefined,
@@ -32,7 +32,7 @@ function ItemsGroup({ items }: Props) {
 
       setLocalItems((prev) =>
         prev.map((i) =>
-          i._id === id
+          i.id === id
             ? {
                 ...i,
                 borrower: borrowerName,
@@ -58,7 +58,7 @@ function ItemsGroup({ items }: Props) {
             const borrowTime = new Date(item.borrowDate).getTime();
             const now = Date.now();
             const diff = 48 * 60 * 60 * 500 - (now - borrowTime);
-            newTimes[item._id] = Math.max(0, Math.floor(diff / 1000));
+            newTimes[item.id] = Math.max(0, Math.floor(diff / 1000));
           }
         });
         return newTimes;
@@ -71,7 +71,7 @@ function ItemsGroup({ items }: Props) {
   return (
     <div className="row g-4 mt-1 justify-content-center">
       {localItems.map((i) => (
-        <div key={i._id} className="col-sm-12 col-md-6 col-lg-5">
+        <div key={i.id} className="col-sm-12 col-md-6 col-lg-5">
           <div className="card h-100 shadow-sm rounded-4 m-2">
             <div className="card-body d-flex flex-column justify-content-between">
               <div className="mb-3">
@@ -117,7 +117,7 @@ function ItemsGroup({ items }: Props) {
                   <span
                     className="badge bg-info text-dark rounded-pill px-4 py-2 shadow-sm clickable"
                     style={{ cursor: "pointer" }}
-                    onClick={() => handleBorrowToggle(i._id)}>
+                    onClick={() => handleBorrowToggle(i.id)}>
                     Borrow
                   </span>
                 ) : (
@@ -125,17 +125,17 @@ function ItemsGroup({ items }: Props) {
                     <span
                       className="badge bg-dark rounded-pill px-4 py-2 shadow-sm clickable mb-2"
                       style={{ cursor: "pointer" }}
-                      onClick={() => handleBorrowToggle(i._id)}>
+                      onClick={() => handleBorrowToggle(i.id)}>
                       Return
                     </span>
-                    {i.borrower && timeLeft[i._id] !== undefined && (
+                    {i.borrower && timeLeft[i.id] !== undefined && (
                       <div className="text-center small text-muted">
                         <div>Borrowed by: {i.borrower}</div>
                         <span>{new Date(i.borrowDate!).toDateString()}</span>
                         <div>
-                          Return within : {Math.floor(timeLeft[i._id] / 3600)}h
-                          {Math.floor((timeLeft[i._id] % 3600) / 60)}m
-                          {timeLeft[i._id] % 60}s
+                          Return within : {Math.floor(timeLeft[i.id] / 3600)}h
+                          {Math.floor((timeLeft[i.id] % 3600) / 60)}m
+                          {timeLeft[i.id] % 60}s
                         </div>
                       </div>
                     )}

@@ -20,7 +20,7 @@ function CreateItemPage() {
   );
 
   const selectedCategory = categories.find(
-    (c) => c._id === selectedCategoryId
+    (c) => c.id === selectedCategoryId
   ) as Category | undefined;
 
   const dynamicSchema = getDynamicSchema(selectedCategory);
@@ -47,14 +47,14 @@ function CreateItemPage() {
     const item = getItem(id);
     if (!item) return;
 
-    setSelectedCategoryId(item.category._id);
+    setSelectedCategoryId(item.category.id);
     reset(mapToFormData(item));
 
     function mapToFormData(item: LibraryItem): DynamicFormData {
       const base: DynamicFormData = {
-        _id: item._id,
+        id: item.id,
         title: item.title,
-        categoryId: item.category._id,
+        categoryId: item.category.id,
       };
 
       item.category.fields?.forEach((field) => {
@@ -95,7 +95,7 @@ function CreateItemPage() {
               onChange={(e) => setSelectedCategoryId(e.target.value)}>
               <option value="">Category</option>
               {categories.map((category) => (
-                <option key={category._id} value={category._id}>
+                <option key={category.id} value={category.id}>
                   {category.name}
                 </option>
               ))}

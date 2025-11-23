@@ -12,9 +12,9 @@ function Listgroup({ items, onCategorySelect, selectedCategory }: Props) {
       {items.map((item) => (
         <button
           onClick={() => onCategorySelect(item)}
-          key={item._id}
+          key={item.id}
           className={`mt-2 btn btn-outline-info rounded-4 m-1 ${
-            item._id === selectedCategory._id ? "active" : ""
+            item.id === selectedCategory.id ? "active" : ""
           }   `}>
           {item.name}
         </button>

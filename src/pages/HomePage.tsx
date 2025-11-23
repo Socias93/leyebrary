@@ -9,7 +9,7 @@ import {
 } from "../components/index";
 import { Category, getCategories } from "../services/Utils";
 
-const DEFAULT_CATEGORY: Category = { _id: "", name: "All Categories" };
+const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 5;
 
 function HomePage() {
@@ -23,8 +23,8 @@ function HomePage() {
     setSelectedPage(1);
   }
 
-  let filtredItems = selectedCategory._id
-    ? items.filter((item) => item.category._id === selectedCategory._id)
+  let filtredItems = selectedCategory.id
+    ? items.filter((item) => item.category.id === selectedCategory.id)
     : items;
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);

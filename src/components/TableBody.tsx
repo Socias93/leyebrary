@@ -11,13 +11,13 @@ function TableBody({ columns, items }: Props) {
   return (
     <tbody>
       {items.map((item) => (
-        <tr key={item._id}>
+        <tr key={item.id}>
           {columns.map((column) => {
             const cellKey = "key" in column ? column.key : column.path;
             return "content" in column ? (
-              <td key={`${item._id}-${cellKey}`}>{column.content(item)}</td>
+              <td key={`${item.id}-${cellKey}`}>{column.content(item)}</td>
             ) : (
-              <td key={`${item._id}-${cellKey}`}>{_.get(item, column.path)}</td>
+              <td key={`${item.id}-${cellKey}`}>{_.get(item, column.path)}</td>
             );
           })}
         </tr>

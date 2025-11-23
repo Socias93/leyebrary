@@ -21,7 +21,7 @@ function AllItemsPage() {
   const navigate = useNavigate();
 
   function handleDelete(id: string) {
-    const newItem = items.filter((item) => item._id !== id);
+    const newItem = items.filter((item) => item.id !== id);
     setItems(newItem);
     deleteItem(id);
   }
@@ -63,7 +63,7 @@ function AllItemsPage() {
       content: (item) => (
         <button
           onClick={() =>
-            navigate(`/edit-item/${item._id}?type=${item.category.name}`)
+            navigate(`/edit-item/${item.id}?type=${item.category.name}`)
           }
           className="btn btn-outline-info">
           Edit
@@ -74,7 +74,7 @@ function AllItemsPage() {
       key: "delete",
       content: (item) => (
         <button
-          onClick={() => handleDelete(item._id)}
+          onClick={() => handleDelete(item.id)}
           className="btn btn-outline-dark">
           Delete
         </button>

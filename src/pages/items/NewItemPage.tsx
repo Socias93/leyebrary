@@ -14,9 +14,9 @@ function NewItemPage() {
         {categories.map((c) => {
           return (
             <button
-              key={c._id}
+              key={c.id}
               onClick={() =>
-                navigate(`/new-item/new?category=${c._id}&type=${c.name}`)
+                navigate(`/new-item/new?category=${c.id}&type=${c.name}`)
               }
               className="btn btn-outline-info col-2 mt-4 ms-3 w-25">
               {c.name}

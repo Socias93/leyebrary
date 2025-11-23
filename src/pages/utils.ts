@@ -4,7 +4,7 @@ import { BaseItem } from "../services/Utils";
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
 export interface LibraryFormData {
-  _id?: string;
+  id?: string;
   title: string;
   categoryId: string;
   author?: string;

@@ -15,121 +15,121 @@ import {
  */
 const items: LibraryItem[] = [
   {
-    _id: "lib-0001",
+    id: "lib-0001",
     title: "Svenska sagor",
     author: "A. Författare",
     nbrPages: 320,
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Book") || {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
       name: "Book",
     },
   } as Book,
   {
-    _id: "lib-0002",
+    id: "lib-0002",
     title: "Action Movie I",
     runTimeMinutes: 125,
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "DVD") || {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
       name: "DVD",
     },
   } as DVD,
   {
-    _id: "lib-0003",
+    id: "lib-0003",
     title: "Storytelling",
     runTimeMinutes: 400,
     isBorrowable: true,
     category: getCategories().find((c) => c.name === "Audiobook") || {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
   } as Audiobook,
   {
-    _id: "lib-0004",
+    id: "lib-0004",
     title: "Nationalencyklopedin Volym 1",
     author: "NE",
     nbrPages: 1200,
     category: getCategories().find((c) => c.name === "Referencebook") || {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
   } as ReferenceBook,
 
   {
-    _id: "lib-0005",
+    id: "lib-0005",
     title: "Svenska sagor - Volym 2",
     author: "A. Författare",
     nbrPages: 288,
     isBorrowable: true,
-    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
+    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
   } as Book,
   {
-    _id: "lib-0006",
+    id: "lib-0006",
     title: "Moderna noveller",
     author: "B. Författare",
     nbrPages: 214,
     isBorrowable: true,
-    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
+    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
   } as Book,
 
   // Två extra DVD
   {
-    _id: "lib-0007",
+    id: "lib-0007",
     title: "Action Movie II",
     runTimeMinutes: 132,
     isBorrowable: true,
-    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
   } as DVD,
 
   {
-    _id: "lib-0008",
+    id: "lib-0008",
     title: "Drama Anthology",
     runTimeMinutes: 98,
     isBorrowable: true,
-    category: { _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
+    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
   } as DVD,
 
   // Två extra ljudböcker
   {
-    _id: "lib-0009",
+    id: "lib-0009",
     title: "Storytelling - Vol. 2",
     runTimeMinutes: 360,
     isBorrowable: true,
     category: {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
   } as Audiobook,
   {
-    _id: "lib-0010",
+    id: "lib-0010",
     title: "Berättelser för natten",
     runTimeMinutes: 240,
     isBorrowable: true,
     category: {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
       name: "Audiobook",
     },
   } as Audiobook,
 
   // Två extra uppslagsböcker
   {
-    _id: "lib-0011",
+    id: "lib-0011",
     title: "Nationalencyklopedin Volym 2",
     author: "NE",
     nbrPages: 1184,
     category: {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
   } as ReferenceBook,
   {
-    _id: "lib-0012",
+    id: "lib-0012",
     title: "Nationalencyklopedin Volym 3",
     author: "NE",
     nbrPages: 1220,
     category: {
-      _id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
+      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
       name: "Referencebook",
     },
   } as ReferenceBook,
@@ -140,7 +140,7 @@ export function getItems() {
 }
 
 export function getItem(id: string) {
-  return items.find((it) => it._id === id);
+  return items.find((it) => it.id === id);
 }
 
 /**
@@ -150,7 +150,7 @@ export function getItem(id: string) {
  * - enforces: Referencebook -> isBorrowable = false
  */
 export function saveItem(form: LibraryFormData) {
-  const categoryInDb = getCategories().find((c) => c._id === form.categoryId);
+  const categoryInDb = getCategories().find((c) => c.id === form.categoryId);
   if (!categoryInDb) throw new Error("Category was not found");
 
   // Bestäm typ utifrån category.name
@@ -171,13 +171,13 @@ export function saveItem(form: LibraryFormData) {
   }
 
   // Hitta existerande item eller skapa nytt partial
-  let itemInDb = items.find((i) => i._id === form._id) as
+  let itemInDb = items.find((i) => i.id === form.id) as
     | Partial<LibraryItem>
     | undefined;
 
   if (!itemInDb) {
     itemInDb = {
-      _id: form._id ?? Date.now().toString(),
+      id: form.id ?? Date.now().toString(),
       title: "",
       isBorrowable: true,
       category: categoryInDb,
@@ -186,7 +186,7 @@ export function saveItem(form: LibraryFormData) {
   }
 
   // Common assignments
-  itemInDb._id = itemInDb._id ?? form._id ?? Date.now().toString();
+  itemInDb.id = itemInDb.id ?? form.id ?? Date.now().toString();
   itemInDb.title = form.title;
   itemInDb.isBorrowable = categoryInDb.name === "Referencebook" ? false : true;
 
@@ -215,7 +215,7 @@ export function saveItem(form: LibraryFormData) {
   }
 
   // Persist: push eller ersätt
-  const idx = items.findIndex((i) => i._id === itemInDb!._id);
+  const idx = items.findIndex((i) => i.id === itemInDb!.id);
   if (idx === -1) {
     items.push(itemInDb as LibraryItem);
     return itemInDb;
@@ -229,7 +229,7 @@ export function saveItem(form: LibraryFormData) {
  * deleteItem : remove by id
  */
 export function deleteItem(id: string) {
-  const index = items.findIndex((i) => i._id === id);
+  const index = items.findIndex((i) => i.id === id);
   if (index === -1) return undefined;
   const removed = items.splice(index, 1)[0];
   return removed;
