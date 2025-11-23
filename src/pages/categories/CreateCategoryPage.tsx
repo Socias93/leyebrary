@@ -6,12 +6,17 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { saveCategory } from "../../services/fakeCategoryService";
-import { ItemType } from "../utils";
+
+const FIELD_OPTIONS = [
+  { value: "author", label: "Author" },
+  { value: "nbrPages", label: "Number of pages" },
+  { value: "runTimeMinutes", label: "Run time (minutes)" },
+] as const;
 
 function CreateCategoryPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const type = (searchParams.get("type") ?? undefined) as ItemType | undefined;
+  const type = (searchParams.get("type") ?? undefined) as string | undefined;
 
   const {
     register,
@@ -40,6 +45,26 @@ function CreateCategoryPage() {
               />
               {errors.name && (
                 <p className="text-danger">{errors.name.message} </p>
+              )}
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label d-blick">
+                Fields (choose which field items this category has)
+              </label>
+              {FIELD_OPTIONS.map((fields) => (
+                <div key={fields.value} className="form-check">
+                  <input
+                    value={fields.value}
+                    {...register("fields")}
+                    type="checkbox"
+                    className="form-check-input"
+                  />
+                  <label className="form-check-label">{fields.label} </label>
+                </div>
+              ))}
+              {errors.fields && (
+                <p className="text-danger"> {errors.fields.message} </p>
               )}
             </div>
             <div className="text-center m-2">

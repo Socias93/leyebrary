@@ -1,4 +1,3 @@
-// schemas/CategorySchema.ts
 import { z } from "zod";
 import { getCategories } from "../../../services/fakeCategoryService";
 
@@ -12,6 +11,7 @@ export const categorySchema = z.object({
       );
       return !exists;
     }, "Category already exists"),
+  fields: z.array(z.enum(["author", "nbrPages", "runTimeMinutes"])).optional(),
 });
 
 export type CategoryFormData = z.infer<typeof categorySchema>;

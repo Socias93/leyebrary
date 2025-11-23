@@ -3,23 +3,6 @@ import { BaseItem } from "../services/fakeItemService";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
-export interface BookishFormData {
-  _id?: string;
-  title: string;
-  categoryId: string;
-  author: string;
-  nbrPages: number;
-  isBorrowable?: boolean;
-}
-
-export interface TimeBasedFormData {
-  _id?: string;
-  title: string;
-  categoryId: string;
-  runTimeMinutes: number;
-  isBorrowable?: boolean;
-}
-
 export interface LibraryFormData {
   _id?: string;
   title: string;
