@@ -22,7 +22,10 @@ function CreateCategoryPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CategoryFormData>({ resolver: zodResolver(categorySchema) });
+  } = useForm<CategoryFormData>({
+    defaultValues: { name: "", fields: [] },
+    resolver: zodResolver(categorySchema),
+  });
 
   function onSubmit(data: CategoryFormData) {
     console.log("Submitted", data);

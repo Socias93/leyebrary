@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LibraryItem, Book, DVD, Audiobook } from "../services/Utils";
+import { LibraryItem } from "../services/Utils";
 
 interface Props {
   items: LibraryItem[];
@@ -78,17 +78,34 @@ function ItemsGroup({ items }: Props) {
                 <h5 className="card-title">{i.title}</h5>
                 <p className="card-subtitle text-muted">{i.category.name}</p>
 
-                {i.category.name === "Book" ||
-                i.category.name === "Referencebook" ? (
-                  <>
-                    <p className="mb-1">Author: {(i as Book).author}</p>
-                    <p className="mb-1">Pages: {(i as Book).nbrPages}</p>
-                  </>
-                ) : (
-                  <p className="mb-1">
-                    Runtime: {(i as DVD | Audiobook).runTimeMinutes} min
-                  </p>
-                )}
+                {i.category.fields?.map((field) => {
+                  let label = "";
+                  let value: string | number = "";
+
+                  switch (field) {
+                    case "author":
+                      label = "Author";
+                      value = (i as any).author;
+                      break;
+                    case "nbrPages":
+                      label = "Pages";
+                      value = (i as any).nbrPages;
+                      break;
+                    case "runTimeMinutes":
+                      label = "Runtime (minutes)";
+                      value = (i as any).runTimeMinutes;
+                      break;
+                    default:
+                      label = field;
+                      value = (i as any)[field];
+                  }
+
+                  return (
+                    <p className="mb-1" key={field}>
+                      {label}: {value}
+                    </p>
+                  );
+                })}
               </div>
 
               <div className="d-flex flex-column align-items-center mt-3">
@@ -115,7 +132,6 @@ function ItemsGroup({ items }: Props) {
                       <div className="text-center small text-muted">
                         <div>Borrowed by: {i.borrower}</div>
                         <span>{new Date(i.borrowDate!).toDateString()}</span>
-
                         <div>
                           Return within : {Math.floor(timeLeft[i._id] / 3600)}h
                           {Math.floor((timeLeft[i._id] % 3600) / 60)}m

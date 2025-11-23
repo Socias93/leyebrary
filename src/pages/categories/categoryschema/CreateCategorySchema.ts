@@ -11,7 +11,9 @@ export const categorySchema = z.object({
       );
       return !exists;
     }, "Category already exists"),
-  fields: z.array(z.enum(["author", "nbrPages", "runTimeMinutes"])).optional(),
+  fields: z
+    .array(z.enum(["author", "nbrPages", "runTimeMinutes"]))
+    .min(1, { message: "You must choose at least 1 field" }),
 });
 
 export type CategoryFormData = z.infer<typeof categorySchema>;
