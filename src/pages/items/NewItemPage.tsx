@@ -10,15 +10,16 @@ function NewItemPage() {
       <h1 className="mt-3">
         What item would you like to create <span className="text-info">?</span>
       </h1>
-      <div className="d-flex justify-content-center">
+      <div className="d-flex flex-wrap flex-lg-nowrap justify-content-center gap-2">
         {categories.map((c) => {
           return (
             <button
+              style={{ minWidth: "120px" }}
               key={c.id}
               onClick={() =>
                 navigate(`/new-item/new?category=${c.id}&type=${c.name}`)
               }
-              className="btn btn-outline-info col-2 mt-4 ms-3 w-25">
+              className="btn btn-outline-info mt-4 m-2">
               {c.name}
             </button>
           );
