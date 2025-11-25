@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteItem, getItems } from "../../services/fakeItemService";
+import { getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import { Columns, SortColumn, getAbbreviation } from "../utils";
 import { SearchBox, Table } from "../../components/index";
@@ -8,16 +8,10 @@ import _ from "lodash";
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
 function AllItemsPage() {
-  const [items, setItems] = useState(getItems());
+  const items = getItems();
   const [sortColumn, setSortColumn] = useState(SORT_ITEM);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
-
-  function handleDelete(id: string) {
-    const newItem = items.filter((item) => item.id !== id);
-    setItems(newItem);
-    deleteItem(id);
-  }
 
   const query = searchQuery.toLowerCase();
 
@@ -60,16 +54,6 @@ function AllItemsPage() {
           }
           className="btn btn-outline-info">
           Edit
-        </button>
-      ),
-    },
-    {
-      key: "delete",
-      content: (item) => (
-        <button
-          onClick={() => handleDelete(item.id)}
-          className="btn btn-outline-dark">
-          Delete
         </button>
       ),
     },
