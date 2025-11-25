@@ -76,13 +76,15 @@ function ItemsGroup({ items, onDelete }: Props) {
           <div className="card h-100 shadow-sm rounded-4 m-2">
             <div className="card-body d-flex flex-column justify-content-between">
               <div className="mb-3">
-                <div className="relative">
+                <div className="position-relative">
                   <h5 className="card-title">{i.title}</h5>
-                  <button
-                    onClick={() => onDelete(i.id)}
-                    className="btn btn-outline-info absolute top-1 right-1 h-7 w-7 border border-red-500 rounded-3 flex items-center justify-center text-sm p-0">
-                    X
-                  </button>
+                  {!i.borrowDate && (
+                    <button
+                      onClick={() => onDelete(i.id)}
+                      className="btn btn-outline-info position-absolute top-0 end-0 ">
+                      X
+                    </button>
+                  )}
                 </div>
                 <p className="card-subtitle text-muted">{i.category.name}</p>
 
