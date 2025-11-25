@@ -10,7 +10,7 @@ import {
 import { Category, getCategories } from "../services/utils";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 4;
 
 function HomePage() {
   const [items, setItems] = useState(getItems());
