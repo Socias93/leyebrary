@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCategories } from "../../services/Utils";
+import { getCategories } from "../../services/utils";
 import { getItems } from "../../services/fakeItemService";
 
 function AllCategoriesPage() {

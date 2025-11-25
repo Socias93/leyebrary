@@ -1,4 +1,4 @@
-import { Category, NewCategoryData } from "./Utils";
+import { Category, NewCategoryData } from "./utils";
 
 /**
  * Kategorierna som ska finnas (unika id)

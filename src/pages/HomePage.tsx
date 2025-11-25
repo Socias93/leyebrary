@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { getItems } from "../services/fakeItemService";
+import { deleteItem, getItems } from "../services/fakeItemService";
 import { paginate } from "../components/utils";
 import {
   ItemsGroup,
@@ -7,13 +7,15 @@ import {
   Pagination,
   HeaderImg,
 } from "../components/index";
-import { Category, getCategories } from "../services/Utils";
+import { Category, getCategories } from "../services/utils";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 5;
 
 function HomePage() {
-  const items = getItems();
+  const [items, setItems] = useState(getItems());
+  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
+  const [selectedPage, setSelectedPage] = useState(1);
   const categories = getCategories();
 
   const itemsWithFields = items.map((item) => {
@@ -27,8 +29,11 @@ function HomePage() {
     };
   });
 
-  const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
-  const [selectedPage, setSelectedPage] = useState(1);
+  function handleDelete(id: string) {
+    const newItems = items.filter((item) => item.id !== id);
+    setItems(newItems);
+    deleteItem(id);
+  }
 
   function handleCategorySelect(category: Category) {
     setSelectedCategory(category);
@@ -57,7 +62,7 @@ function HomePage() {
           />
         </div>
       </div>
-      <ItemsGroup items={paginatedItems} />
+      <ItemsGroup items={paginatedItems} onDelete={handleDelete} />
       <Pagination
         pageSize={PAGE_SIZE}
         totalCount={filtredItems.length}

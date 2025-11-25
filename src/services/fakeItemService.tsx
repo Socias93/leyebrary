@@ -7,7 +7,7 @@ import {
   LibraryItem,
   ReferenceBook,
   getCategories,
-} from "./Utils";
+} from "./utils";
 
 /**
  * In-memory items (example data)

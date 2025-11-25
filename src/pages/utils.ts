@@ -1,5 +1,5 @@
-import { JSX } from "react";
-import { BaseItem } from "../services/Utils";
+import { ReactNode } from "react";
+import { BaseItem } from "../services/utils";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
@@ -20,7 +20,7 @@ export interface TextColumn {
 
 export interface ContentColumn {
   key: string;
-  content: (item: BaseItem) => JSX.Element;
+  content: (item: BaseItem) => ReactNode;
 }
 
 export type Columns = TextColumn | ContentColumn;
@@ -28,4 +28,11 @@ export type Columns = TextColumn | ContentColumn;
 export interface SortColumn {
   path: string;
   order: "asc" | "desc";
+}
+
+export function getAbbreviation(title: string) {
+  return title
+    .trim()
+    .split(/\s+/)
+    .map((w) => w.charAt(0).toUpperCase());
 }

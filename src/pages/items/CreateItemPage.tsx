@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getItem, saveItem } from "../../services/fakeItemService";
 import { LibraryFormData } from "../utils";
 import { getDynamicSchema } from "../index";
-import { getCategories, Category, LibraryItem } from "../../services/Utils";
+import { getCategories, Category, LibraryItem } from "../../services/utils";
 import { FormField } from "../../components/index";
 import z from "zod";
 

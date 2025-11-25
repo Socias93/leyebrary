@@ -1,18 +1,11 @@
 import { useState } from "react";
 import { deleteItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
-import { Columns, SortColumn } from "../utils";
+import { Columns, SortColumn, getAbbreviation } from "../utils";
 import { SearchBox, Table } from "../../components/index";
 import _ from "lodash";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
-
-function getAbbreviation(title: string) {
-  return title
-    .trim()
-    .split(/\s+/)
-    .map((w) => w.charAt(0).toUpperCase());
-}
 
 function AllItemsPage() {
   const [items, setItems] = useState(getItems());

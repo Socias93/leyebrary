@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../../services/Utils";
+import { getCategories } from "../../services/utils";
 
 function NewItemPage() {
   const categories = getCategories();
