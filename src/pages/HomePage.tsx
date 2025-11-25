@@ -33,6 +33,12 @@ function HomePage() {
     const newItems = items.filter((item) => item.id !== id);
     setItems(newItems);
     deleteItem(id);
+
+    const newPageCount = Math.max(1, Math.ceil(newItems.length / PAGE_SIZE));
+
+    if (selectedPage > newPageCount) {
+      setSelectedPage(newPageCount);
+    }
   }
 
   function handleCategorySelect(category: Category) {
