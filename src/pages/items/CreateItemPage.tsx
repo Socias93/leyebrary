@@ -22,9 +22,7 @@ function CreateItemPage() {
     initialCategoryFromQuery
   );
 
-  const selectedCategory = categories.find(
-    (c) => c.id === selectedCategoryId
-  ) as Category | undefined;
+  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
 
   const dynamicSchema = getDynamicSchema(selectedCategory);
   type DynamicFormData = z.infer<typeof dynamicSchema>;
@@ -33,7 +31,6 @@ function CreateItemPage() {
     register,
     handleSubmit,
     reset,
-    setValue,
     formState: { errors },
   } = useForm<DynamicFormData>({
     resolver: zodResolver(dynamicSchema),
@@ -41,23 +38,17 @@ function CreateItemPage() {
   });
 
   useEffect(() => {
-    setValue("categoryId", selectedCategoryId);
-  }, [selectedCategoryId, setValue]);
-
-  useEffect(() => {
     async function fetch() {
-      const { data: categories } = await getCategories();
+      const { data: categories } = await getCategories(); // AxiosResponse<Category[]>
       setCategories(categories);
 
       if (!id || id === "new") return;
       const { data: item } = await getItem(id);
       if (!item) return;
-      const categoryId = item.category?.id;
-      if (categoryId) setSelectedCategoryId(categoryId);
 
-      setItems(item);
       setSelectedCategoryId(item.category.id);
       reset(mapToFormData(item));
+      setItems(item);
     }
 
     fetch();
@@ -79,10 +70,15 @@ function CreateItemPage() {
     return base;
   }
 
-  function onSubmit(data: DynamicFormData) {
-    console.log("Submitted", data);
-    saveItem(data as unknown as LibraryFormData);
-    navigate("/all/items");
+  async function onSubmit(data: DynamicFormData) {
+    const { title, categoryId, ...rest } = data;
+    const payload = {
+      title,
+      categoryId,
+      attributes: rest,
+    };
+    await saveItem(payload as LibraryFormData);
+    navigate("/");
   }
 
   return (

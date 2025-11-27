@@ -38,26 +38,12 @@ export function getCategories() {
   return axios.get<Category[]>(API_URL);
 }
 
-export function saveCategory(newCategory: NewCategoryData): Category | null {
-  // Kontrollera om category redan finns
-  const exists = categories.find(
-    (c) => c.name.toLowerCase() === String(newCategory.name).toLowerCase()
-  );
-  if (exists) {
-    return null; // returnera null om den redan finns
-  }
+export function saveCategory(category: NewCategoryData) {
+  return axios.put(API_URL, category);
+}
 
-  // Skapa nytt Category-objekt
-  const category: Category = {
-    id: crypto.randomUUID(), // eller valfri metod för unik id
-    name: newCategory.name,
-    fields: newCategory.fields ?? [],
-  };
-
-  // Lägg till i categories-arrayen
-  categories.push(category);
-
-  return category;
+export function deleteCategory(id: string) {
+  return axios.delete<Category>(`${API_URL}/${id}`);
 }
 
 /**
@@ -98,29 +84,15 @@ export interface ReferenceBook extends BaseItem {
   type: "Referencebook";
   author: string;
   nbrPages: number;
-  // enligt regeln: Referencebook kan INTE lånas => isBorrowable should be false
 }
 
-/**
- * Unionstyp för alla items
- */
 export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
 
-/**
- * Hjälpfunktion: kolla om en item kan lånas (enligt regler)
- * - En Book/DVD/Audiobook kan lånas endast om isBorrowable === true
- * - En Referencebook (type === "Referencebook") kan aldrig lånas (returnerar false)
- */
 export function canBorrow(item: LibraryItem): boolean {
   if (item.type === "Referencebook") return false;
   return item.isBorrowable === true && !item.borrower;
 }
 
-/**
- * Låna ett objekt:
- * - returnerar nytt objekt med borrower och borrowDate satt om det var möjligt
- * - annars kastar ett Error
- */
 export function checkoutItem(
   item: LibraryItem,
   borrower: string,
@@ -137,11 +109,6 @@ export function checkoutItem(
   return { ...item, borrower, borrowDate: isoDate } as LibraryItem;
 }
 
-/**
- * Återlämna ett objekt:
- * - tar bort borrower och borrowDate
- * - om objektet inte var utlånat så kastar den Error
- */
 export function returnItem(item: LibraryItem): LibraryItem {
   if (!item.borrower) {
     throw new Error(`Item "${item.title}" är inte utlånad.`);
@@ -152,64 +119,8 @@ export function returnItem(item: LibraryItem): LibraryItem {
   return copy as LibraryItem;
 }
 
-/**
- * Exempel: några items (OBS: använd i produktion ett riktigt DB)
- */
-export const sampleItems: LibraryItem[] = [
-  {
-    id: "item-0001",
-    title: "Svenska sagor",
-    author: "A. Författare",
-    nbrPages: 320,
-    type: "Book",
-    isBorrowable: true,
-    categoryId: categories.find((c) => c.name === "Book")!.id,
-  },
-  {
-    id: "item-0002",
-    title: "Action Movie I",
-    runTimeMinutes: 125,
-    type: "DVD",
-    isBorrowable: true,
-    categoryId: categories.find((c) => c.name === "DVD")!.id,
-  },
-  {
-    id: "item-0003",
-    title: "Storytelling - Audiobook",
-    runTimeMinutes: 400,
-    type: "Audiobook",
-    isBorrowable: true,
-    categoryId: categories.find((c) => c.name === "Audiobook")!.id,
-  },
-  {
-    id: "item-0004",
-    title: "Nationalencyklopedin Volym 1",
-    author: "NE",
-    nbrPages: 1200,
-    type: "Referencebook",
-    isBorrowable: false, // får inte lånas
-    categoryId: categories.find((c) => c.name === "Referencebook")!.id,
-  },
-];
-
-/*
-  Exempel på användning:
-
-  import { sampleItems, checkoutItem, returnItem } from './library';
-
-  const book = sampleItems[0];
-  if (canBorrow(book)) {
-    const lent = checkoutItem(book, 'Anna Andersson');
-    // lent.borrower och lent.borrowDate är nu satta
-  }
-
-  // återlämna
-  const returned = returnItem(lent);
-*/
-
 export default {
   categories,
-  sampleItems,
   canBorrow,
   checkoutItem,
   returnItem,

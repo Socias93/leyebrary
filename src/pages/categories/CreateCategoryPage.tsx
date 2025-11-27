@@ -10,6 +10,8 @@ import {
   categorySchema,
 } from "./categoryschema/CreateCategorySchema";
 import { CategoryFieldInput } from "../../components";
+import { AxiosResponse } from "axios";
+import { Category } from "../../services/utils";
 
 function CreateCategoryPage() {
   const navigate = useNavigate();
@@ -26,7 +28,10 @@ function CreateCategoryPage() {
   async function onSubmit(data: CategoryFormData) {
     console.log("Submitted", data);
 
-    const { data: categories } = await getCategories();
+    const res = await getCategories();
+
+    const categories =
+      (res as AxiosResponse<Category[]>).data ?? (res as unknown as Category[]);
 
     const exists = categories.some(
       (c) => c.name.toLowerCase() === data.name.toLowerCase()

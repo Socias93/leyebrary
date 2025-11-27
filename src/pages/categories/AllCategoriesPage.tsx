@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { getItems } from "../../services/fakeItemService";
-import { getCategories } from "../../services/fakeCategoryService";
+import {
+  deleteCategory,
+  getCategories,
+} from "../../services/fakeCategoryService";
 import { BaseItem, Category } from "../../services/utils";
 
 function AllCategoriesPage() {
@@ -19,12 +22,12 @@ function AllCategoriesPage() {
     fetch();
   }, []);
 
-  function handleDelete(id: string) {
+  async function handleDelete(id: string) {
     const used = items.some((item) => item.category.id === id);
     if (used) return;
 
+    await deleteCategory(id);
     const newCategory = categories.filter((category) => category.id !== id);
-
     setCategories(newCategory);
   }
 

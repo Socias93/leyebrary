@@ -9,6 +9,7 @@ import {
 } from "../components/index";
 import { BaseItem, Category, LibraryItem } from "../services/utils";
 import { getCategories } from "../services/fakeCategoryService";
+import { useLocation } from "react-router-dom";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
@@ -18,6 +19,7 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const location = useLocation();
 
   useEffect(() => {
     async function fetch() {
@@ -29,7 +31,7 @@ function HomePage() {
     }
 
     fetch();
-  }, []);
+  }, [location.key]);
 
   const itemsWithFields = items.map((item) => {
     const category = categories.find((c) => c.id === item.category.id);

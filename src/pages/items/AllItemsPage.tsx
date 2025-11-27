@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getItem, getItems } from "../../services/fakeItemService";
+import { getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import { Columns, SortColumn, getAbbreviation } from "../utils";
 import { SearchBox, Table } from "../../components/index";
