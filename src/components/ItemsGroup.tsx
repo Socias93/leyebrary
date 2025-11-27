@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BaseItem, LibraryItem } from "../services/utils";
+import { LibraryItem } from "../services/utils";
 
 interface Props {
   items: LibraryItem[];
@@ -11,7 +11,6 @@ interface Props {
 function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
   const [timeLeft, setTimeLeft] = useState<Record<string, number>>({});
 
-  // Timer för alla items
   useEffect(() => {
     const interval = setInterval(() => {
       const newTimes: Record<string, number> = {};
@@ -19,7 +18,7 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
         if (item.borrower && item.borrowDate) {
           const borrowTime = new Date(item.borrowDate).getTime();
           const now = Date.now();
-          const diff = 48 * 60 * 60 * 1000 - (now - borrowTime); // 48h
+          const diff = 48 * 60 * 60 * 500 - (now - borrowTime); // 48h
           newTimes[item.id] = Math.max(0, Math.floor(diff / 1000));
         }
       });
@@ -31,7 +30,6 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
   const handleBorrowToggle = (item: LibraryItem) => {
     if (item.borrower) {
-      // Return
       onReturn(item.id);
     } else {
       const borrowerName = prompt("Enter borrower name")?.trim();

@@ -35,9 +35,17 @@ function HomePage() {
   async function handleCheckout(itemId: string, borrower: string) {
     try {
       const { data: updatedItem } = await checkoutItem(itemId, borrower);
+
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.id === updatedItem.id ? updatedItem : item
+          item.id === updatedItem.id
+            ? {
+                ...item,
+                borrower: updatedItem.borrower,
+                isBorrowable: updatedItem.isBorrowable,
+                borrowDate: updatedItem.borrowDate,
+              }
+            : item
         )
       );
     } catch (err) {
@@ -49,9 +57,17 @@ function HomePage() {
   async function handleReturn(itemId: string) {
     try {
       const { data: updatedItem } = await returnItem(itemId);
+
       setItems((prevItems) =>
         prevItems.map((item) =>
-          item.id === updatedItem.id ? updatedItem : item
+          item.id === updatedItem.id
+            ? {
+                ...item,
+                borrower: updatedItem.borrower,
+                isBorrowable: updatedItem.isBorrowable,
+                borrowDate: updatedItem.borrowDate,
+              }
+            : item
         )
       );
     } catch (err) {
@@ -59,7 +75,6 @@ function HomePage() {
       alert("Could not return item");
     }
   }
-
   const itemsWithFields = items.map((item) => {
     const categoryId = item.category?.id;
     const category = categories.find((c) => c.id === categoryId);
