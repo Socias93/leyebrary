@@ -1,9 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../../services/utils";
+import { getCategories } from "../../services/fakeCategoryService";
+import { useEffect, useState } from "react";
+import { Category } from "../../services/utils";
 
 function NewItemPage() {
-  const categories = getCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+    }
+
+    fetch();
+  }, []);
 
   return (
     <div className="d-grid justify-content-center">

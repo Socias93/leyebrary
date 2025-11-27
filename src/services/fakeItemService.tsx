@@ -1,146 +1,20 @@
 // fakeLibraryService.ts
-import {
-  Audiobook,
-  Book,
-  DVD,
-  LibraryFormData,
-  LibraryItem,
-  ReferenceBook,
-  getCategories,
-} from "./utils";
+import axios from "axios";
+import { BaseItem, LibraryFormData, LibraryItem } from "./utils";
+
+const API_URL = "http://localhost:5313/api/items";
 
 /**
  * In-memory items (example data)
  * NOTE: category objects here should match categories returned by getCategories()
  */
-const items: LibraryItem[] = [
-  {
-    id: "lib-0001",
-    title: "Svenska sagor",
-    author: "A. Författare",
-    nbrPages: 320,
-    isBorrowable: true,
-    category: getCategories().find((c) => c.name === "Book") || {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
-      name: "Book",
-    },
-  } as Book,
-  {
-    id: "lib-0002",
-    title: "Action Movie I",
-    runTimeMinutes: 125,
-    isBorrowable: true,
-    category: getCategories().find((c) => c.name === "DVD") || {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002",
-      name: "DVD",
-    },
-  } as DVD,
-  {
-    id: "lib-0003",
-    title: "Storytelling",
-    runTimeMinutes: 400,
-    isBorrowable: true,
-    category: getCategories().find((c) => c.name === "Audiobook") || {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
-      name: "Audiobook",
-    },
-  } as Audiobook,
-  {
-    id: "lib-0004",
-    title: "Nationalencyklopedin Volym 1",
-    author: "NE",
-    nbrPages: 1200,
-    category: getCategories().find((c) => c.name === "Referencebook") || {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
-      name: "Referencebook",
-    },
-  } as ReferenceBook,
-
-  {
-    id: "lib-0005",
-    title: "Svenska sagor - Volym 2",
-    author: "A. Författare",
-    nbrPages: 288,
-    isBorrowable: true,
-    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
-  } as Book,
-  {
-    id: "lib-0006",
-    title: "Moderna noveller",
-    author: "B. Författare",
-    nbrPages: 214,
-    isBorrowable: true,
-    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001", name: "Book" },
-  } as Book,
-
-  // Två extra DVD
-  {
-    id: "lib-0007",
-    title: "Action Movie II",
-    runTimeMinutes: 132,
-    isBorrowable: true,
-    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
-  } as DVD,
-
-  {
-    id: "lib-0008",
-    title: "Drama Anthology",
-    runTimeMinutes: 98,
-    isBorrowable: true,
-    category: { id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000002", name: "DVD" },
-  } as DVD,
-
-  // Två extra ljudböcker
-  {
-    id: "lib-0009",
-    title: "Storytelling - Vol. 2",
-    runTimeMinutes: 360,
-    isBorrowable: true,
-    category: {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
-      name: "Audiobook",
-    },
-  } as Audiobook,
-  {
-    id: "lib-0010",
-    title: "Berättelser för natten",
-    runTimeMinutes: 240,
-    isBorrowable: true,
-    category: {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000003",
-      name: "Audiobook",
-    },
-  } as Audiobook,
-
-  // Två extra uppslagsböcker
-  {
-    id: "lib-0011",
-    title: "Nationalencyklopedin Volym 2",
-    author: "NE",
-    nbrPages: 1184,
-    category: {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
-      name: "Referencebook",
-    },
-  } as ReferenceBook,
-  {
-    id: "lib-0012",
-    title: "Nationalencyklopedin Volym 3",
-    author: "NE",
-    nbrPages: 1220,
-    category: {
-      id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000004",
-      name: "Referencebook",
-    },
-  } as ReferenceBook,
-];
 
 export function getItems() {
-  return items;
+  return axios.get<BaseItem[]>(API_URL);
 }
 
 export function getItem(id: string) {
-  return items.find((it) => it.id === id);
+  return axios.get<BaseItem>(`${API_URL}/${id}`);
 }
 
 /**
@@ -150,78 +24,12 @@ export function getItem(id: string) {
  * - enforces: Referencebook -> isBorrowable = false
  */
 export function saveItem(form: LibraryFormData) {
-  const categoryInDb = getCategories().find((c) => c.id === form.categoryId);
-  if (!categoryInDb) throw new Error("Category was not found");
-
-  // Bestäm typ utifrån category.name
-  const typeName = categoryInDb.name; // "Book" | "DVD" | "Audiobook" | "Referencebook"
-
-  // Basic validation
-  if (!form.title) throw new Error("Title is required");
-
-  // Validera beroende på typeName
-  if (typeName === "Book" || typeName === "Referencebook") {
-    if (!form.author)
-      throw new Error("author is required for Book/Referencebook");
-    if (form.nbrPages == null)
-      throw new Error("nbrPages is required for Book/Referencebook");
-  } else if (typeName === "DVD" || typeName === "Audiobook") {
-    if (form.runTimeMinutes == null)
-      throw new Error("runTimeMinutes is required for DVD/Audiobook");
-  }
-
-  // Hitta existerande item eller skapa nytt partial
-  let itemInDb = items.find((i) => i.id === form.id) as
-    | Partial<LibraryItem>
-    | undefined;
-
-  if (!itemInDb) {
-    itemInDb = {
-      id: form.id ?? Date.now().toString(),
-      title: "",
-      isBorrowable: true,
-      category: categoryInDb,
-      type: typeName,
-    } as Partial<LibraryItem>;
-  }
-
-  // Common assignments
-  itemInDb.id = itemInDb.id ?? form.id ?? Date.now().toString();
-  itemInDb.title = form.title;
-  itemInDb.isBorrowable = categoryInDb.name === "Referencebook" ? false : true;
-
-  itemInDb.category = categoryInDb;
-
-  // Type-specific assignments (sätt och ta bort felaktiga fält)
-  if (typeName === "Book") {
-    (itemInDb as any).author = form.author!;
-    (itemInDb as any).nbrPages = form.nbrPages!;
-    delete (itemInDb as any).runTimeMinutes;
-  } else if (typeName === "Referencebook") {
-    (itemInDb as any).author = form.author!;
-    (itemInDb as any).nbrPages = form.nbrPages!;
-    itemInDb.isBorrowable = false;
-    delete (itemInDb as any).runTimeMinutes;
-    delete (itemInDb as any).borrower;
-    delete (itemInDb as any).borrowDate;
-  } else if (typeName === "DVD") {
-    (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
-    delete (itemInDb as any).author;
-    delete (itemInDb as any).nbrPages;
-  } else if (typeName === "Audiobook") {
-    (itemInDb as any).runTimeMinutes = form.runTimeMinutes!;
-    delete (itemInDb as any).author;
-    delete (itemInDb as any).nbrPages;
-  }
-
-  // Persist: push eller ersätt
-  const idx = items.findIndex((i) => i.id === itemInDb!.id);
-  if (idx === -1) {
-    items.push(itemInDb as LibraryItem);
-    return itemInDb;
+  if (form.id) {
+    // Update existing item
+    return axios.put(`${API_URL}/${form.id}`, form);
   } else {
-    items[idx] = itemInDb as LibraryItem;
-    return items[idx];
+    // Create new item
+    return axios.post(API_URL, form);
   }
 }
 
@@ -229,10 +37,7 @@ export function saveItem(form: LibraryFormData) {
  * deleteItem : remove by id
  */
 export function deleteItem(id: string) {
-  const index = items.findIndex((i) => i.id === id);
-  if (index === -1) return undefined;
-  const removed = items.splice(index, 1)[0];
-  return removed;
+  return axios.delete<LibraryItem>(`${API_URL}/${id}`);
 }
 
 /**
@@ -243,24 +48,10 @@ export function canBorrow(item: LibraryItem): boolean {
   return item.isBorrowable === true && !item.borrower;
 }
 
-export function checkoutItem(
-  itemId: string,
-  borrower: string,
-  date = new Date()
-): LibraryItem {
-  const item = getItem(itemId);
-  if (!item) throw new Error("Item not found");
-  if (!canBorrow(item)) throw new Error("Item cannot be borrowed");
-  item.borrower = borrower;
-  item.borrowDate = date.toISOString();
-  return item;
+export function checkoutItem(itemId: string, borrower: string) {
+  return axios.post(`${API_URL}/${itemId}/checkout`, { borrower });
 }
 
-export function returnItem(itemId: string): LibraryItem {
-  const item = getItem(itemId);
-  if (!item) throw new Error("Item not found");
-  if (!item.borrower) throw new Error("Item is not borrowed");
-  delete item.borrower;
-  delete item.borrowDate;
-  return item;
+export function returnItem(itemId: string) {
+  return axios.post(`${API_URL}/${itemId}/return`);
 }

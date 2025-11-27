@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LibraryItem } from "../services/utils";
+import { BaseItem, LibraryItem } from "../services/utils";
 
 interface Props {
   items: LibraryItem[];
@@ -7,7 +7,7 @@ interface Props {
 }
 
 function ItemsGroup({ items, onDelete }: Props) {
-  const [localItems, setLocalItems] = useState<LibraryItem[]>(items);
+  const [localItems, setLocalItems] = useState<BaseItem[]>([]);
   const [timeLeft, setTimeLeft] = useState<Record<string, number>>({});
 
   const handleBorrowToggle = (id: string) => {

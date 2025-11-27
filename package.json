@@ -13,6 +13,7 @@
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@hookform/resolvers": "^5.2.2",
     "@tailwindcss/vite": "^4.1.17",
+    "axios": "^1.13.2",
     "bootstrap": "^5.3.8",
     "lodash": "^4.17.21",
     "react": "^19.0.0",

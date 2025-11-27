@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
-import { getCategories } from "../../services/utils";
 import { getItems } from "../../services/fakeItemService";
+import { getCategories } from "../../services/fakeCategoryService";
+import { BaseItem, Category } from "../../services/utils";
 
 function AllCategoriesPage() {
-  const [categories, setCategories] = useState(getCategories());
-  const [items, setItems] = useState(() => getItems());
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [items, setItems] = useState<BaseItem[]>([]);
 
   useEffect(() => {
-    setItems(getItems());
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+
+      const { data: items } = await getItems();
+      setItems(items);
+    }
+
+    fetch();
   }, []);
 
   function handleDelete(id: string) {

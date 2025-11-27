@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { deleteItem, getItems } from "../services/fakeItemService";
 import { paginate } from "../components/utils";
 import {
@@ -7,16 +7,26 @@ import {
   Pagination,
   HeaderImg,
 } from "../components/index";
-import { Category, getCategories } from "../services/utils";
+import { BaseItem, Category, LibraryItem } from "../services/utils";
+import { getCategories } from "../services/fakeCategoryService";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
 
 function HomePage() {
-  const [items, setItems] = useState(getItems());
+  const [items, setItems] = useState<BaseItem[]>([]);
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
-  const categories = getCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
+    }
+
+    fetch();
+  }, []);
 
   const itemsWithFields = items.map((item) => {
     const category = categories.find((c) => c.id === item.category.id);
@@ -26,7 +36,7 @@ function HomePage() {
         ...item.category,
         fields: category?.fields || [],
       },
-    };
+    } as LibraryItem;
   });
 
   function handleDelete(id: string) {
@@ -62,7 +72,7 @@ function HomePage() {
         <h1 className="text-center">L{eye}brary </h1>
         <div className="d-flex">
           <ListGroup
-            items={[DEFAULT_CATEGORY, ...getCategories()]}
+            items={[DEFAULT_CATEGORY, ...categories]}
             onCategorySelect={handleCategorySelect}
             selectedCategory={selectedCategory}
           />

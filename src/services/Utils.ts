@@ -1,5 +1,4 @@
 import { ItemType } from "../pages/utils";
-import { categories } from "./fakeCategoryService";
 
 // library.ts
 export interface Category {
@@ -12,10 +11,6 @@ export interface Category {
 export interface NewCategoryData {
   name: ItemType | string;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
-}
-
-export function getCategories(): Category[] {
-  return categories;
 }
 
 export interface BaseItem {

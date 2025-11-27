@@ -1,7 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { saveCategory } from "../../services/fakeCategoryService";
+import {
+  getCategories,
+  saveCategory,
+} from "../../services/fakeCategoryService";
 import {
   CategoryFormData,
   categorySchema,
@@ -20,9 +23,22 @@ function CreateCategoryPage() {
     resolver: zodResolver(categorySchema),
   });
 
-  function onSubmit(data: CategoryFormData) {
+  async function onSubmit(data: CategoryFormData) {
     console.log("Submitted", data);
-    saveCategory(data);
+
+    const { data: categories } = await getCategories();
+
+    const exists = categories.some(
+      (c) => c.name.toLowerCase() === data.name.toLowerCase()
+    );
+
+    if (exists) {
+      alert("Category already exists");
+      return;
+    }
+
+    await saveCategory(data);
+
     navigate("/home");
   }
 

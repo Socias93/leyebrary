@@ -1,8 +1,8 @@
 import { Category, NewCategoryData } from "./utils";
+import axios from "axios";
 
-/**
- * Kategorierna som ska finnas (unika id)
- */
+const API_URL = "http://localhost:5313/api/categories";
+
 export const categories: Category[] = [
   {
     id: "c1b3f9a0-1a2b-4c3d-8e9f-000000000001",
@@ -33,6 +33,10 @@ export const categories: Category[] = [
     fields: ["author", "nbrPages"],
   },
 ];
+
+export function getCategories() {
+  return axios.get<Category[]>(API_URL);
+}
 
 export function saveCategory(newCategory: NewCategoryData): Category | null {
   // Kontrollera om category redan finns

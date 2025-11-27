@@ -5,15 +5,17 @@ import { useEffect, useState } from "react";
 import { getItem, saveItem } from "../../services/fakeItemService";
 import { LibraryFormData } from "../utils";
 import { getDynamicSchema } from "../index";
-import { getCategories, Category, LibraryItem } from "../../services/utils";
+import { BaseItem, Category } from "../../services/utils";
 import { FormField } from "../../components/index";
 import z from "zod";
+import { getCategories } from "../../services/fakeCategoryService";
 
 function CreateItemPage() {
   const { id } = useParams();
+  const [items, setItems] = useState<BaseItem>();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const categories = getCategories();
+  const [categories, setCategories] = useState<Category[]>([]);
 
   const initialCategoryFromQuery = searchParams.get("category") ?? "";
   const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
@@ -43,16 +45,25 @@ function CreateItemPage() {
   }, [selectedCategoryId, setValue]);
 
   useEffect(() => {
-    if (!id || id === "new") return;
+    async function fetch() {
+      const { data: categories } = await getCategories();
+      setCategories(categories);
 
-    const item = getItem(id);
-    if (!item) return;
+      if (!id || id === "new") return;
+      const { data: item } = await getItem(id);
+      if (!item) return;
+      const categoryId = item.category?.id;
+      if (categoryId) setSelectedCategoryId(categoryId);
 
-    setSelectedCategoryId(item.category.id);
-    reset(mapToFormData(item));
+      setItems(item);
+      setSelectedCategoryId(item.category.id);
+      reset(mapToFormData(item));
+    }
+
+    fetch();
   }, [id, reset]);
 
-  function mapToFormData(item: LibraryItem): DynamicFormData {
+  function mapToFormData(item: BaseItem): DynamicFormData {
     const base: DynamicFormData = {
       id: item.id,
       title: item.title,

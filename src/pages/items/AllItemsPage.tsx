@@ -1,17 +1,27 @@
-import { useState } from "react";
-import { getItems } from "../../services/fakeItemService";
+import { useEffect, useState } from "react";
+import { getItem, getItems } from "../../services/fakeItemService";
 import { useNavigate } from "react-router-dom";
 import { Columns, SortColumn, getAbbreviation } from "../utils";
 import { SearchBox, Table } from "../../components/index";
 import _ from "lodash";
+import { BaseItem } from "../../services/utils";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
 function AllItemsPage() {
-  const items = getItems();
+  const [items, setItems] = useState<BaseItem[]>([]);
   const [sortColumn, setSortColumn] = useState(SORT_ITEM);
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetch() {
+      const { data: items } = await getItems();
+      setItems(items);
+    }
+
+    fetch();
+  }, []);
 
   const query = searchQuery.toLowerCase();
 
@@ -49,9 +59,7 @@ function AllItemsPage() {
       key: "edit",
       content: (item) => (
         <button
-          onClick={() =>
-            navigate(`/edit-item/${item.id}?type=${item.category.name}`)
-          }
+          onClick={() => navigate(`/edit-item/${item.id}?type=${item}`)}
           className="btn btn-outline-info">
           Edit
         </button>
