@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { deleteItem, getItems } from "../services/fakeItemService";
 import { paginate } from "../components/utils";
+import { checkoutItem, returnItem } from "../services/fakeItemService";
 import {
   ItemsGroup,
   ListGroup,
@@ -9,7 +10,6 @@ import {
 } from "../components/index";
 import { BaseItem, Category, LibraryItem } from "../services/utils";
 import { getCategories } from "../services/fakeCategoryService";
-import { useLocation } from "react-router-dom";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
@@ -19,22 +19,50 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
-  const location = useLocation();
 
   useEffect(() => {
     async function fetch() {
       const { data: categories } = await getCategories();
       setCategories(categories);
 
-      const { data: items } = await getItems();
-      setItems(items);
+      const { data } = await getItems();
+      setItems(Array.isArray(data) ? data : []);
     }
 
     fetch();
-  }, [location.key]);
+  }, []);
+
+  async function handleCheckout(itemId: string, borrower: string) {
+    try {
+      const { data: updatedItem } = await checkoutItem(itemId, borrower);
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === updatedItem.id ? updatedItem : item
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Could not checkout item");
+    }
+  }
+
+  async function handleReturn(itemId: string) {
+    try {
+      const { data: updatedItem } = await returnItem(itemId);
+      setItems((prevItems) =>
+        prevItems.map((item) =>
+          item.id === updatedItem.id ? updatedItem : item
+        )
+      );
+    } catch (err) {
+      console.error(err);
+      alert("Could not return item");
+    }
+  }
 
   const itemsWithFields = items.map((item) => {
-    const category = categories.find((c) => c.id === item.category.id);
+    const categoryId = item.category?.id;
+    const category = categories.find((c) => c.id === categoryId);
     return {
       ...item,
       category: {
@@ -83,7 +111,12 @@ function HomePage() {
           />
         </div>
       </div>
-      <ItemsGroup items={paginatedItems} onDelete={handleDelete} />
+      <ItemsGroup
+        items={paginatedItems}
+        onDelete={handleDelete}
+        onCheckOut={handleCheckout}
+        onReturn={handleReturn}
+      />
       <Pagination
         pageSize={PAGE_SIZE}
         totalCount={filtredItems.length}

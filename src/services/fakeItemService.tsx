@@ -14,14 +14,14 @@ export function getItem(id: string) {
 
 export function saveItem(form: LibraryFormData) {
   if (form.id) {
-    return axios.put(`${API_URL}/${form.id}`, form);
+    return axios.put<BaseItem>(`${API_URL}/${form.id}`, form);
   } else {
-    return axios.post(API_URL, form);
+    return axios.post<BaseItem[]>(API_URL, form);
   }
 }
 
 export function deleteItem(id: string) {
-  return axios.delete<LibraryItem>(`${API_URL}/${id}`);
+  return axios.delete<LibraryItem[]>(`${API_URL}/${id}`);
 }
 
 export function canBorrow(item: LibraryItem): boolean {
@@ -30,9 +30,9 @@ export function canBorrow(item: LibraryItem): boolean {
 }
 
 export function checkoutItem(itemId: string, borrower: string) {
-  return axios.post(`${API_URL}/${itemId}/checkout`, { borrower });
+  return axios.post<BaseItem>(`${API_URL}/${itemId}/checkout`, { borrower });
 }
 
 export function returnItem(itemId: string) {
-  return axios.post(`${API_URL}/${itemId}/return`);
+  return axios.post<BaseItem>(`${API_URL}/${itemId}/return`);
 }
