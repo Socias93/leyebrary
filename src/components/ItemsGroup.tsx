@@ -98,15 +98,15 @@ function ItemsGroup({ items, onDelete }: Props) {
                     switch (field) {
                       case "author":
                         label = "Author";
-                        value = (i as any).author;
+                        value = i.attributes?.author;
                         break;
                       case "nbrPages":
                         label = "Pages";
-                        value = (i as any).nbrPages;
+                        value = i.attributes?.nbrPages;
                         break;
                       case "runTimeMinutes":
                         label = "Runtime (minutes)";
-                        value = (i as any).runTimeMinutes;
+                        value = i.attributes?.runTimeMinutes;
                         break;
                       default:
                         label = field;

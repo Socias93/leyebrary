@@ -18,7 +18,7 @@ export interface BaseItem {
   title: string;
   isBorrowable?: boolean;
   category: Category;
-  // if checked out:
+  attributes?: Record<string, any>;
   borrower?: string;
   borrowDate?: string; // ISO string
 }

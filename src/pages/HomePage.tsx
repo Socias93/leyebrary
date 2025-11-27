@@ -23,6 +23,9 @@ function HomePage() {
     async function fetch() {
       const { data: categories } = await getCategories();
       setCategories(categories);
+
+      const { data: items } = await getItems();
+      setItems(items);
     }
 
     fetch();
