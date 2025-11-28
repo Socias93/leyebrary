@@ -27,15 +27,24 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
     return () => clearInterval(interval);
   }, [items]);
-
   const handleBorrowToggle = (item: LibraryItem) => {
     if (item.borrower) {
+      const returnerName = prompt("Enter your name to return the item")?.trim();
+      if (!returnerName) {
+        alert("You must write your name");
+        return;
+      }
+
+      if (returnerName !== item.borrower) {
+        alert(`Wrong name! This item is borrowed by ${item.borrower}`);
+        return;
+      }
+
       onReturn(item.id);
     } else {
       const borrowerName = prompt("Enter borrower name")?.trim();
       if (!borrowerName) {
         alert("You must write your name");
-
         return;
       }
       onCheckOut(item.id, borrowerName);
