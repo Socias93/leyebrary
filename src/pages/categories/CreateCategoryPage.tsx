@@ -9,6 +9,8 @@ import {
 import { CategoryFieldInput } from "@/components";
 import { getCategories, saveCategory } from "@services/categoryService";
 
+const CATEGORY_ERROR = "Category already exists";
+
 function CreateCategoryPage() {
   const navigate = useNavigate();
 
@@ -31,7 +33,7 @@ function CreateCategoryPage() {
     );
 
     if (exists) {
-      alert("Category already exists");
+      alert(CATEGORY_ERROR);
       return;
     }
 

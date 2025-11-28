@@ -8,13 +8,9 @@ export function getCategories() {
 }
 
 export function saveCategory(category: NewCategoryData) {
-  return axios.post(API_URL, category); // POST för create
+  return axios.post(API_URL, category);
 }
 
 export function deleteCategory(id: string) {
   return axios.delete<Category>(`${API_URL}/${id}`);
 }
-
-/**
- * Common fields for all library items
- */

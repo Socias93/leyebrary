@@ -8,6 +8,10 @@ import { ItemForm, itemSchema } from "../index";
 import { getItem, saveItem } from "@services/itemService";
 import { FormField } from "@/components";
 
+const AUTHOR = "author";
+const NBR_PAGES = "nbrPages";
+const RUN_TIMES_MINUTES = "runTimeMinutes";
+
 function CreateItemPage() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
@@ -61,19 +65,19 @@ function CreateItemPage() {
     const fields = selectedCategory?.fields ?? [];
 
     fields.forEach((field) => {
-      if (field === "author") {
+      if (field === AUTHOR) {
         setValue("attributes.author", "");
-      } else if (field === "nbrPages") {
+      } else if (field === NBR_PAGES) {
         setValue("attributes.nbrPages", undefined);
-      } else if (field === "runTimeMinutes") {
+      } else if (field === RUN_TIMES_MINUTES) {
         setValue("attributes.runTimeMinutes", undefined);
       }
     });
 
     const allKeys: Array<keyof ItemForm["attributes"]> = [
-      "author",
-      "nbrPages",
-      "runTimeMinutes",
+      AUTHOR,
+      NBR_PAGES,
+      RUN_TIMES_MINUTES,
     ];
     allKeys.forEach((k) => {
       if (!fields.includes(k as any)) {

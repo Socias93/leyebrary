@@ -7,6 +7,10 @@ interface Props {
   onCheckOut(itemId: string, borrower: string): void;
   onReturn(itemId: string): void;
 }
+const NAME = "You must write your name";
+const NEW_NAME = "Enter your name to return the item";
+const NEW_BORROWER = "Enter borrower name";
+const WRONG_RETURN = "Wrong name! This item is borrowed by";
 
 function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
   const [timeLeft, setTimeLeft] = useState<Record<string, number>>({});
@@ -27,24 +31,25 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
     return () => clearInterval(interval);
   }, [items]);
+
   const handleBorrowToggle = (item: LibraryItem) => {
     if (item.borrower) {
-      const returnerName = prompt("Enter your name to return the item")?.trim();
+      const returnerName = prompt(NEW_NAME)?.trim();
       if (!returnerName) {
-        alert("You must write your name");
+        alert(NAME);
         return;
       }
 
       if (returnerName !== item.borrower) {
-        alert(`Wrong name! This item is borrowed by ${item.borrower}`);
+        alert(`${WRONG_RETURN} ${item.borrower}`);
         return;
       }
 
       onReturn(item.id);
     } else {
-      const borrowerName = prompt("Enter borrower name")?.trim();
+      const borrowerName = prompt(NEW_BORROWER)?.trim();
       if (!borrowerName) {
-        alert("You must write your name");
+        alert(NAME);
         return;
       }
       onCheckOut(item.id, borrowerName);
@@ -115,10 +120,9 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
                   ) : (
                     <div className="d-flex flex-column align-items-center">
                       <span
-                        className={`badge ${
+                        className={`clickable badge ${
                           item.borrower ? "bg-dark" : "bg-info text-dark"
                         } rounded-pill px-4 py-2 shadow-sm clickable mb-2`}
-                        style={{ cursor: "pointer" }}
                         onClick={() => handleBorrowToggle(item)}>
                         {item.borrower ? "Return" : "Borrow"}
                       </span>

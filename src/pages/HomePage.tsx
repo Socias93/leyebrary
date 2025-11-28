@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { paginate } from "@/components/utils";
+import { BaseItem, Category, LibraryItem } from "@/services/utils";
+import { getCategories } from "@/services/categoryService";
 import {
   checkoutItem,
   deleteItem,
@@ -12,11 +14,11 @@ import {
   Pagination,
   HeaderImg,
 } from "@/components/index";
-import { BaseItem, Category, LibraryItem } from "@/services/utils";
-import { getCategories } from "@/services/categoryService";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
+const CANT_CHECKOUT = "Could not checkout item";
+const CANT_RETURN = "Could not return item";
 
 function HomePage() {
   const [items, setItems] = useState<BaseItem[]>([]);
@@ -54,7 +56,7 @@ function HomePage() {
       );
     } catch (err) {
       console.error(err);
-      alert("Could not checkout item");
+      alert(CANT_CHECKOUT);
     }
   }
 
@@ -76,7 +78,7 @@ function HomePage() {
       );
     } catch (err) {
       console.error(err);
-      alert("Could not return item");
+      alert(CANT_RETURN);
     }
   }
   const itemsWithFields = items.map((item) => {

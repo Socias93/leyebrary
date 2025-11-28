@@ -23,7 +23,6 @@ function FieldInput({ errors, field, register }: Props) {
           errors.attributes?.[field] ? "is-invalid" : ""
         }`}
         {...register(`attributes.${field}`, {
-          // Om number: konvertera tom sträng -> undefined, annars Number(v)
           ...(isNumberField && {
             valueAsNumber: true,
             setValueAs: (v: any) => (v === "" ? undefined : Number(v)),
