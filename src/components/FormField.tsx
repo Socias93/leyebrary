@@ -1,4 +1,4 @@
-import { CategoryFormData } from "../pages/categories/categoryschema/CreateCategorySchema";
+import { ItemForm } from "../pages/items/schemas/DynamicSchema";
 import { Category } from "../services/utils";
 import FieldInput from "./FieldInput";
 
@@ -6,7 +6,7 @@ interface Props {
   handleSubmit: any;
   selectedCategory?: Category;
   errors: any;
-  onSubmit(ddata: CategoryFormData): void;
+  onSubmit(data: ItemForm): void;
   register: any;
 }
 
@@ -21,7 +21,7 @@ function FormField({
     <form onSubmit={handleSubmit(onSubmit)}>
       {selectedCategory?.fields?.map((field) => (
         <FieldInput
-          key={field}
+          key={field} // om field är t.ex. "author"
           field={field}
           register={register}
           errors={errors}

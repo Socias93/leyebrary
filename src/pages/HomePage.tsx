@@ -115,6 +115,7 @@ function HomePage() {
   return (
     <>
       <HeaderImg />
+      <p>There are {items.length} items in the database </p>
 
       <div className="d-grid justify-content-center">
         <h1 className="text-center">L{eye}brary </h1>

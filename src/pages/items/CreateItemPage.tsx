@@ -3,17 +3,17 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { getItem, saveItem } from "../../services/fakeItemService";
-import { LibraryFormData } from "../utils";
-import { getDynamicSchema } from "../index";
 import { BaseItem, Category } from "../../services/utils";
 import { FormField } from "../../components/index";
 import { getCategories } from "../../services/fakeCategoryService";
 import z from "zod";
+import { itemSchema } from "./schemas/DynamicSchema";
 
 function CreateItemPage() {
   const { id } = useParams();
-  const [items, setItems] = useState<BaseItem>();
+  const [item, setItem] = useState<BaseItem | null>(null);
   const [searchParams] = useSearchParams();
+
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
 
@@ -22,20 +22,29 @@ function CreateItemPage() {
     initialCategoryFromQuery
   );
 
-  const selectedCategory = categories.find((c) => c.id === selectedCategoryId);
-
-  const dynamicSchema = getDynamicSchema(selectedCategory);
-  type DynamicFormData = z.infer<typeof dynamicSchema>;
+  type ItemForm = z.infer<typeof itemSchema>;
 
   const {
     register,
     handleSubmit,
+    watch,
     reset,
     formState: { errors },
-  } = useForm<DynamicFormData>({
-    resolver: zodResolver(dynamicSchema),
-    defaultValues: { categoryId: initialCategoryFromQuery || "" },
+  } = useForm<ItemForm>({
+    resolver: zodResolver(itemSchema),
+    defaultValues: {
+      id: "",
+      title: "",
+      categoryId: initialCategoryFromQuery || "",
+      attributes: {
+        author: "",
+        nbrPages: undefined,
+        runTimeMinutes: undefined,
+      },
+    },
   });
+  const watchedCategoryId = watch("categoryId");
+  const selectedCategory = categories.find((c) => c.id === watchedCategoryId);
 
   useEffect(() => {
     async function fetch() {
@@ -44,41 +53,38 @@ function CreateItemPage() {
 
       if (!id || id === "new") return;
       const { data: item } = await getItem(id);
-      if (!item) return;
+      console.log(item);
 
-      setSelectedCategoryId(item.category.id);
+      if (!item) return;
+      console.log("Backend item.attributes:", item.attributes); // 🔹 logga här
+
+      setItem(item);
       reset(mapToFormData(item));
-      setItems(item);
+      console.log("Mapped form data:", mapToFormData(item));
     }
 
     fetch();
   }, [id, reset]);
 
-  function mapToFormData(item: BaseItem): DynamicFormData {
-    const base: DynamicFormData = {
+  async function onSubmit(data: ItemForm) {
+    console.log("Submitting:", data);
+    console.log("Current errors:", errors); // <- här ser du valideringsfel innan submit
+
+    await saveItem(data);
+    navigate("/");
+  }
+
+  function mapToFormData(item: BaseItem) {
+    return {
       id: item.id,
       title: item.title,
       categoryId: item.category.id,
+      attributes: {
+        author: item.attributes?.author || "",
+        nbrPages: item.attributes?.nbrPages ?? undefined,
+        runTimeMinutes: item.attributes?.runTimeMinutes ?? undefined,
+      },
     };
-
-    item.category.fields?.forEach((field) => {
-      if (field in item) {
-        (base as any)[field] = (item as any)[field];
-      }
-    });
-
-    return base;
-  }
-
-  async function onSubmit(data: DynamicFormData) {
-    const { title, categoryId, ...rest } = data;
-    const payload = {
-      title,
-      categoryId,
-      attributes: rest,
-    };
-    await saveItem(payload as LibraryFormData);
-    navigate("/");
   }
 
   return (

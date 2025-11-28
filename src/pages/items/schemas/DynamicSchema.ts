@@ -1,30 +1,14 @@
 import { z } from "zod";
-import { Category } from "../../../services/utils";
 
-export function getDynamicSchema(category?: Category) {
-  const shape: Record<string, any> = {
-    id: z.string().optional(),
-    title: z.string().min(1, { message: "Title is mandatory" }),
-    categoryId: z.string().min(1, { message: "Category is required" }),
-  };
+export const itemSchema = z.object({
+  id: z.string().optional(),
+  title: z.string().min(1),
+  categoryId: z.string(),
+  attributes: z.object({
+    author: z.string().optional(),
+    nbrPages: z.number().optional(),
+    runTimeMinutes: z.number().optional(),
+  }),
+});
 
-  category?.fields?.forEach((field) => {
-    switch (field) {
-      case "author":
-        shape.author = z.string().min(1, { message: "Author is required" });
-        break;
-      case "nbrPages":
-        shape.nbrPages = z
-          .number({ error: "Must be a number" })
-          .min(1, { message: "Pages must be at least 1" });
-        break;
-      case "runTimeMinutes":
-        shape.runTimeMinutes = z
-          .number({ error: "Must be a number" })
-          .min(1, { message: "Time must be at least 1" });
-        break;
-    }
-  });
-
-  return z.object(shape);
-}
+export type ItemForm = z.infer<typeof itemSchema>;
