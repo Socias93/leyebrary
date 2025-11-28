@@ -67,9 +67,7 @@ function CreateItemPage() {
   }, [id, reset]);
 
   async function onSubmit(data: ItemForm) {
-    console.log("Submitting:", data);
-    console.log("Current errors:", errors); // <- här ser du valideringsfel innan submit
-
+    console.log("Submitted", data);
     await saveItem(data);
     navigate("/");
   }

@@ -16,13 +16,19 @@ function FieldInput({ errors, field, register }: Props) {
 
   return (
     <div className="mb-3">
-      <label className="form-label">{labels[field] ?? field}</label>
+      <label className="form-label d-block">{labels[field]}</label>
       <input
         type={isNumberField ? "number" : "text"}
-        className="form-control"
-        {...register(field, { valueAsNumber: isNumberField })}
+        className={`form-control ${
+          errors.attributes?.[field] ? "is-invalid" : ""
+        }`}
+        {...register(`attributes.${field}`, { valueAsNumber: isNumberField })}
       />
-      {errors[field] && <p className="text-danger">{errors[field]?.message}</p>}
+      {errors.attributes?.[field] && (
+        <div className="invalid-feedback">
+          {errors.attributes[field]?.message}
+        </div>
+      )}
     </div>
   );
 }
