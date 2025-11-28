@@ -33,8 +33,11 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
       onReturn(item.id);
     } else {
       const borrowerName = prompt("Enter borrower name")?.trim();
-      if (!borrowerName) return;
+      if (!borrowerName) {
+        alert("You must write your name");
 
+        return;
+      }
       onCheckOut(item.id, borrowerName);
     }
   };
