@@ -6,21 +6,17 @@ import { getItem, saveItem } from "../../services/fakeItemService";
 import { BaseItem, Category } from "../../services/utils";
 import { FormField } from "../../components/index";
 import { getCategories } from "../../services/fakeCategoryService";
-import z from "zod";
 import { itemSchema } from "./schemas/DynamicSchema";
+import z from "zod";
 
 function CreateItemPage() {
   const { id } = useParams();
-  const [item, setItem] = useState<BaseItem | null>(null);
   const [searchParams] = useSearchParams();
 
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
 
   const initialCategoryFromQuery = searchParams.get("category") ?? "";
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(
-    initialCategoryFromQuery
-  );
 
   type ItemForm = z.infer<typeof itemSchema>;
 
@@ -53,14 +49,10 @@ function CreateItemPage() {
 
       if (!id || id === "new") return;
       const { data: item } = await getItem(id);
-      console.log(item);
 
       if (!item) return;
-      console.log("Backend item.attributes:", item.attributes); // 🔹 logga här
 
-      setItem(item);
       reset(mapToFormData(item));
-      console.log("Mapped form data:", mapToFormData(item));
     }
 
     fetch();
@@ -103,10 +95,7 @@ function CreateItemPage() {
         </div>
 
         <div className="mb-3 mt-4">
-          <select
-            className="form-select"
-            {...register("categoryId")}
-            onChange={(e) => setSelectedCategoryId(e.target.value)}>
+          <select className="form-select" {...register("categoryId")}>
             <option value="">Category</option>
             {categories.map((category) => (
               <option key={category.id} value={category.id}>
@@ -118,8 +107,9 @@ function CreateItemPage() {
             <p className="text-danger">{errors.categoryId.message}</p>
           )}
         </div>
+
         <FormField
-          key={selectedCategoryId}
+          key={watchedCategoryId}
           errors={errors}
           handleSubmit={handleSubmit}
           register={register}

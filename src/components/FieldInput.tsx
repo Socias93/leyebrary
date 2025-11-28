@@ -22,7 +22,12 @@ function FieldInput({ errors, field, register }: Props) {
         className={`form-control ${
           errors.attributes?.[field] ? "is-invalid" : ""
         }`}
-        {...register(`attributes.${field}`, { valueAsNumber: isNumberField })}
+        {...register(`attributes.${field}`, {
+          ...(isNumberField && {
+            valueAsNumber: true,
+            setValueAs: (v: any) => (v === "" ? undefined : Number(v)),
+          }),
+        })}
       />
       {errors.attributes?.[field] && (
         <div className="invalid-feedback">

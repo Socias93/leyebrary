@@ -21,7 +21,7 @@ function FormField({
     <form onSubmit={handleSubmit(onSubmit)}>
       {selectedCategory?.fields?.map((field) => (
         <FieldInput
-          key={field} // om field är t.ex. "author"
+          key={field}
           field={field}
           register={register}
           errors={errors}
