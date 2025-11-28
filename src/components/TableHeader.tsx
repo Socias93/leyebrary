@@ -1,4 +1,4 @@
-import { Columns, SortColumn } from "../pages/utils";
+import { Columns, SortColumn } from "@/pages/utils";
 
 interface Props {
   columns: Columns[];

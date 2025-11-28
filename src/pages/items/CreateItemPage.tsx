@@ -2,12 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { getItem, saveItem } from "../../services/fakeItemService";
-import { BaseItem, Category } from "../../services/utils";
-import { FormField } from "../../components/index";
-import { getCategories } from "../../services/fakeCategoryService";
-import { itemSchema } from "./schemas/DynamicSchema";
-import z from "zod";
+import { BaseItem, Category } from "@services/utils";
+import { getCategories } from "@services/categoryService";
+import { ItemForm, itemSchema } from "../index";
+import { getItem, saveItem } from "@services/itemService";
+import { FormField } from "@/components";
 
 function CreateItemPage() {
   const { id } = useParams();
@@ -17,8 +16,6 @@ function CreateItemPage() {
   const [categories, setCategories] = useState<Category[]>([]);
 
   const initialCategoryFromQuery = searchParams.get("category") ?? "";
-
-  type ItemForm = z.infer<typeof itemSchema>;
 
   const {
     register,

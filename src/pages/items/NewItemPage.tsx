@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { getCategories } from "../../services/fakeCategoryService";
+import { getCategories } from "@/services/categoryService";
 import { useEffect, useState } from "react";
-import { Category } from "../../services/utils";
+import { Category } from "@/services/utils";
 
 function NewItemPage() {
   const [categories, setCategories] = useState<Category[]>([]);

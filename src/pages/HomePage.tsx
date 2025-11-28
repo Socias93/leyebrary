@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { deleteItem, getItems } from "../services/fakeItemService";
-import { paginate } from "../components/utils";
-import { checkoutItem, returnItem } from "../services/fakeItemService";
+import { paginate } from "@/components/utils";
+import {
+  checkoutItem,
+  deleteItem,
+  getItems,
+  returnItem,
+} from "@/services/itemService";
 import {
   ItemsGroup,
   ListGroup,
   Pagination,
   HeaderImg,
-} from "../components/index";
-import { BaseItem, Category, LibraryItem } from "../services/utils";
-import { getCategories } from "../services/fakeCategoryService";
+} from "@/components/index";
+import { BaseItem, Category, LibraryItem } from "@/services/utils";
+import { getCategories } from "@/services/categoryService";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;

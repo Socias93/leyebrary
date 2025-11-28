@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
-import { getItems } from "../../services/fakeItemService";
-import {
-  deleteCategory,
-  getCategories,
-} from "../../services/fakeCategoryService";
-import { BaseItem, Category } from "../../services/utils";
+import { BaseItem, Category } from "@/services/utils";
+import { deleteCategory, getCategories } from "@services/categoryService";
+import { getItems } from "@services/itemService";
 
 function AllCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);

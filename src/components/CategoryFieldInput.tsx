@@ -1,5 +1,5 @@
-import { CategoryFormData } from "../pages/categories/categoryschema/CreateCategorySchema";
-import { Category } from "../services/utils";
+import { Category } from "@/services/utils";
+import { CategoryFormData } from "@pages";
 
 interface Props {
   handleSubmit: any;

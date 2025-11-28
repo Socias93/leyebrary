@@ -1,6 +1,6 @@
-import { ItemForm } from "../pages/items/schemas/DynamicSchema";
-import { Category } from "../services/utils";
-import FieldInput from "./FieldInput";
+import { ItemForm } from "@/pages/items/schemas/DynamicSchema";
+import { Category } from "@/services/utils";
+import { FieldInput } from "./index";
 
 interface Props {
   handleSubmit: any;

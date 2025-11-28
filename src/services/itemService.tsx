@@ -1,4 +1,3 @@
-// fakeLibraryService.ts
 import axios from "axios";
 import { BaseItem, LibraryFormData, LibraryItem } from "./utils";
 

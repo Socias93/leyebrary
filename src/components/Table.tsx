@@ -1,5 +1,5 @@
-import { Columns, SortColumn } from "../pages/utils";
-import { BaseItem } from "../services/utils";
+import { Columns, SortColumn } from "@/pages/utils";
+import { BaseItem } from "@/services/utils";
 import { TableBody, TableHeader } from "./index";
 
 interface Props {

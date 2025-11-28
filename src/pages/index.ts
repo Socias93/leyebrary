@@ -6,3 +6,6 @@ export { default as CreateCategoryPage } from "./categories/CreateCategoryPage";
 export { default as AllCategoriesPage } from "./categories/AllCategoriesPage";
 export { default as NotFound } from "./NotfoundPage";
 export { categorySchema as CreateCategorySchema } from "./categories/categoryschema/CreateCategorySchema";
+export { itemSchema as itemSchema } from "./items/schemas/DynamicSchema";
+export type { ItemForm } from "./items/schemas/DynamicSchema";
+export type { CategoryFormData } from "../pages/categories/categoryschema/CreateCategorySchema";

@@ -1,17 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
-import {
-  getCategories,
-  saveCategory,
-} from "../../services/fakeCategoryService";
+import { Category } from "@/services/utils";
 import {
   CategoryFormData,
   categorySchema,
 } from "./categoryschema/CreateCategorySchema";
-import { CategoryFieldInput } from "../../components";
-import { AxiosResponse } from "axios";
-import { Category } from "../../services/utils";
+import { CategoryFieldInput } from "@/components";
+import { getCategories, saveCategory } from "@services/categoryService";
 
 function CreateCategoryPage() {
   const navigate = useNavigate();

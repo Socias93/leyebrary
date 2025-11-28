@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LibraryItem } from "../services/utils";
+import { LibraryItem } from "@/services/utils";
 
 interface Props {
   items: LibraryItem[];
