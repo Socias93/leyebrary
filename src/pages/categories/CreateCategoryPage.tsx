@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosResponse } from "axios";
 import { useForm } from "react-hook-form";
 import { Category } from "@/services/utils";
 import {
@@ -18,7 +17,7 @@ function CreateCategoryPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<CategoryFormData>({
-    defaultValues: { name: "", fields: [] },
+    defaultValues: { name: "", fields: [], imageUrl: "" },
     resolver: zodResolver(categorySchema),
   });
 
@@ -26,12 +25,9 @@ function CreateCategoryPage() {
     console.log("Submitted", data);
 
     const res = await getCategories();
-
-    const categories =
-      (res as AxiosResponse<Category[]>).data ?? (res as unknown as Category[]);
-
+    const categories = (res as any).data ?? [];
     const exists = categories.some(
-      (c) => c.name.toLowerCase() === data.name.toLowerCase()
+      (c: Category) => c.name.toLowerCase() === data.name.toLowerCase()
     );
 
     if (exists) {
@@ -40,8 +36,7 @@ function CreateCategoryPage() {
     }
 
     await saveCategory(data);
-
-    navigate("/home");
+    navigate("/all/categories");
   }
 
   return (

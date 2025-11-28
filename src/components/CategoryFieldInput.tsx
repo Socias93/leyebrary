@@ -47,6 +47,18 @@ function CategoryFieldInput({
         {errors.fields && (
           <p className="text-danger"> {errors.fields.message} </p>
         )}
+        <div className="mb-3">
+          <label className="form-label">Image</label>
+          <input
+            {...register("imageUrl")}
+            type="text"
+            className="form-control"
+            placeholder="Enter image path, e.g. images/audiobook.jpeg"
+          />
+          {errors.imageUrl && (
+            <p className="text-danger">{errors.imageUrl.message} </p>
+          )}
+        </div>
       </div>
       <div className="text-center m-2">
         <button className="btn btn-outline-info">Create</button>

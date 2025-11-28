@@ -10,6 +10,7 @@ export interface Category {
 
 export interface NewCategoryData {
   name: ItemType | string;
+  imageUrl: string;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
 }
 
