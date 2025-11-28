@@ -13,7 +13,7 @@ function DropDown() {
         </a>
         <ul className="dropdown-menu">
           <li>
-            <NavLink to={"new-item"} className="clickable dropdown-item">
+            <NavLink to={"new-item/new"} className="clickable dropdown-item">
               New Item
             </NavLink>
           </li>

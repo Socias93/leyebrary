@@ -1,12 +1,12 @@
 interface Props {
-  field: string;
+  field: "author" | "nbrPages" | "runTimeMinutes";
   register: any;
   errors: any;
   item?: any;
 }
 
 function FieldInput({ errors, field, register }: Props) {
-  const labels: { [key: string]: string } = {
+  const labels: Record<string, string> = {
     author: "Author",
     nbrPages: "Number of Pages",
     runTimeMinutes: "Run time (minutes)",
@@ -23,6 +23,7 @@ function FieldInput({ errors, field, register }: Props) {
           errors.attributes?.[field] ? "is-invalid" : ""
         }`}
         {...register(`attributes.${field}`, {
+          // Om number: konvertera tom sträng -> undefined, annars Number(v)
           ...(isNumberField && {
             valueAsNumber: true,
             setValueAs: (v: any) => (v === "" ? undefined : Number(v)),

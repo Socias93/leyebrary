@@ -22,6 +22,7 @@ function CreateItemPage() {
     handleSubmit,
     watch,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<ItemForm>({
     resolver: zodResolver(itemSchema),
@@ -36,6 +37,7 @@ function CreateItemPage() {
       },
     },
   });
+
   const watchedCategoryId = watch("categoryId");
   const selectedCategory = categories.find((c) => c.id === watchedCategoryId);
 
@@ -55,6 +57,31 @@ function CreateItemPage() {
     fetch();
   }, [id, reset]);
 
+  useEffect(() => {
+    const fields = selectedCategory?.fields ?? [];
+
+    fields.forEach((field) => {
+      if (field === "author") {
+        setValue("attributes.author", "");
+      } else if (field === "nbrPages") {
+        setValue("attributes.nbrPages", undefined);
+      } else if (field === "runTimeMinutes") {
+        setValue("attributes.runTimeMinutes", undefined);
+      }
+    });
+
+    const allKeys: Array<keyof ItemForm["attributes"]> = [
+      "author",
+      "nbrPages",
+      "runTimeMinutes",
+    ];
+    allKeys.forEach((k) => {
+      if (!fields.includes(k as any)) {
+        setValue(`attributes.${k}`, undefined);
+      }
+    });
+  }, [watchedCategoryId, selectedCategory, setValue]);
+
   async function onSubmit(data: ItemForm) {
     console.log("Submitted", data);
     await saveItem(data);
@@ -67,9 +94,9 @@ function CreateItemPage() {
       title: item.title,
       categoryId: item.category.id,
       attributes: {
-        author: item.attributes?.author || "",
-        nbrPages: item.attributes?.nbrPages ?? undefined,
-        runTimeMinutes: item.attributes?.runTimeMinutes ?? undefined,
+        author: item.attributes?.author,
+        nbrPages: item.attributes?.nbrPages,
+        runTimeMinutes: item.attributes?.runTimeMinutes,
       },
     };
   }
@@ -78,7 +105,7 @@ function CreateItemPage() {
     <div className="vh-100 d-grid justify-content-center align-content-center">
       <h4 className="text-center">
         {id === "new"
-          ? `Create new ${selectedCategory?.name}`
+          ? `Create a new item`
           : `Update your ${selectedCategory?.name}`}
       </h4>
 
@@ -106,12 +133,11 @@ function CreateItemPage() {
         </div>
 
         <FormField
-          key={watchedCategoryId}
           errors={errors}
           handleSubmit={handleSubmit}
           register={register}
-          selectedCategory={selectedCategory}
           onSubmit={onSubmit}
+          selectedCategory={selectedCategory}
         />
       </div>
     </div>
