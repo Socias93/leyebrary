@@ -121,7 +121,6 @@ function HomePage() {
   return (
     <>
       <HeaderImg />
-
       <div className="d-grid justify-content-center">
         <h1 className="text-center">L{eye}brary </h1>
         <div className="d-flex">
