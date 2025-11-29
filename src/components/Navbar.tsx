@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { DropDown } from "./index";
+import { DropDown } from "@components/index";
 
 function Navbar() {
   const eye = <i className="fa-solid fa-eye text-info"></i>;

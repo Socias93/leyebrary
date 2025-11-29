@@ -7,7 +7,7 @@ import {
   CreateItemPage,
   AllCategoriesPage,
   NotFound,
-} from "./pages/index";
+} from "@pages/index";
 
 const router = createBrowserRouter([
   { path: "*", element: <NotFound /> },

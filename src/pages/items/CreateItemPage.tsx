@@ -4,9 +4,9 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { BaseItem, Category } from "@services/utils";
 import { getCategories } from "@services/categoryService";
-import { ItemForm, itemSchema } from "../index";
 import { getItem, saveItem } from "@services/itemService";
-import { FormField } from "@/components";
+import { FormField } from "@components/index";
+import { itemSchema, ItemForm } from "@pages/index";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";

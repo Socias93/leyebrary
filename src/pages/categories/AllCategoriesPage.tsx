@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BaseItem, Category } from "@/services/utils";
+import { BaseItem, Category } from "@services/utils";
 import { deleteCategory, getCategories } from "@services/categoryService";
 import { getItems } from "@services/itemService";
 

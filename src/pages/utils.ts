@@ -1,5 +1,7 @@
 import { ReactNode } from "react";
-import { BaseItem } from "../services/utils";
+import { BaseItem } from "@services/utils";
+import { categorySchema } from "@pages/index";
+import z from "zod";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 
@@ -17,6 +19,8 @@ export interface TextColumn {
   path: string;
   label: string;
 }
+
+export type CategoryFormData = z.infer<typeof categorySchema>;
 
 export interface ContentColumn {
   key: string;

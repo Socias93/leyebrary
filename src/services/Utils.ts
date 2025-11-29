@@ -1,4 +1,4 @@
-import { ItemType } from "../pages/utils";
+import { ItemType } from "@pages/utils";
 
 // library.ts
 export interface Category {
@@ -24,6 +24,8 @@ export interface BaseItem {
   borrowDate?: string; // ISO string
 }
 
+export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
+
 export interface Book extends BaseItem {
   author: string;
   nbrPages: number;
@@ -41,8 +43,6 @@ export interface ReferenceBook extends BaseItem {
   author: string;
   nbrPages: number;
 }
-
-export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
 
 /**
  * Data shape expected from forms / client when creating/updating
