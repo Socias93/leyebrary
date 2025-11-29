@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BaseItem, LibraryFormData, LibraryItem } from "../types";
 
-const API_URL = "http://localhost:5313/api/items";
+const API_URL = import.meta.env.VITE_API_URL + "/api/items";
 
 export function getItems() {
   return axios.get<BaseItem[]>(API_URL);
