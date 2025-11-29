@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { BaseItem } from "../services/utils";
-import { categorySchema } from "../pages/index";
 import z from "zod";
+import { categorySchema } from "./categories/categoryschema/CreateCategorySchema";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
 

@@ -1,4 +1,4 @@
-import _ from "lodash";
+import * as _ from "lodash";
 import { Columns } from "../pages/utils";
 import { BaseItem } from "../services/utils";
 

@@ -6,7 +6,7 @@ import { BaseItem, Category } from "../../services/utils";
 import { getCategories } from "../../services/categoryService";
 import { getItem, saveItem } from "../../services/itemService";
 import { FormField } from "../../components/index";
-import { itemSchema, ItemForm } from "../../pages/index";
+import { ItemForm, itemSchema } from "./schemas/DynamicSchema";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";

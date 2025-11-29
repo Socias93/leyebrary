@@ -6,8 +6,8 @@ import { useState } from "react";
 import { getCategories, saveCategory } from "../../services/categoryService";
 import { Category } from "../../services/utils";
 import { CategoryFieldInput } from "../../components/index";
-import { categorySchema } from "../../pages/index";
 import { CategoryFormData } from "../../pages/utils";
+import { categorySchema } from "./categoryschema/CreateCategorySchema";
 
 const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";

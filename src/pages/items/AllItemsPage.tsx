@@ -1,10 +1,10 @@
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Columns, SortColumn, getAbbreviation } from "../../pages/utils";
 import { getItems } from "../../services/itemService";
 import { SearchBox, Table } from "../../components/index";
 import { BaseItem } from "../../services/utils";
+import * as _ from "lodash";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
