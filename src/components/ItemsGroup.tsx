@@ -92,36 +92,38 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
                     {item.category.name}
                   </p>
 
-                  {item.category.fields?.map((field) => {
-                    let label = "";
-                    let value: string | number = "";
+                  {item.category.fields?.map(
+                    (field: "author" | "nbrPages" | "runTimeMinutes") => {
+                      let label = "";
+                      let value: string | number = "";
 
-                    switch (field) {
-                      case "author":
-                        label = "Author";
-                        value = item.attributes?.author;
-                        break;
-                      case "nbrPages":
-                        label = "Pages";
-                        value = item.attributes?.nbrPages;
-                        break;
-                      case "runTimeMinutes":
-                        label = "Runtime (minutes)";
-                        value = item.attributes?.runTimeMinutes;
-                        break;
-                      default:
-                        label = field;
-                        value = (item as any)[field];
+                      switch (field) {
+                        case "author":
+                          label = "Author";
+                          value = item.attributes?.author;
+                          break;
+                        case "nbrPages":
+                          label = "Pages";
+                          value = item.attributes?.nbrPages;
+                          break;
+                        case "runTimeMinutes":
+                          label = "Runtime (minutes)";
+                          value = item.attributes?.runTimeMinutes;
+                          break;
+                        default:
+                          label = field;
+                          value = (item as any)[field];
+                      }
+
+                      if (value === undefined || value === null) return null;
+
+                      return (
+                        <p className="mb-1" key={item.id + "_" + field}>
+                          {label}: {value}
+                        </p>
+                      );
                     }
-
-                    if (value === undefined || value === null) return null;
-
-                    return (
-                      <p className="mb-1" key={item.id + "_" + field}>
-                        {label}: {value}
-                      </p>
-                    );
-                  })}
+                  )}
                 </div>
 
                 <div className="d-flex flex-column align-items-center mt-3">
