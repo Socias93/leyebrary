@@ -1,4 +1,4 @@
-import { ItemType } from "@pages/utils";
+import { ItemType } from "../pages/utils";
 
 // library.ts
 export interface Category {

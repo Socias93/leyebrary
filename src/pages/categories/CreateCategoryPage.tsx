@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { getCategories, saveCategory } from "@services/categoryService";
-import { Category } from "@services/utils";
-import { CategoryFieldInput } from "@components/index";
-import { categorySchema } from "@pages/index";
-import { CategoryFormData } from "@pages/utils";
+import { getCategories, saveCategory } from "../../services/categoryService";
+import { Category } from "../../services/utils";
+import { CategoryFieldInput } from "../../components/index";
+import { categorySchema } from "../../pages/index";
+import { CategoryFormData } from "../../pages/utils";
 
 const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";

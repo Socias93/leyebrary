@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
-import { BaseItem } from "@services/utils";
-import { categorySchema } from "@pages/index";
+import { BaseItem } from "../services/utils";
+import { categorySchema } from "../pages/index";
 import z from "zod";
 
 export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";

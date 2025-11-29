@@ -1,6 +1,6 @@
-import { ItemForm } from "@pages/index";
-import { Category } from "@services/utils";
-import { FieldInput } from "@components/index";
+import { ItemForm } from "../pages/index";
+import { Category } from "../services/utils";
+import { FieldInput } from "../components/index";
 
 interface Props {
   handleSubmit: any;

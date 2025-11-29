@@ -2,11 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { BaseItem, Category } from "@services/utils";
-import { getCategories } from "@services/categoryService";
-import { getItem, saveItem } from "@services/itemService";
-import { FormField } from "@components/index";
-import { itemSchema, ItemForm } from "@pages/index";
+import { BaseItem, Category } from "../../services/utils";
+import { getCategories } from "../../services/categoryService";
+import { getItem, saveItem } from "../../services/itemService";
+import { FormField } from "../../components/index";
+import { itemSchema, ItemForm } from "../../pages/index";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";
