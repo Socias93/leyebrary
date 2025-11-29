@@ -10,5 +10,3 @@ export const categorySchema = z.object({
     .instanceof(FileList)
     .refine((fl) => fl.length > 0, { message: "Image is required" }),
 });
-
-export type CategoryFormData = z.infer<typeof categorySchema>;

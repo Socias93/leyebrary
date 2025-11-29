@@ -1,5 +1,6 @@
-import { Category, NewCategoryData } from "../services/utils";
+import { NewCategoryData } from "../services/utils";
 import axios from "axios";
+import { Category } from "../types";
 
 const API_URL = "http://localhost:5313/api/categories";
 

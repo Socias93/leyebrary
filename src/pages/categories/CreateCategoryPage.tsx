@@ -4,10 +4,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getCategories, saveCategory } from "../../services/categoryService";
-import { Category } from "../../services/utils";
 import { CategoryFieldInput } from "../../components/index";
-import { CategoryFormData } from "../../pages/utils";
 import { categorySchema } from "./categoryschema/CreateCategorySchema";
+import { Category, CategoryFormData } from "../../types";
 
 const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";

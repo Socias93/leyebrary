@@ -1,5 +1,4 @@
-import { Category } from "../services/utils";
-import { CategoryFormData } from "../pages/utils";
+import { Category, CategoryFormData } from "../types";
 
 interface Props {
   handleSubmit: any;

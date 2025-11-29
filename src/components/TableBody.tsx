@@ -1,6 +1,5 @@
 import * as _ from "lodash";
-import { Columns } from "../pages/utils";
-import { BaseItem } from "../services/utils";
+import { BaseItem, Columns } from "../types";
 
 interface Props {
   items: BaseItem[];

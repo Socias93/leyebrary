@@ -1,6 +1,6 @@
-import { Columns, SortColumn } from "../pages/utils";
-import { BaseItem } from "../services/utils";
+import { SortColumn } from "../pages/utils";
 import { TableBody, TableHeader } from "../components/index";
+import { BaseItem, Columns } from "../types";
 
 interface Props {
   columns: Columns[];

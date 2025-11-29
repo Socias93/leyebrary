@@ -2,11 +2,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { BaseItem, Category } from "../../services/utils";
 import { getCategories } from "../../services/categoryService";
 import { getItem, saveItem } from "../../services/itemService";
 import { FormField } from "../../components/index";
 import { ItemForm, itemSchema } from "./schemas/DynamicSchema";
+import { BaseItem, Category } from "../../types";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";
@@ -47,7 +47,7 @@ function CreateItemPage() {
 
   useEffect(() => {
     async function fetch() {
-      const { data: categories } = await getCategories(); // AxiosResponse<Category[]>
+      const { data: categories } = await getCategories();
       setCategories(categories);
 
       if (!id || id === "new") return;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BaseItem, LibraryFormData, LibraryItem } from "../services/utils";
+import { BaseItem, LibraryFormData, LibraryItem } from "../types";
 
 const API_URL = "http://localhost:5313/api/items";
 
