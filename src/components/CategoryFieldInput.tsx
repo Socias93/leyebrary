@@ -51,9 +51,8 @@ function CategoryFieldInput({
           <label className="form-label">Image</label>
           <input
             {...register("imageUrl")}
-            type="text"
+            type="file"
             className="form-control"
-            placeholder="Enter image path, e.g. images/audiobook.jpeg"
           />
           {errors.imageUrl && (
             <p className="text-danger">{errors.imageUrl.message} </p>

@@ -42,11 +42,18 @@ function AllCategoriesPage() {
               <div key={category.id} className="col">
                 <div className="card h-100 shadow-lg border-0 rounded-4 relative">
                   <img
-                    src={category.imageUrl}
+                    src={
+                      category.imageUrl instanceof FileList &&
+                      category.imageUrl[0]
+                        ? URL.createObjectURL(category.imageUrl[0])
+                        : typeof category.imageUrl === "string"
+                        ? category.imageUrl
+                        : ""
+                    }
                     alt={category.name}
-                    className="card-img-top rounded-top-4 relative"
                     style={{ height: 160, objectFit: "cover" }}
                   />
+
                   <div className="d-grid justify-content-center">
                     <h3 className="text-center">{category.name}</h3>
                     <div className="text-center">

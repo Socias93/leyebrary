@@ -8,8 +8,10 @@ import {
 } from "./categoryschema/CreateCategorySchema";
 import { CategoryFieldInput } from "@/components";
 import { getCategories, saveCategory } from "@services/categoryService";
+import axios from "axios";
 
 const CATEGORY_ERROR = "Category already exists";
+const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";
 
 function CreateCategoryPage() {
   const navigate = useNavigate();
@@ -19,13 +21,11 @@ function CreateCategoryPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<CategoryFormData>({
-    defaultValues: { name: "", fields: [], imageUrl: "" },
+    defaultValues: { name: "", fields: [], imageUrl: undefined },
     resolver: zodResolver(categorySchema),
   });
 
   async function onSubmit(data: CategoryFormData) {
-    console.log("Submitted", data);
-
     const res = await getCategories();
     const categories = (res as any).data ?? [];
     const exists = categories.some(
@@ -36,9 +36,19 @@ function CreateCategoryPage() {
       alert(CATEGORY_ERROR);
       return;
     }
+    console.log("Submitted", data);
 
-    await saveCategory(data);
-    navigate("/all/categories");
+    if (data.imageUrl) {
+      const cloudinaryUrl = CLOUDINARY_API;
+      const formData = new FormData();
+      formData.append("file", data.imageUrl[0]);
+      formData.append("upload_preset", "leyebrary");
+      const respone = await axios.post(cloudinaryUrl, formData);
+      console.log(respone);
+
+      await saveCategory({ ...data, imageUrl: respone.data.secure_url });
+      navigate("/all/categories");
+    }
   }
 
   return (

@@ -4,7 +4,7 @@ import { ItemType } from "../pages/utils";
 export interface Category {
   id: string;
   name: ItemType | string;
-  imageUrl?: string;
+  imageUrl?: FileList;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
 }
 
