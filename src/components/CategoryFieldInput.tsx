@@ -7,6 +7,7 @@ interface Props {
   errors: any;
   onSubmit(ddata: CategoryFormData): void;
   register: any;
+  isLoading?: boolean;
 }
 
 const FIELD_OPTIONS = [
@@ -20,6 +21,7 @@ function CategoryFieldInput({
   handleSubmit,
   onSubmit,
   register,
+  isLoading,
 }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,9 +61,22 @@ function CategoryFieldInput({
           )}
         </div>
       </div>
-      <div className="text-center m-2">
-        <button className="btn btn-outline-info">Create</button>
-      </div>
+      <button
+        type="submit"
+        className="btn btn-outline-info"
+        disabled={isLoading}>
+        {isLoading ? (
+          <>
+            <span
+              className="spinner-border spinner-border-sm"
+              role="status"
+              aria-hidden="true"></span>
+            &nbsp;Laddar...
+          </>
+        ) : (
+          "Create"
+        )}
+      </button>
     </form>
   );
 }
