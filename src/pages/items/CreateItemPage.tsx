@@ -106,43 +106,47 @@ function CreateItemPage() {
   }
 
   return (
-    <div className="vh-100 d-grid justify-content-center align-content-center">
-      <h4 className="text-center">
-        {id === "new"
-          ? `Create a new item`
-          : `Update your ${selectedCategory?.name}`}
-      </h4>
+    <div className="container-lg px-3 py-3">
+      <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center">
+        <h4 className="text-center">
+          {id === "new"
+            ? `Create a new item`
+            : `Update your ${selectedCategory?.name}`}
+        </h4>
 
-      <div className="p-3 shadow rounded-4 mt-3" style={{ width: 350 }}>
-        <div className="mb-3">
-          <label className="form-label">Title</label>
-          <input className="form-control" {...register("title")} />
-          {errors.title && (
-            <p className="text-danger">{errors.title.message}</p>
-          )}
+        <div
+          className="p-3 shadow rounded-4 mt-2 mx-3"
+          style={{ width: "100%", maxWidth: 420 }}>
+          <div className="mb-3">
+            <label className="form-label">Title</label>
+            <input className="form-control" {...register("title")} />
+            {errors.title && (
+              <p className="text-danger">{errors.title.message}</p>
+            )}
+          </div>
+
+          <div className="mb-3 mt-4">
+            <select className="form-select" {...register("categoryId")}>
+              <option value="">Category</option>
+              {categories.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            {errors.categoryId && (
+              <p className="text-danger">{errors.categoryId.message}</p>
+            )}
+          </div>
+
+          <FormField
+            errors={errors}
+            handleSubmit={handleSubmit}
+            register={register}
+            onSubmit={onSubmit}
+            selectedCategory={selectedCategory}
+          />
         </div>
-
-        <div className="mb-3 mt-4">
-          <select className="form-select" {...register("categoryId")}>
-            <option value="">Category</option>
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-          {errors.categoryId && (
-            <p className="text-danger">{errors.categoryId.message}</p>
-          )}
-        </div>
-
-        <FormField
-          errors={errors}
-          handleSubmit={handleSubmit}
-          register={register}
-          onSubmit={onSubmit}
-          selectedCategory={selectedCategory}
-        />
       </div>
     </div>
   );

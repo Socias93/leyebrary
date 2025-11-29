@@ -12,6 +12,16 @@ const NEW_NAME = "Enter your name to return the item";
 const NEW_BORROWER = "Enter borrower name";
 const WRONG_RETURN = "Wrong name! This item is borrowed by";
 
+function formatHMS(totalSeconds: number) {
+  const abs = Math.abs(totalSeconds);
+  const h = Math.floor(abs / 3600);
+  const m = Math.floor((abs % 3600) / 60);
+  const s = Math.floor(abs % 60);
+  return `${h}h ${m}m ${s}s`;
+}
+
+const BORROW_TTL_MS = 24 * 60 * 60 * 1000;
+
 function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
   const [timeLeft, setTimeLeft] = useState<Record<string, number>>({});
 
@@ -22,8 +32,10 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
         if (item.borrower && item.borrowDate) {
           const borrowTime = new Date(item.borrowDate).getTime();
           const now = Date.now();
-          const diff = 48 * 60 * 60 * 500 - (now - borrowTime); // 48h
-          newTimes[item.id] = Math.max(0, Math.floor(diff / 1000));
+          const remaningSeconds = Math.floor(
+            (borrowTime + BORROW_TTL_MS - now) / 1000
+          );
+          newTimes[item.id] = remaningSeconds;
         }
       });
       setTimeLeft(newTimes);
@@ -119,27 +131,53 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
                     </span>
                   ) : (
                     <div className="d-flex flex-column align-items-center">
-                      <span
-                        className={`clickable badge ${
-                          item.borrower ? "bg-dark" : "bg-info text-dark"
-                        } rounded-pill px-4 py-2 shadow-sm clickable mb-2`}
-                        onClick={() => handleBorrowToggle(item)}>
-                        {item.borrower ? "Return" : "Borrow"}
-                      </span>
-                      {item.borrower && timeLeft[item.id] !== undefined && (
-                        <div className="text-center small text-muted">
-                          <div>Borrowed by: {item.borrower}</div>
-                          <span>
-                            {new Date(item.borrowDate!).toDateString()}
-                          </span>
-                          <div>
-                            Return within :{" "}
-                            {Math.floor(timeLeft[item.id] / 3600)}h
-                            {Math.floor((timeLeft[item.id] % 3600) / 60)}m
-                            {timeLeft[item.id] % 60}s
-                          </div>
-                        </div>
-                      )}
+                      {(() => {
+                        const remaining = timeLeft[item.id];
+                        const isOverdue =
+                          remaining !== undefined && remaining < 0;
+                        const isBorrowed = !!item.borrower;
+
+                        return (
+                          <>
+                            <span
+                              className={`clickable badge rounded-pill px-4 py-2 shadow-sm clickable mb-2 ${
+                                isOverdue
+                                  ? "bg-danger text-white"
+                                  : isBorrowed
+                                  ? "bg-dark text-white"
+                                  : "bg-info text-dark"
+                              }`}
+                              onClick={() => handleBorrowToggle(item)}>
+                              {isOverdue
+                                ? "Late with return"
+                                : isBorrowed
+                                ? "Return"
+                                : "Borrow"}
+                            </span>
+
+                            {isBorrowed && remaining !== undefined && (
+                              <div className="text-center small text-muted">
+                                <div>Borrowed by: {item.borrower}</div>
+                                <span>
+                                  {new Date(item.borrowDate!).toDateString()}
+                                </span>
+                                <div>
+                                  {remaining >= 0 ? (
+                                    <>
+                                      Return within :{" "}
+                                      {Math.floor(remaining / 3600)}h
+                                      {Math.floor((remaining % 3600) / 60)}m
+                                      {remaining % 60}s
+                                    </>
+                                  ) : (
+                                    <>Late by : {formatHMS(remaining)}</>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   )}
                 </div>
