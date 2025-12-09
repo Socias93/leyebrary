@@ -1,4 +1,4 @@
-import { Category, CategoryFormData } from "../types";
+import { Category, CategoryFormData, ItemType } from "../types";
 
 interface Props {
   handleSubmit: any;
@@ -9,11 +9,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const FIELD_OPTIONS = [
-  { value: "author", label: "Author" },
-  { value: "nbrPages", label: "Number of pages" },
-  { value: "runTimeMinutes", label: "Run time (minutes)" },
-] as const;
+const TYPES: ItemType[] = ["Book", "ReferenceBook", "DVD", "AudioBook"];
 
 function CategoryFieldInput({
   errors,
@@ -31,25 +27,17 @@ function CategoryFieldInput({
       </div>
 
       <div className="mb-3">
-        <label className="form-label d-blick">
-          Fields (choose which field items this category has)
-        </label>
-        {FIELD_OPTIONS.map((fields) => (
-          <div key={fields.value} className="form-check">
-            <input
-              value={fields.value}
-              {...register("fields")}
-              type="checkbox"
-              className="form-check-input"
-            />
-            <label className="form-check-label">{fields.label} </label>
-          </div>
-        ))}
-        {errors.fields && (
-          <p className="text-danger"> {errors.fields.message} </p>
-        )}
+        <select {...register("type")} className="form-select">
+          <option className="form-label d-blick">Select Type</option>
+          {TYPES.map((type) => (
+            <option key={type} value={type} className="form-label d-blick">
+              {type}
+            </option>
+          ))}
+        </select>
+
         <div className="mb-3">
-          <label className="form-label">Image</label>
+          <label className="form-label mt-3">Image</label>
           <input
             {...register("imageUrl")}
             type="file"
