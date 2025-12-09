@@ -4,7 +4,7 @@ interface Props {
   handleSubmit: any;
   selectedCategory?: Category;
   errors: any;
-  onSubmit(ddata: CategoryFormData): void;
+  onSubmit(data: CategoryFormData): void;
   register: any;
   isLoading?: boolean;
 }

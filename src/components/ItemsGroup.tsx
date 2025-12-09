@@ -8,9 +8,7 @@ interface Props {
   onReturn(itemId: string): void;
 }
 const NAME = "You must write your name";
-const NEW_NAME = "Enter your name to return the item";
 const NEW_BORROWER = "Enter borrower name";
-const WRONG_RETURN = "Wrong name! This item is borrowed by";
 
 function formatHMS(totalSeconds: number) {
   const abs = Math.abs(totalSeconds);
@@ -46,17 +44,6 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
   const handleBorrowToggle = (item: LibraryItem) => {
     if (item.borrower) {
-      const returnerName = prompt(NEW_NAME)?.trim();
-      if (!returnerName) {
-        alert(NAME);
-        return;
-      }
-
-      if (returnerName !== item.borrower) {
-        alert(`${WRONG_RETURN} ${item.borrower}`);
-        return;
-      }
-
       onReturn(item.id);
     } else {
       const borrowerName = prompt(NEW_BORROWER)?.trim();
