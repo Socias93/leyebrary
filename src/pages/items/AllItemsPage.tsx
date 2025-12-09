@@ -51,6 +51,7 @@ function AllItemsPage() {
         );
       },
     },
+    { path: "type", label: "Type" },
     {
       path: "category.name",
       label: "Category",
