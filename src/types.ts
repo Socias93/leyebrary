@@ -2,9 +2,9 @@ import z from "zod";
 import { categorySchema } from "./pages/categories/categoryschema/CreateCategorySchema";
 import { ContentColumn, TextColumn } from "./pages/utils";
 
-export type ItemType = "Book" | "Referencebook" | "DVD" | "Audiobook";
+export type ItemType = "Book" | "ReferenceBook" | "DVD" | "AudioBook";
 
-export type LibraryItem = Book | DVD | Audiobook | ReferenceBook;
+export type LibraryItem = Book | DVD | AudioBook | ReferenceBook;
 
 export type CategoryFormData = z.infer<typeof categorySchema>;
 
@@ -43,19 +43,26 @@ export interface NewCategoryData {
 }
 
 export interface Book extends BaseItem {
+  type: "Book";
   author: string;
   nbrPages: number;
 }
 
 export interface DVD extends BaseItem {
+  type: "DVD";
+
   runTimeMinutes: number;
 }
 
-export interface Audiobook extends BaseItem {
+export interface AudioBook extends BaseItem {
+  type: "AudioBook";
+
   runTimeMinutes: number;
 }
 
 export interface ReferenceBook extends BaseItem {
+  type: "ReferenceBook";
+
   author: string;
   nbrPages: number;
 }

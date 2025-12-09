@@ -40,7 +40,7 @@ function Navbar() {
               </li>
               <li className="nav-item">
                 <NavLink to={"all/categories"} className="clickable nav-link">
-                  All Categories
+                  All Types
                 </NavLink>
               </li>
               <DropDown />
