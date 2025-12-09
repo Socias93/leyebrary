@@ -65,7 +65,7 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
                 <div className="mb-3">
                   <div className="position-relative">
                     <h5 className="card-title mb-0 pe-5 text-truncate">
-                      {item.title}
+                      {`${item.title} - ( ${item.type} )`}
                     </h5>
                     {!item.borrowDate && (
                       <button
@@ -75,46 +75,30 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
                       </button>
                     )}
                   </div>
-                  <p className="card-subtitle text-muted">
+                  <p className="card-subtitle text-muted mt-2">
                     {item.category.name}
                   </p>
 
-                  {item.category.fields?.map(
-                    (field: "author" | "nbrPages" | "runTimeMinutes") => {
-                      let label = "";
-                      let value: string | number = "";
-
-                      switch (field) {
-                        case "author":
-                          label = "Author";
-                          value = item.attributes?.author;
-                          break;
-                        case "nbrPages":
-                          label = "Pages";
-                          value = item.attributes?.nbrPages;
-                          break;
-                        case "runTimeMinutes":
-                          label = "Runtime (minutes)";
-                          value = item.attributes?.runTimeMinutes;
-                          break;
-                        default:
-                          label = field;
-                          value = (item as any)[field];
-                      }
-
-                      if (value === undefined || value === null) return null;
-
-                      return (
-                        <p className="mb-1" key={item.id + "_" + field}>
-                          {label}: {value}
+                  {["Book", "ReferenceBook"].includes(item.type) && (
+                    <>
+                      <div className="d-grid mt-1">
+                        <p>
+                          Author: {item.attributes?.author}
+                          <p>Pages: {item.attributes?.nbrPages}</p>
                         </p>
-                      );
-                    }
+                      </div>
+                    </>
+                  )}
+
+                  {["DVD", "AudioBook"].includes(item.type) && (
+                    <p className="mt-1">
+                      Runtime: {item.attributes?.runTimeMinutes} minutes
+                    </p>
                   )}
                 </div>
 
                 <div className="d-flex flex-column align-items-center mt-3">
-                  {item.category.name === "Referencebook" ? (
+                  {item.type === "ReferenceBook" ? (
                     <span className="badge bg-secondary rounded-pill px-3 py-2 shadow-sm">
                       Not borrowable
                     </span>

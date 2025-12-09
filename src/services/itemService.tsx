@@ -24,7 +24,7 @@ export function deleteItem(id: string) {
 }
 
 export function canBorrow(item: LibraryItem): boolean {
-  if (item.category.name === "Referencebook") return false;
+  if (item.type === "ReferenceBook") return false;
   return item.isBorrowable === true && !item.borrower;
 }
 
