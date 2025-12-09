@@ -2,12 +2,15 @@ import { FieldInput } from "../components/index";
 import { ItemForm } from "../pages/items/schemas/DynamicSchema";
 import { Category } from "../types";
 
+export type AttributeField = "author" | "nbrPages" | "runTimeMinutes";
+
 interface Props {
   handleSubmit: any;
   selectedCategory?: Category;
   errors: any;
   onSubmit(data: ItemForm): void;
   register: any;
+  fields: AttributeField[];
 }
 
 function FormField({
@@ -15,11 +18,11 @@ function FormField({
   errors,
   onSubmit,
   register,
-  selectedCategory,
+  fields,
 }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {selectedCategory?.fields?.map((field) => (
+      {fields.map((field) => (
         <FieldInput
           key={field}
           field={field}

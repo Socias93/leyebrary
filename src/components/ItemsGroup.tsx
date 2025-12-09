@@ -81,12 +81,10 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
                   {["Book", "ReferenceBook"].includes(item.type) && (
                     <>
-                      <div className="d-grid mt-1">
-                        <p>
-                          Author: {item.attributes?.author}
-                          <p>Pages: {item.attributes?.nbrPages}</p>
-                        </p>
-                      </div>
+                      <ul className="list-unstyled mt-1">
+                        <li>Author: {item.attributes?.author ?? "—"}</li>
+                        <li>Pages: {item.attributes?.nbrPages ?? "—"}</li>
+                      </ul>
                     </>
                   )}
 

@@ -7,10 +7,12 @@ import { getItem, saveItem } from "../../services/itemService";
 import { FormField } from "../../components/index";
 import { ItemForm, itemSchema } from "./schemas/DynamicSchema";
 import { BaseItem, Category } from "../../types";
+import { AttributeField } from "../../components/FormField";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";
 const RUN_TIMES_MINUTES = "runTimeMinutes";
+const itemTypes = ["Book", "ReferenceBook", "DVD", "AudioBook"] as const;
 
 function CreateItemPage() {
   const { id } = useParams();
@@ -61,30 +63,33 @@ function CreateItemPage() {
     fetch();
   }, [id, reset]);
 
+  const watchedType = watch("type");
+
+  const fieldsToShow: AttributeField[] = (() => {
+    switch (watchedType) {
+      case "Book":
+      case "ReferenceBook":
+        return ["author", "nbrPages"];
+      case "DVD":
+      case "AudioBook":
+        return ["runTimeMinutes"];
+      default:
+        return [];
+    }
+  })();
+
   useEffect(() => {
-    const fields = selectedCategory?.fields ?? [];
-
-    fields.forEach((field) => {
-      if (field === AUTHOR) {
-        setValue("attributes.author", "");
-      } else if (field === NBR_PAGES) {
-        setValue("attributes.nbrPages", undefined);
-      } else if (field === RUN_TIMES_MINUTES) {
-        setValue("attributes.runTimeMinutes", undefined);
-      }
-    });
-
     const allKeys: Array<keyof ItemForm["attributes"]> = [
       AUTHOR,
       NBR_PAGES,
       RUN_TIMES_MINUTES,
     ];
     allKeys.forEach((k) => {
-      if (!fields.includes(k as any)) {
+      if (!fieldsToShow.includes(k as any)) {
         setValue(`attributes.${k}`, undefined);
       }
     });
-  }, [watchedCategoryId, selectedCategory, setValue]);
+  }, [watch("type"), setValue]);
 
   async function onSubmit(data: ItemForm) {
     console.log("Submitted", data);
@@ -97,6 +102,7 @@ function CreateItemPage() {
       id: item.id,
       title: item.title,
       categoryId: item.category.id,
+
       attributes: {
         author: item.attributes?.author,
         nbrPages: item.attributes?.nbrPages,
@@ -111,7 +117,7 @@ function CreateItemPage() {
         <h4 className="text-center">
           {id === "new"
             ? `Create a new item`
-            : `Update your ${selectedCategory?.name}`}
+            : `Update your ${selectedCategory?.name} ${watchedType || ""}`}
         </h4>
 
         <div
@@ -126,8 +132,22 @@ function CreateItemPage() {
           </div>
 
           <div className="mb-3 mt-4">
+            <select className="form-select" {...register("type")}>
+              <option value="">Select Type</option>
+              {itemTypes.map((type) => (
+                <option key={type} value={type}>
+                  {type}
+                </option>
+              ))}
+            </select>
+            {errors.type && (
+              <p className="text-danger">{errors.type.message}</p>
+            )}
+          </div>
+
+          <div className="mb-3 mt-4">
             <select className="form-select" {...register("categoryId")}>
-              <option value="">Category</option>
+              <option value="">Select Category</option>
               {categories.map((category) => (
                 <option key={category.id} value={category.id}>
                   {category.name}
@@ -144,7 +164,7 @@ function CreateItemPage() {
             handleSubmit={handleSubmit}
             register={register}
             onSubmit={onSubmit}
-            selectedCategory={selectedCategory}
+            fields={fieldsToShow}
           />
         </div>
       </div>
