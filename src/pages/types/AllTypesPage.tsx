@@ -2,10 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { ItemType } from "../../types";
 
 const TYPES: { type: ItemType; imageUrl: string }[] = [
-  { type: "Book", imageUrl: "/public/images/Book1.png" },
-  { type: "ReferenceBook", imageUrl: "/public/images/Referencebook.jpg" },
-  { type: "DVD", imageUrl: "/public/images/DVD1.jpg" },
-  { type: "AudioBook", imageUrl: "/public/images/AudioBook.avif" },
+  { type: "Book", imageUrl: "/images/Book1.png" },
+  { type: "ReferenceBook", imageUrl: "/images/Referencebook.jpg" },
+  { type: "DVD", imageUrl: "/images/DVD1.jpg" },
+  { type: "AudioBook", imageUrl: "/images/AudioBook.avif" },
 ];
 
 function AllTypesPage() {
