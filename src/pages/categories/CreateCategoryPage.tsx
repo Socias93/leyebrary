@@ -22,7 +22,7 @@ function CreateCategoryPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<CategoryFormData>({
-    defaultValues: { name: "", type: undefined, imageUrl: undefined },
+    defaultValues: { name: "", imageUrl: undefined },
     resolver: zodResolver(categorySchema),
   });
 
