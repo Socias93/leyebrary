@@ -24,6 +24,7 @@ export interface BaseItem {
   attributes?: Record<string, any>;
   borrower?: string;
   borrowDate?: string;
+  type?: ItemType;
 }
 
 export interface LibraryFormData {

@@ -28,7 +28,8 @@ function AllItemsPage() {
   const filtredItems = items.filter(
     (item) =>
       item.title.toLowerCase().includes(query) ||
-      item.category.name.toLowerCase().includes(query)
+      item.category.name.toLowerCase().includes(query) ||
+      item.type?.toLowerCase().includes(query)
   );
 
   const sortedItems = _.orderBy(

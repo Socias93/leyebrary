@@ -1,4 +1,4 @@
-import { Category, CategoryFormData, ItemType } from "../types";
+import { Category, CategoryFormData } from "../types";
 
 interface Props {
   handleSubmit: any;
@@ -8,8 +8,6 @@ interface Props {
   register: any;
   isLoading?: boolean;
 }
-
-const TYPES: ItemType[] = ["Book", "ReferenceBook", "DVD", "AudioBook"];
 
 function CategoryFieldInput({
   errors,
