@@ -1,5 +1,5 @@
-import { createBrowserRouter } from "react-router-dom";
 import App from "./App";
+import { createBrowserRouter } from "react-router-dom";
 import {
   AllItemsPage,
   HomePage,
@@ -7,6 +7,7 @@ import {
   CreateItemPage,
   AllCategoriesPage,
   NotFound,
+  AllTypesPage,
 } from "./pages/index";
 
 const router = createBrowserRouter([
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "all/categories",
         element: <AllCategoriesPage />,
+      },
+      {
+        path: "all/types",
+        element: <AllTypesPage />,
       },
 
       { path: "edit-item/:id", element: <CreateItemPage /> },
