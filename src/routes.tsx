@@ -8,6 +8,7 @@ import {
   AllCategoriesPage,
   NotFound,
   AllTypesPage,
+  ViewTypes,
 } from "./pages/index";
 
 const router = createBrowserRouter([
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "all/types",
         element: <AllTypesPage />,
+      },
+      {
+        path: "view-type/:type",
+        element: <ViewTypes />,
       },
 
       { path: "edit-item/:id", element: <CreateItemPage /> },

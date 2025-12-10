@@ -1,4 +1,5 @@
-import { ItemType } from "../types";
+import { useNavigate } from "react-router-dom";
+import { ItemType } from "../../types";
 
 const TYPES: { type: ItemType; imageUrl: string }[] = [
   { type: "Book", imageUrl: "/public/images/Book1.png" },
@@ -8,6 +9,8 @@ const TYPES: { type: ItemType; imageUrl: string }[] = [
 ];
 
 function AllTypesPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="row">
       {TYPES.map((t) => (
@@ -20,6 +23,13 @@ function AllTypesPage() {
             />
             <div className="d-grid justify-content-center">
               <h3 className="text-center">{t.type}</h3>
+            </div>
+            <div className="text-center">
+              <button
+                onClick={() => navigate(`/view-type/${t.type}`)}
+                className="btn btn-outline-primary m-3">
+                View All {t.type}s
+              </button>
             </div>
           </div>
         </div>

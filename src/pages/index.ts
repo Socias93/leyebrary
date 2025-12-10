@@ -4,4 +4,5 @@ export { default as CreateItemPage } from "./items/CreateItemPage";
 export { default as CreateCategoryPage } from "./categories/CreateCategoryPage";
 export { default as AllCategoriesPage } from "./categories/AllCategoriesPage";
 export { default as NotFound } from "./NotfoundPage";
-export { default as AllTypesPage } from "./AllTypesPage";
+export { default as AllTypesPage } from "./types/AllTypesPage";
+export { default as ViewTypes } from "./types/ViewTypes";
