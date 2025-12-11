@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { deleteCategory, getCategories } from "../../services/categoryService";
 import { getItems } from "../../services/itemService";
 import { BaseItem, Category } from "../../types";
+import { useNavigate } from "react-router-dom";
 
 function AllCategoriesPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [items, setItems] = useState<BaseItem[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetch() {
@@ -55,14 +57,25 @@ function AllCategoriesPage() {
 
                   <div className="d-grid justify-content-center">
                     <h3 className="text-center">{category.name}</h3>
-                    <div className="text-center">
+                    <div
+                      className="d-flex mt-2 mb-3 gap-3"
+                      style={{ maxWidth: "250px" }}>
                       <button
                         onClick={() => handleDelete(category.id)}
-                        className="btn btn-dark mt-2 mb-3"
-                        style={{ width: 150 }}
+                        className="btn btn-dark "
                         disabled={disabled}>
                         {disabled ? `In use (${usedCount})` : "Delete"}
                       </button>
+                      <div>
+                        <button
+                          onClick={() =>
+                            navigate(`/update-category/${category.id}`)
+                          }
+                          className="btn btn-info "
+                          disabled={disabled}>
+                          {disabled ? `In use (${usedCount})` : "Edit"}
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
