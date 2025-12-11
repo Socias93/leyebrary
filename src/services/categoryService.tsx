@@ -7,6 +7,10 @@ export function getCategories() {
   return axios.get<Category[]>(API_URL);
 }
 
+export function getCategory(id: string) {
+  return axios.get<Category>(`${API_URL}/${id}`);
+}
+
 export function saveCategory(category: NewCategoryData & { id?: string }) {
   if (category.id) {
     return axios.put<Category>(`${API_URL}/${category.id}`, category);
