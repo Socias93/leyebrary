@@ -26,10 +26,8 @@ function CategoryFieldInput({
 
       <div className="mb-3">
         <label className="form-label mt-3">Image</label>
-        <input {...register("imageUrl")} type="file" className="form-control" />
-        {errors.imageUrl && (
-          <p className="text-danger">{errors.imageUrl.message} </p>
-        )}
+        <input {...register("image")} type="file" className="form-control" />
+        {errors.image && <p className="text-danger">{errors.image.message} </p>}
       </div>
       <button
         type="submit"

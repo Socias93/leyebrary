@@ -43,11 +43,10 @@ function AllCategoriesPage() {
                 <div className="card h-100 shadow-lg border-0 rounded-4 relative">
                   <img
                     src={
-                      category.imageUrl instanceof FileList &&
-                      category.imageUrl[0]
-                        ? URL.createObjectURL(category.imageUrl[0])
-                        : typeof category.imageUrl === "string"
-                        ? category.imageUrl
+                      category.image instanceof FileList && category.image[0]
+                        ? URL.createObjectURL(category.image[0])
+                        : typeof category.image === "string"
+                        ? category.image
                         : ""
                     }
                     alt={category.name}

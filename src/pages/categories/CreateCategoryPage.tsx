@@ -22,7 +22,7 @@ function CreateCategoryPage() {
     handleSubmit,
     formState: { errors },
   } = useForm<CategoryFormData>({
-    defaultValues: { name: "", imageUrl: undefined },
+    defaultValues: { name: "", image: undefined },
     resolver: zodResolver(categorySchema),
   });
 
@@ -42,14 +42,14 @@ function CreateCategoryPage() {
 
       console.log("Submitted", data);
 
-      if (data.imageUrl) {
+      if (data.image) {
         const cloudinaryUrl = CLOUDINARY_API;
         const formData = new FormData();
-        formData.append("file", data.imageUrl[0]);
+        formData.append("file", data.image[0]);
         formData.append("upload_preset", "leyebrary");
         const respone = await axios.post(cloudinaryUrl, formData);
         console.log(respone);
-        await saveCategory({ ...data, imageUrl: respone.data.secure_url });
+        await saveCategory({ ...data, image: respone.data.secure_url });
         navigate("/all/categories");
       }
     } catch (err) {

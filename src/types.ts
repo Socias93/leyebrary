@@ -13,7 +13,7 @@ export type Columns = TextColumn | ContentColumn;
 export interface Category {
   id: string;
   name: ItemType | string;
-  imageUrl?: FileList;
+  image?: FileList;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
 }
 export interface BaseItem {
@@ -22,6 +22,7 @@ export interface BaseItem {
   isBorrowable?: boolean;
   category: Category;
   attributes?: Record<string, any>;
+  image: FileList;
   borrower?: string;
   borrowDate?: string;
   type?: ItemType;
@@ -33,13 +34,14 @@ export interface LibraryFormData {
   isBorrowable?: boolean;
   categoryId: string;
   author?: string;
+  image: FileList;
   nbrPages?: number;
   runTimeMinutes?: number;
 }
 
 export interface NewCategoryData {
   name: ItemType | string;
-  imageUrl: string;
+  image: string;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
 }
 

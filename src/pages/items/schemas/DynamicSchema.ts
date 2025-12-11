@@ -5,6 +5,9 @@ export const itemSchema = z.object({
   title: z.string().min(1, { message: "Title is required" }),
   categoryId: z.string({ error: "Category is required" }),
   type: z.enum(["AudioBook", "DVD", "ReferenceBook", "Book"]).optional(),
+  image: z
+    .instanceof(FileList)
+    .refine((fl) => fl.length > 0, { message: "Image is required" }),
   attributes: z.object({
     author: z.string().optional(),
     nbrPages: z.number().optional(),
