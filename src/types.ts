@@ -40,6 +40,7 @@ export interface LibraryFormData {
 }
 
 export interface NewCategoryData {
+  id?: string;
   name: ItemType | string;
   image: string;
   fields?: ("author" | "nbrPages" | "runTimeMinutes")[];
