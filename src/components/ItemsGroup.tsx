@@ -1,6 +1,6 @@
 import { LibraryItem } from "@types";
 import { useBorrowTimer } from "@/hooks/useBorrowTimer";
-import LibrarySpan from "./LibrarySpan";
+import { LibrarySpan } from "@/components/index";
 
 interface Props {
   items: LibraryItem[];

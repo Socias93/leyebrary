@@ -11,3 +11,4 @@ export { default as FieldInput } from "./FieldInput";
 export { default as FormField } from "./FormField";
 export { default as DropDown } from "./DropDown";
 export { default as CategoryFieldInput } from "./CategoryFieldInput";
+export { default as LibrarySpan } from "./LibrarySpan";
