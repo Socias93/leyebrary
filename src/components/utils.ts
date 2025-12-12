@@ -16,3 +16,11 @@ export function paginate<T>(
 
   return items.slice(startNumber, endNumber);
 }
+
+export function formatHMS(totalSeconds: number) {
+  const abs = Math.abs(totalSeconds);
+  const h = Math.floor(abs / 3600);
+  const m = Math.floor((abs % 3600) / 60);
+  const s = Math.floor(abs % 60);
+  return `${h}h ${m}m ${s}s`;
+}
