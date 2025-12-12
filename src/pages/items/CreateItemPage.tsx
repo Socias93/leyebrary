@@ -8,19 +8,20 @@ import { FormField } from "../../components/index";
 import { ItemForm, itemSchema } from "./schemas/DynamicSchema";
 import { BaseItem, Category } from "../../types";
 import { AttributeField } from "../../components/FormField";
+import axios from "axios";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";
 const RUN_TIMES_MINUTES = "runTimeMinutes";
 const itemTypes = ["Book", "ReferenceBook", "DVD", "AudioBook"] as const;
+const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";
 
 function CreateItemPage() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
-
-  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
-
+  const navigate = useNavigate();
   const initialCategoryFromQuery = searchParams.get("category") ?? "";
 
   const {
@@ -93,9 +94,35 @@ function CreateItemPage() {
   }, [watch("type"), setValue]);
 
   async function onSubmit(data: ItemForm) {
-    console.log("Submitted", data);
-    await saveItem(data);
-    navigate("/");
+    setIsLoading(true);
+    try {
+      let imageUrl: string | undefined = undefined;
+
+      if (data.image instanceof FileList && data.image.length > 0) {
+        const formData = new FormData();
+        formData.append("file", data.image[0]);
+        formData.append("upload_preset", "leyebrary");
+        const response = await axios.post(CLOUDINARY_API, formData);
+        imageUrl = response.data.secure_url;
+      } else if (typeof data.image === "string") {
+        imageUrl = data.image;
+      }
+
+      const payload = {
+        ...data,
+        image: imageUrl,
+      };
+
+      await saveItem(payload);
+      console.log("Submitted", payload);
+
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+      alert("Något gick fel vid uppladdning/sparande.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function mapToFormData(item: BaseItem) {
@@ -147,7 +174,7 @@ function CreateItemPage() {
             )}
           </div>
 
-          <div className="mb-3 mt-4">
+          <div className="mt-4">
             <select className="form-select" {...register("categoryId")}>
               <option value="">Select Category</option>
               {categories.map((category) => (
@@ -161,12 +188,25 @@ function CreateItemPage() {
             )}
           </div>
 
+          <div className="mb-3">
+            <label className="form-label mt-3">Image</label>
+            <input
+              {...register("image")}
+              type="file"
+              className="form-control"
+            />
+            {errors.image && (
+              <p className="text-danger">{errors.image.message} </p>
+            )}
+          </div>
+
           <FormField
             errors={errors}
             handleSubmit={handleSubmit}
             register={register}
             onSubmit={onSubmit}
             fields={fieldsToShow}
+            isLoading={isLoading}
           />
         </div>
       </div>

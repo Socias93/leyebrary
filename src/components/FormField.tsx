@@ -5,6 +5,7 @@ import { Category } from "../types";
 export type AttributeField = "author" | "nbrPages" | "runTimeMinutes";
 
 interface Props {
+  isLoading: any;
   handleSubmit: any;
   selectedCategory?: Category;
   errors: any;
@@ -19,6 +20,7 @@ function FormField({
   onSubmit,
   register,
   fields,
+  isLoading,
 }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -32,8 +34,21 @@ function FormField({
       ))}
 
       <div className="text-center">
-        <button className="btn btn-outline-info" type="submit">
-          Create
+        <button
+          type="submit"
+          className="btn btn-outline-info"
+          disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <span
+                className="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"></span>
+              &nbsp;Loading...
+            </>
+          ) : (
+            "Create"
+          )}
         </button>
       </div>
     </form>

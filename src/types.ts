@@ -22,7 +22,7 @@ export interface BaseItem {
   isBorrowable?: boolean;
   category: Category;
   attributes?: Record<string, any>;
-  image: FileList;
+  image: string;
   borrower?: string;
   borrowDate?: string;
   type?: ItemType;
@@ -34,7 +34,7 @@ export interface LibraryFormData {
   isBorrowable?: boolean;
   categoryId: string;
   author?: string;
-  image: FileList;
+  image: FileList | string | undefined;
   nbrPages?: number;
   runTimeMinutes?: number;
 }

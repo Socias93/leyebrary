@@ -39,7 +39,7 @@ function CategoryFieldInput({
               className="spinner-border spinner-border-sm"
               role="status"
               aria-hidden="true"></span>
-            &nbsp;Laddar...
+            &nbsp;Loading...
           </>
         ) : (
           "Create"
