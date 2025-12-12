@@ -52,7 +52,7 @@ function AllCategoriesPage() {
                         : ""
                     }
                     alt={category.name}
-                    style={{ height: 160, objectFit: "cover" }}
+                    style={{ height: 160, objectFit: "contain" }}
                   />
 
                   <div className="d-grid justify-content-center">
