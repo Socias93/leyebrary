@@ -7,6 +7,7 @@ interface Props {
   onSubmit(data: CategoryFormData): void;
   register: any;
   isLoading?: boolean;
+  imagePreview: string | undefined;
 }
 
 function CategoryFieldInput({
@@ -15,6 +16,7 @@ function CategoryFieldInput({
   onSubmit,
   register,
   isLoading,
+  imagePreview,
 }: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -26,6 +28,16 @@ function CategoryFieldInput({
 
       <div className="mb-3">
         <label className="form-label mt-3">Image</label>
+        {imagePreview && (
+          <div className="mb-2">
+            <img
+              src={imagePreview}
+              alt="preview"
+              className="rounded-3"
+              style={{ width: 100, height: 100, objectFit: "cover" }}
+            />
+          </div>
+        )}
         <input {...register("image")} type="file" className="form-control" />
         {errors.image && <p className="text-danger">{errors.image.message} </p>}
       </div>

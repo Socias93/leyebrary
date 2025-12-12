@@ -3,14 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { CategoryFieldInput } from "../../components/index";
+import { categorySchema } from "./categoryschema/CreateCategorySchema";
+import { Category, CategoryFormData } from "../../types";
 import {
   getCategories,
   getCategory,
   saveCategory,
 } from "../../services/categoryService";
-import { CategoryFieldInput } from "../../components/index";
-import { categorySchema } from "./categoryschema/CreateCategorySchema";
-import { Category, CategoryFormData } from "../../types";
 
 const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";
@@ -19,6 +19,7 @@ function CreateCategoryPage() {
   const [categories, setCategories] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | undefined>();
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function CreateCategoryPage() {
     reset,
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<CategoryFormData>({
     defaultValues: { name: "", image: undefined },
@@ -35,14 +37,23 @@ function CreateCategoryPage() {
 
   useEffect(() => {
     async function fetch() {
-      if (!id || id === "new") return;
+      if (!id || id === "new-category") {
+        reset({
+          id: "",
+          name: "",
+          image: undefined,
+        });
+        setImagePreview(undefined);
+        return;
+      }
       const { data: category } = await getCategory(id);
-
       if (!category) return;
 
       setCategories(category);
-
       reset(mapToCategoryData(category));
+      setImagePreview(
+        typeof category.image === "string" ? category.image : undefined
+      );
     }
     fetch();
   }, [id, reset]);
@@ -100,6 +111,13 @@ function CreateCategoryPage() {
     }
   }
 
+  const watchedImage = watch("image");
+  useEffect(() => {
+    if (watchedImage instanceof FileList && watchedImage.length > 0) {
+      setImagePreview(URL.createObjectURL(watchedImage[0]));
+    }
+  }, [watchedImage]);
+
   return (
     <>
       <div className="vh-100 d-grid justify-content-center align-content-center">
@@ -114,6 +132,7 @@ function CreateCategoryPage() {
             onSubmit={onSubmit}
             register={register}
             isLoading={isLoading}
+            imagePreview={imagePreview}
           />
         </div>
       </div>
