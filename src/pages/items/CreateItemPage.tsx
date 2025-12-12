@@ -37,6 +37,7 @@ function CreateItemPage() {
       id: "",
       title: "",
       categoryId: initialCategoryFromQuery || "",
+      type: undefined,
       image: undefined,
       attributes: {
         author: "",
@@ -130,6 +131,7 @@ function CreateItemPage() {
       id: item.id,
       title: item.title,
       categoryId: item.category.id,
+      type: item.type,
       image: item.image,
 
       attributes: {
