@@ -16,7 +16,6 @@ const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";
 
 function CreateCategoryPage() {
-  const [categories, setCategories] = useState<Category | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | undefined>();
@@ -49,7 +48,6 @@ function CreateCategoryPage() {
       const { data: category } = await getCategory(id);
       if (!category) return;
 
-      setCategories(category);
       reset(mapToCategoryData(category));
       setImagePreview(
         typeof category.image === "string" ? category.image : undefined
