@@ -22,6 +22,7 @@ function CreateItemPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
+  const [imagePreview, setImagePreview] = useState<string | undefined>();
   const initialCategoryFromQuery = searchParams.get("category") ?? "";
 
   const {
@@ -61,6 +62,7 @@ function CreateItemPage() {
       if (!item) return;
 
       reset(mapToFormData(item));
+      setImagePreview(item.image);
     }
 
     fetch();
@@ -142,6 +144,13 @@ function CreateItemPage() {
     };
   }
 
+  const watchedImage = watch("image");
+  useEffect(() => {
+    if (watchedImage instanceof FileList && watchedImage.length > 0) {
+      setImagePreview(URL.createObjectURL(watchedImage[0]));
+    }
+  }, [watchedImage]);
+
   return (
     <div className="container-lg px-3 py-3">
       <div className="min-vh-100 d-flex flex-column justify-content-center align-items-center">
@@ -192,11 +201,23 @@ function CreateItemPage() {
 
           <div className="mb-3">
             <label className="form-label mt-3">Image</label>
+
+            {imagePreview && (
+              <div className="mb-2">
+                <img
+                  className="rounded-3"
+                  src={imagePreview}
+                  alt="preview"
+                  style={{ width: 100, height: 100, objectFit: "cover" }}
+                />
+              </div>
+            )}
             <input
               {...register("image")}
               type="file"
               className="form-control"
             />
+
             {errors.image && (
               <p className="text-danger">{errors.image.message} </p>
             )}
