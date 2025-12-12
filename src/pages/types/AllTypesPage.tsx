@@ -12,28 +12,40 @@ function AllTypesPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="row">
-      {TYPES.map((t) => (
-        <div key={t.type} className="col">
-          <div className="card h-100 shadow-lg border-0 rounded-4 relative">
-            <img
-              src={t.imageUrl || ""}
-              alt={t.type}
-              style={{ height: 180, objectFit: "scale-down" }}
-            />
-            <div className="d-grid justify-content-center">
-              <h3 className="text-center">{t.type}</h3>
-            </div>
-            <div className="text-center">
-              <button
-                onClick={() => navigate(`/view-type/${t.type}`)}
-                className="btn btn-outline-primary m-3">
-                View All {t.type}s
-              </button>
+    <div className="container py-4">
+      <div className="row g-3 justify-content-center">
+        {TYPES.map((t) => (
+          <div
+            key={t.type}
+            className="col-12 col-sm-6 col-md-4 col-lg-3 d-flex">
+            <div className="card shadow-lg border-0 rounded-4 w-100 d-flex flex-column">
+              <img
+                src={t.imageUrl || ""}
+                alt={t.type}
+                className="mx-auto mt-3"
+                style={{
+                  height: 180,
+                  objectFit: "cover",
+                  width: "auto",
+                  maxWidth: "100%",
+                }}
+              />
+
+              <div className="card-body d-flex flex-column">
+                <h5 className="card-title text-center mb-3">{t.type}</h5>
+
+                <div className="mt-auto text-center">
+                  <button
+                    onClick={() => navigate(`/view-type/${t.type}`)}
+                    className="btn btn-outline-primary">
+                    View All {t.type}s
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
