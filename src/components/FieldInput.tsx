@@ -1,8 +1,10 @@
+import { ItemType } from "@types";
+
 interface Props {
   field: "author" | "nbrPages" | "runTimeMinutes";
   register: any;
   errors: any;
-  item?: any;
+  item?: ItemType;
 }
 
 function FieldInput({ errors, field, register }: Props) {

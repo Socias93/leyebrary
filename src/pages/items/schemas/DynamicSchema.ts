@@ -12,5 +12,3 @@ export const itemSchema = z.object({
     runTimeMinutes: z.number({ error: "You must write a number" }).optional(),
   }),
 });
-
-export type ItemForm = z.infer<typeof itemSchema>;

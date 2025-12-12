@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { LibraryItem } from "../types";
+import { LibraryItem } from "@types";
 
 interface Props {
   items: LibraryItem[];

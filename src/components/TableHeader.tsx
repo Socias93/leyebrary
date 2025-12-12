@@ -1,5 +1,5 @@
-import { SortColumn } from "../pages/utils";
-import { Columns } from "../types";
+import { SortColumn } from "@/pages/utils";
+import { Columns } from "@types";
 
 interface Props {
   columns: Columns[];

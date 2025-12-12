@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
-import { BaseItem } from "../../types";
-import { getItems } from "../../services/itemService";
+import { BaseItem } from "@types";
+import { getItems } from "@/services/itemService";
 
 function ViewTypes() {
   const { type } = useParams();

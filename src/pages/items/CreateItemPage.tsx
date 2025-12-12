@@ -1,14 +1,15 @@
+import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { getCategories } from "../../services/categoryService";
-import { getItem, saveItem } from "../../services/itemService";
-import { FormField } from "../../components/index";
-import { ItemForm, itemSchema } from "./schemas/DynamicSchema";
-import { BaseItem, Category } from "../../types";
-import { AttributeField } from "../../components/FormField";
-import axios from "axios";
+import { getCategories } from "@/services/categoryService";
+import { getItem, saveItem } from "@/services/itemService";
+import { FormField } from "@/components/index";
+import { BaseItem, Category } from "@types";
+import { AttributeField } from "@/components/FormField";
+import { ItemForm } from "@/pages/utils";
+import { itemSchema } from "@/pages/items/schemas/DynamicSchema";
 
 const AUTHOR = "author";
 const NBR_PAGES = "nbrPages";

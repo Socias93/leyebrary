@@ -3,14 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
-import { CategoryFieldInput } from "../../components/index";
-import { categorySchema } from "./categoryschema/CreateCategorySchema";
-import { Category, CategoryFormData } from "../../types";
+import { CategoryFieldInput } from "@/components/index";
+import { categorySchema } from "@/pages/categories/categoryschema/CreateCategorySchema";
+import { Category, CategoryFormData } from "@types";
 import {
   getCategories,
   getCategory,
   saveCategory,
-} from "../../services/categoryService";
+} from "@/services/categoryService";
 
 const CATEGORY_ERROR = "Category already exists";
 const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";

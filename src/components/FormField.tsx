@@ -1,6 +1,6 @@
-import { FieldInput } from "../components/index";
-import { ItemForm } from "../pages/items/schemas/DynamicSchema";
-import { Category } from "../types";
+import { FieldInput } from "@/components/index";
+import { Category } from "@types";
+import { ItemForm } from "@/pages/utils";
 
 export type AttributeField = "author" | "nbrPages" | "runTimeMinutes";
 

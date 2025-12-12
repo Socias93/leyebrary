@@ -1,10 +1,14 @@
 import { ReactNode } from "react";
 import { BaseItem } from "../types";
+import z from "zod";
+import { itemSchema } from "./items/schemas/DynamicSchema";
 
 export interface TextColumn {
   path: string;
   label: string;
 }
+
+export type ItemForm = z.infer<typeof itemSchema>;
 
 export interface ContentColumn {
   key: string;

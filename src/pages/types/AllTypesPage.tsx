@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { ItemType } from "../../types";
+import { ItemType } from "@types";
 
 const TYPES: { type: ItemType; imageUrl: string }[] = [
   { type: "Book", imageUrl: "/images/Book1.png" },

@@ -1,4 +1,4 @@
-import { range } from "../components/utils";
+import { range } from "@/components/utils";
 
 interface Props {
   pageSize: number;

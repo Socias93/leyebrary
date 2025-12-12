@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { deleteCategory, getCategories } from "../../services/categoryService";
-import { getItems } from "../../services/itemService";
-import { BaseItem, Category } from "../../types";
+import { deleteCategory, getCategories } from "@/services/categoryService";
+import { getItems } from "@/services/itemService";
+import { BaseItem, Category } from "@types";
 import { useNavigate } from "react-router-dom";
 
 function AllCategoriesPage() {

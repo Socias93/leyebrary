@@ -1,5 +1,5 @@
 import * as _ from "lodash";
-import { BaseItem, Columns } from "../types";
+import { BaseItem, Columns } from "@types";
 
 interface Props {
   items: BaseItem[];
