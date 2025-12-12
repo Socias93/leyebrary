@@ -34,39 +34,41 @@ function CreateItemPage() {
     formState: { errors },
   } = useForm<ItemForm>({
     resolver: zodResolver(itemSchema),
-    defaultValues: {
-      id: "",
-      title: "",
-      categoryId: initialCategoryFromQuery || "",
-      type: undefined,
-      image: undefined,
-      attributes: {
-        author: "",
-        nbrPages: undefined,
-        runTimeMinutes: undefined,
-      },
-    },
   });
 
   const watchedCategoryId = watch("categoryId");
   const selectedCategory = categories.find((c) => c.id === watchedCategoryId);
 
   useEffect(() => {
-    async function fetch() {
+    async function fetchData() {
       const { data: categories } = await getCategories();
       setCategories(categories);
 
-      if (!id || id === "new") return;
+      if (!id || id === "new") {
+        reset({
+          id: "",
+          title: "",
+          categoryId: "",
+          type: undefined,
+          image: undefined,
+          attributes: {
+            author: "",
+            nbrPages: undefined,
+            runTimeMinutes: undefined,
+          },
+        });
+        setImagePreview(undefined);
+        return;
+      }
+
       const { data: item } = await getItem(id);
-
       if (!item) return;
-
       reset(mapToFormData(item));
       setImagePreview(item.image);
     }
 
-    fetch();
-  }, [id, reset]);
+    fetchData();
+  }, [id, reset, initialCategoryFromQuery]);
 
   const watchedType = watch("type");
 
@@ -172,7 +174,11 @@ function CreateItemPage() {
           </div>
 
           <div className="mb-3 mt-4">
-            <select className="form-select" {...register("type")}>
+            <select
+              key={id}
+              className="form-select"
+              {...register("type")}
+              value={watch("type") ?? ""}>
               <option value="">Select Type</option>
               {itemTypes.map((type) => (
                 <option key={type} value={type}>
@@ -213,6 +219,7 @@ function CreateItemPage() {
               </div>
             )}
             <input
+              key={id}
               {...register("image")}
               type="file"
               className="form-control"
