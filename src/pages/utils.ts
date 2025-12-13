@@ -26,3 +26,19 @@ export function getAbbreviation(title: string) {
     .split(/\s+/)
     .map((w) => w.charAt(0).toUpperCase());
 }
+
+export function mapToFormData(item: BaseItem) {
+  return {
+    id: item.id,
+    title: item.title,
+    categoryId: item.category.id,
+    type: item.type,
+    image: item.image,
+
+    attributes: {
+      author: item.attributes?.author,
+      nbrPages: item.attributes?.nbrPages,
+      runTimeMinutes: item.attributes?.runTimeMinutes,
+    },
+  };
+}

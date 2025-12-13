@@ -32,7 +32,7 @@ function ViewTypes() {
         )}
         {filteredItems.map((item) => (
           <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
-            <div className="card h-100 shadow-sm ms-4 me-4">
+            <div className="card h-100 shadow-lg ms-4 me-4">
               <div className="card-body justify-content-center ">
                 <div className="col text-center">
                   <h5 className="card-title ">{item.title}</h5>

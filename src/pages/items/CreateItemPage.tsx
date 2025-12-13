@@ -1,127 +1,68 @@
-import axios from "axios";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getCategories } from "@/services/categoryService";
-import { getItem, saveItem } from "@/services/itemService";
+import { saveItem } from "@/services/itemService";
 import { FormField } from "@/components/index";
-import { BaseItem, Category } from "@types";
-import { AttributeField } from "@/components/FormField";
-import { ItemForm } from "@/pages/utils";
-import { itemSchema } from "@/pages/items/schemas/DynamicSchema";
+import { ItemForm, mapToFormData } from "@/pages/utils";
+import { useItemForm } from "@/hooks/useItemForm";
+import { uploadImage } from "@/services/imageService";
+import { useItemData } from "@/hooks/useItemData";
 
-const AUTHOR = "author";
-const NBR_PAGES = "nbrPages";
-const RUN_TIMES_MINUTES = "runTimeMinutes";
 const itemTypes = ["Book", "ReferenceBook", "DVD", "AudioBook"] as const;
-const CLOUDINARY_API = "https://api.cloudinary.com/v1_1/dyqpakdse/image/upload";
 
 function CreateItemPage() {
   const { id } = useParams();
-  const [searchParams] = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState<string | undefined>();
-  const initialCategoryFromQuery = searchParams.get("category") ?? "";
 
   const {
     register,
     handleSubmit,
     watch,
     reset,
-    setValue,
     formState: { errors },
-  } = useForm<ItemForm>({
-    resolver: zodResolver(itemSchema),
-  });
+    watchedType,
+    fieldsToShow,
+  } = useItemForm();
 
+  const { categories, item } = useItemData(id);
   const watchedCategoryId = watch("categoryId");
   const selectedCategory = categories.find((c) => c.id === watchedCategoryId);
 
   useEffect(() => {
-    async function fetchData() {
-      const { data: categories } = await getCategories();
-      setCategories(categories);
-
-      if (!id || id === "new") {
-        reset({
-          id: "",
-          title: "",
-          categoryId: "",
-          type: undefined,
-          image: undefined,
-          attributes: {
-            author: "",
-            nbrPages: undefined,
-            runTimeMinutes: undefined,
-          },
-        });
-        setImagePreview(undefined);
-        return;
-      }
-
-      const { data: item } = await getItem(id);
-      if (!item) return;
-      reset(mapToFormData(item));
-      setImagePreview(item.image);
+    if (!item) {
+      reset({
+        id: "",
+        title: "",
+        categoryId: "",
+        type: undefined,
+        image: undefined,
+        attributes: {
+          author: "",
+          nbrPages: undefined,
+          runTimeMinutes: undefined,
+        },
+      });
+      setImagePreview(undefined);
+      return;
     }
 
-    fetchData();
-  }, [id, reset, initialCategoryFromQuery]);
-
-  const watchedType = watch("type");
-
-  const fieldsToShow: AttributeField[] = (() => {
-    switch (watchedType) {
-      case "Book":
-      case "ReferenceBook":
-        return ["author", "nbrPages"];
-      case "DVD":
-      case "AudioBook":
-        return ["runTimeMinutes"];
-      default:
-        return [];
-    }
-  })();
-
-  useEffect(() => {
-    const allKeys: Array<keyof ItemForm["attributes"]> = [
-      AUTHOR,
-      NBR_PAGES,
-      RUN_TIMES_MINUTES,
-    ];
-    allKeys.forEach((k) => {
-      if (!fieldsToShow.includes(k as any)) {
-        setValue(`attributes.${k}`, undefined);
-      }
-    });
-  }, [watch("type"), setValue]);
+    reset(mapToFormData(item));
+    setImagePreview(item.image);
+  }, [item, reset]);
 
   async function onSubmit(data: ItemForm) {
     setIsLoading(true);
     try {
-      let imageUrl: string | undefined = undefined;
+      let imageUrl: string | undefined;
 
       if (data.image instanceof FileList && data.image.length > 0) {
-        const formData = new FormData();
-        formData.append("file", data.image[0]);
-        formData.append("upload_preset", "leyebrary");
-        const response = await axios.post(CLOUDINARY_API, formData);
-        imageUrl = response.data.secure_url;
+        imageUrl = await uploadImage(data.image[0]);
       } else if (typeof data.image === "string") {
         imageUrl = data.image;
       }
 
-      const payload = {
-        ...data,
-        image: imageUrl,
-      };
-
-      await saveItem(payload);
-      console.log("Submitted", payload);
-
+      await saveItem({ ...data, image: imageUrl });
       navigate("/");
     } catch (err) {
       console.error(err);
@@ -129,22 +70,6 @@ function CreateItemPage() {
     } finally {
       setIsLoading(false);
     }
-  }
-
-  function mapToFormData(item: BaseItem) {
-    return {
-      id: item.id,
-      title: item.title,
-      categoryId: item.category.id,
-      type: item.type,
-      image: item.image,
-
-      attributes: {
-        author: item.attributes?.author,
-        nbrPages: item.attributes?.nbrPages,
-        runTimeMinutes: item.attributes?.runTimeMinutes,
-      },
-    };
   }
 
   const watchedImage = watch("image");
