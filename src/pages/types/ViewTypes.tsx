@@ -20,8 +20,8 @@ function ViewTypes() {
 
   return (
     <>
-      <h1 className="text-center mb-4 mt-3">Type {type} </h1>
-      <div className="d-flex justify-content-center align-content-center gap-4">
+      <h1 className="text-center mb-4 mt-3">{type}s </h1>
+      <div className="row justify-content-center g-4">
         {filteredItems.length === 0 && (
           <div className="d-grid">
             <h5> There are no items in {type} </h5>
@@ -31,11 +31,11 @@ function ViewTypes() {
           </div>
         )}
         {filteredItems.map((item) => (
-          <div key={item.id} className="col-3 mb-4">
-            <div className="card h-100 shadow-sm">
-              <div className="card-body d-flex justify-content-between align-items-start">
-                <div>
-                  <h5 className="card-title">{item.title}</h5>
+          <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
+            <div className="card h-100 shadow-sm ms-4 me-4">
+              <div className="card-body justify-content-center ">
+                <div className="col text-center">
+                  <h5 className="card-title ">{item.title}</h5>
                   <span>{item.category.name}</span>
 
                   {["Book", "ReferenceBook"].includes(item.type!) && (
@@ -53,17 +53,18 @@ function ViewTypes() {
                 </div>
 
                 {item.image && (
-                  <img
-                    src={typeof item.image === "string" ? item.image : ""}
-                    alt={item.title}
-                    className="ms-3"
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      objectFit: "cover",
-                      borderRadius: "4px",
-                    }}
-                  />
+                  <div className="col-auto text-center">
+                    <img
+                      src={typeof item.image === "string" ? item.image : ""}
+                      alt={item.title}
+                      className="img-fluid rounded"
+                      style={{
+                        width: "80px",
+                        height: "80px",
+                        objectFit: "cover",
+                      }}
+                    />
+                  </div>
                 )}
               </div>
             </div>
