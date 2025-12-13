@@ -47,7 +47,7 @@ function ViewTypes() {
 
                   {["DVD", "AudioBook"].includes(item.type!) && (
                     <p className="mt-1">
-                      Runtime: {item.attributes?.runTimeMinutes} minutes
+                      Runtime: {item.attributes?.runTimeMinutes} min
                     </p>
                   )}
                 </div>

@@ -34,8 +34,8 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
           <h5 className="text-center">There are no items in this category</h5>
         )}
         {items.map((item) => (
-          <div key={item.id} className="col-12 col-sm-6 my-4 d-flex">
-            <div className="card h-100 w-100 shadow-sm rounded-4">
+          <div key={item.id} className="col d-flex">
+            <div className="card h-100 w-100 shadow-sm rounded-4 p-3">
               <div className="card-body d-flex flex-column justify-content-between">
                 <div className="mb-3">
                   <div className="position-relative">
@@ -65,7 +65,7 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
                   {["DVD", "AudioBook"].includes(item.type) && (
                     <p className="mt-1">
-                      Runtime: {item.attributes?.runTimeMinutes} minutes
+                      Runtime: {item.attributes?.runTimeMinutes} min
                     </p>
                   )}
                 </div>

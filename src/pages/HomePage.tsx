@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { paginate } from "@/components/utils";
 import { getCategories } from "@/services/categoryService";
+import { BaseItem, Category, LibraryItem } from "@types";
 import {
   checkoutItem,
   deleteItem,
@@ -12,8 +13,8 @@ import {
   ListGroup,
   Pagination,
   HeaderImg,
+  HandleFilterItem,
 } from "@/components/index";
-import { BaseItem, Category, LibraryItem } from "@types";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
@@ -25,6 +26,9 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [borrowFilter, setBorrowFilter] = useState<
+    "all" | "borrowed" | "available"
+  >("all");
 
   useEffect(() => {
     async function fetch() {
@@ -108,11 +112,18 @@ function HomePage() {
   function handleCategorySelect(category: Category) {
     setSelectedCategory(category);
     setSelectedPage(1);
+    setBorrowFilter("all");
   }
 
   let filtredItems = selectedCategory.id
     ? itemsWithFields.filter((item) => item.category.id === selectedCategory.id)
     : itemsWithFields;
+
+  filtredItems = filtredItems.filter((item) => {
+    if (borrowFilter === "borrowed") return !!item.borrower;
+    if (borrowFilter === "available") return !item.borrower;
+    return true;
+  });
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
 
@@ -130,7 +141,12 @@ function HomePage() {
             selectedCategory={selectedCategory}
           />
         </div>
+        <HandleFilterItem
+          borrowFilter={borrowFilter}
+          setBorrowFilter={setBorrowFilter}
+        />
       </div>
+
       <ItemsGroup
         items={paginatedItems}
         onDelete={handleDelete}
