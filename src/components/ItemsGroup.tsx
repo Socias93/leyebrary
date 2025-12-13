@@ -31,7 +31,7 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
     <div className="container-lg px-3 py-3">
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-2 g-4 justify-content-center">
         {items.length === 0 && (
-          <h5 className="text-center">There are no items in this category</h5>
+          <h5 className="text-center">No items here {":("} </h5>
         )}
         {items.map((item) => (
           <div key={item.id} className="col d-flex">

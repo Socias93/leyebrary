@@ -14,6 +14,7 @@ import {
   Pagination,
   HeaderImg,
   HandleFilterItem,
+  SearchBox,
 } from "@/components/index";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
@@ -26,6 +27,7 @@ function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [borrowFilter, setBorrowFilter] = useState<
     "all" | "borrowed" | "available"
   >("all");
@@ -113,6 +115,12 @@ function HomePage() {
     setSelectedCategory(category);
     setSelectedPage(1);
     setBorrowFilter("all");
+    setSearchQuery("");
+  }
+
+  function handleSearch(value: string) {
+    setSearchQuery(value);
+    setSelectedPage(1);
   }
 
   let filtredItems = selectedCategory.id
@@ -124,6 +132,16 @@ function HomePage() {
     if (borrowFilter === "available") return !item.borrower;
     return true;
   });
+  const query = searchQuery.toLowerCase();
+
+  if (query) {
+    filtredItems = filtredItems.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.borrower?.toLowerCase().includes(query) ||
+        item.type.toLowerCase().includes(query)
+    );
+  }
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
 
@@ -140,6 +158,9 @@ function HomePage() {
             onCategorySelect={handleCategorySelect}
             selectedCategory={selectedCategory}
           />
+        </div>
+        <div className="mt-3">
+          <SearchBox value={searchQuery} onChange={handleSearch} />
         </div>
         <HandleFilterItem
           borrowFilter={borrowFilter}
