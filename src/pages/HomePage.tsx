@@ -123,6 +123,11 @@ function HomePage() {
     setSelectedPage(1);
   }
 
+  function handleBorrowFilter(value: "all" | "borrowed" | "available") {
+    setBorrowFilter(value);
+    setSelectedPage(1);
+  }
+
   let filtredItems = selectedCategory.id
     ? itemsWithFields.filter((item) => item.category.id === selectedCategory.id)
     : itemsWithFields;
@@ -159,12 +164,12 @@ function HomePage() {
             selectedCategory={selectedCategory}
           />
         </div>
-        <div className="mt-3">
+        <div className="m-3">
           <SearchBox value={searchQuery} onChange={handleSearch} />
         </div>
         <HandleFilterItem
           borrowFilter={borrowFilter}
-          setBorrowFilter={setBorrowFilter}
+          setBorrowFilter={handleBorrowFilter}
         />
       </div>
 

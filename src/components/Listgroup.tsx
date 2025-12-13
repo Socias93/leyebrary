@@ -8,7 +8,7 @@ interface Props {
 
 function Listgroup({ items, onCategorySelect, selectedCategory }: Props) {
   return (
-    <div className="d-flex flex-wrap">
+    <div className="d-flex flex-nowrap overflow-x-auto scrollbar-hide py-2">
       {items.map((item) => (
         <button
           onClick={() => onCategorySelect(item)}
