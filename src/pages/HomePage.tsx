@@ -86,7 +86,7 @@ function HomePage() {
   filtredItems = filtredItems.filter((item) => {
     if (borrowFilter === "borrowed") return !!item.borrower;
     if (borrowFilter === "available") return !item.borrower;
-    return true;
+    return items;
   });
   const query = searchQuery.toLowerCase();
 

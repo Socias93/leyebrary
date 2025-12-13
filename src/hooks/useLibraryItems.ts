@@ -17,7 +17,9 @@ export function useItems() {
     try {
       const { data: updatedItem } = await checkoutItem(itemId, borrower);
       setItems((prev) =>
-        prev.map((item) => (item.id === updatedItem.id ? updatedItem : item))
+        prev.map((i) =>
+          i.id === updatedItem.id ? { ...i, ...updatedItem } : i
+        )
       );
       console.log(
         `${updatedItem.borrower} borrowed ${updatedItem.title} - ${updatedItem.type}`
