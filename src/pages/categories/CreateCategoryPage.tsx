@@ -74,7 +74,7 @@ function CreateCategoryPage() {
 
       const exists = categories.some(
         (c: Category) =>
-          c.name.toLowerCase() === data.name.toLowerCase() && c.id !== data.id // ignorera samma kategori vid edit
+          c.name.toLowerCase() === data.name.toLowerCase() && c.id !== data.id
       );
 
       if (exists) {
@@ -119,7 +119,11 @@ function CreateCategoryPage() {
   return (
     <>
       <div className="vh-100 d-grid justify-content-center align-content-center">
-        <h4 className="text-center mb-3">Create a new Category</h4>
+        <h4 className="text-center mb-3">
+          {id === "new-category" || !id
+            ? "Create a new Category"
+            : `Edit your ${watch("name")}`}
+        </h4>
         <div className="p-3 shadow rounded-4">
           {errorMessage && (
             <div className="alert alert-danger">{errorMessage} </div>
