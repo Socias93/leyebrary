@@ -21,6 +21,7 @@ export function useItems() {
           i.id === updatedItem.id ? { ...i, ...updatedItem } : i
         )
       );
+
       console.log(
         `${updatedItem.borrower} borrowed ${updatedItem.title} - ${updatedItem.type}`
       );
@@ -39,6 +40,7 @@ export function useItems() {
           i.id === updatedItem.id ? { ...i, ...updatedItem } : i
         )
       );
+
       console.log(
         `${item.borrower} returned ${updatedItem.title} - ${updatedItem.type}`
       );

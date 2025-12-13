@@ -17,10 +17,10 @@ const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
 
 function HomePage() {
-  const { items, handleCheckout, handleReturn, setItems } = useItems();
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
+  const { items, handleCheckout, handleReturn, setItems } = useItems();
   const [searchQuery, setSearchQuery] = useState("");
   const [borrowFilter, setBorrowFilter] = useState<
     "all" | "borrowed" | "available"
@@ -54,12 +54,6 @@ function HomePage() {
     const newItems = items.filter((item) => item.id !== id);
     setItems(newItems);
     deleteItem(id);
-
-    const newPageCount = Math.max(1, Math.ceil(newItems.length / PAGE_SIZE));
-
-    if (selectedPage > newPageCount) {
-      setSelectedPage(newPageCount);
-    }
   }
 
   function handleCategorySelect(category: Category) {
@@ -98,6 +92,16 @@ function HomePage() {
         item.type.toLowerCase().includes(query)
     );
   }
+
+  useEffect(() => {
+    const newPageCount = Math.max(
+      1,
+      Math.ceil(filtredItems.length / PAGE_SIZE)
+    );
+    if (selectedPage > newPageCount) {
+      setSelectedPage(newPageCount);
+    }
+  }, [filtredItems, selectedPage]);
 
   const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
 
