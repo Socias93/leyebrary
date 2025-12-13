@@ -1,27 +1,19 @@
 import * as _ from "lodash";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SortColumn, getAbbreviation } from "@/pages/utils";
-import { getItems } from "@/services/itemService";
 import { SearchBox, Table } from "@/components/index";
-import { BaseItem, Columns } from "@types";
+import { Columns } from "@types";
+import { useItems } from "@/hooks/useLibraryItems";
 
 const SORT_ITEM: SortColumn = { path: "title", order: "asc" };
 
 function AllItemsPage() {
-  const [items, setItems] = useState<BaseItem[]>([]);
   const [sortColumn, setSortColumn] = useState(SORT_ITEM);
   const [searchQuery, setSearchQuery] = useState("");
+  const { items, handleReturn } = useItems();
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    async function fetch() {
-      const { data: items } = await getItems();
-      setItems(items);
-    }
-
-    fetch();
-  }, []);
 
   const query = searchQuery.toLowerCase();
 
@@ -58,14 +50,21 @@ function AllItemsPage() {
       label: "Category",
     },
     {
-      key: "edit",
-      content: (item) => (
-        <button
-          onClick={() => navigate(`/edit-item/${item.id}?type=${item}`)}
-          className="btn btn-outline-info">
-          Edit
-        </button>
-      ),
+      key: "action",
+      content: (item) =>
+        item.borrower ? (
+          <button
+            className="btn btn-outline-dark"
+            onClick={() => handleReturn(item)}>
+            Return
+          </button>
+        ) : (
+          <button
+            className="btn btn-outline-info"
+            onClick={() => navigate(`/edit-item/${item.id}?type=${item.type}`)}>
+            Edit
+          </button>
+        ),
     },
   ];
 

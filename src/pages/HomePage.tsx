@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
 import { paginate } from "@/components/utils";
 import { getCategories } from "@/services/categoryService";
-import { BaseItem, Category, LibraryItem } from "@types";
-import {
-  checkoutItem,
-  deleteItem,
-  getItems,
-  returnItem,
-} from "@/services//itemService";
+import { Category, LibraryItem } from "@types";
+import { useItems } from "@/hooks/useLibraryItems";
+import { deleteItem, getItems } from "@/services//itemService";
 import {
   ItemsGroup,
   ListGroup,
@@ -19,11 +15,9 @@ import {
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
 const PAGE_SIZE = 4;
-const CANT_CHECKOUT = "Could not checkout item";
-const CANT_RETURN = "Could not return item";
 
 function HomePage() {
-  const [items, setItems] = useState<BaseItem[]>([]);
+  const { items, handleCheckout, handleReturn, setItems } = useItems();
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);
   const [selectedPage, setSelectedPage] = useState(1);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -44,51 +38,6 @@ function HomePage() {
     fetch();
   }, []);
 
-  async function handleCheckout(itemId: string, borrower: string) {
-    try {
-      const { data: updatedItem } = await checkoutItem(itemId, borrower);
-
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === updatedItem.id
-            ? {
-                ...item,
-                borrower: updatedItem.borrower,
-                isBorrowable: updatedItem.isBorrowable,
-                borrowDate: updatedItem.borrowDate,
-              }
-            : item
-        )
-      );
-      setSearchQuery("");
-      setSelectedPage(1);
-    } catch (err) {
-      console.error(err);
-      alert(CANT_CHECKOUT);
-    }
-  }
-
-  async function handleReturn(itemId: string) {
-    try {
-      const { data: updatedItem } = await returnItem(itemId);
-
-      setItems((prevItems) =>
-        prevItems.map((item) =>
-          item.id === updatedItem.id
-            ? {
-                ...item,
-                borrower: updatedItem.borrower,
-                isBorrowable: updatedItem.isBorrowable,
-                borrowDate: updatedItem.borrowDate,
-              }
-            : item
-        )
-      );
-    } catch (err) {
-      console.error(err);
-      alert(CANT_RETURN);
-    }
-  }
   const itemsWithFields = items.map((item) => {
     const categoryId = item.category?.id;
     const category = categories.find((c) => c.id === categoryId);

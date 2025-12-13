@@ -6,7 +6,7 @@ interface Props {
   items: LibraryItem[];
   onDelete(id: string): void;
   onCheckOut(itemId: string, borrower: string): void;
-  onReturn(itemId: string): void;
+  onReturn(item: LibraryItem): void;
 }
 const NAME = "You must write your name";
 const NEW_BORROWER = "Enter borrower name";
@@ -16,7 +16,7 @@ function ItemsGroup({ items, onDelete, onCheckOut, onReturn }: Props) {
 
   const handleBorrowToggle = (item: LibraryItem) => {
     if (item.borrower) {
-      onReturn(item.id);
+      onReturn(item);
     } else {
       const borrowerName = prompt(NEW_BORROWER)?.trim();
       if (!borrowerName) {
