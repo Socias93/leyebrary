@@ -60,6 +60,8 @@ function HomePage() {
             : item
         )
       );
+      setSearchQuery("");
+      setSelectedPage(1);
     } catch (err) {
       console.error(err);
       alert(CANT_CHECKOUT);
