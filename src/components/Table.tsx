@@ -11,10 +11,16 @@ interface Props {
 
 function Table({ columns, onSort, sortColumn, items }: Props) {
   return (
-    <table className="table">
-      <TableHeader columns={columns} onSort={onSort} sortColumn={sortColumn} />
-      <TableBody columns={columns} items={items} />
-    </table>
+    <div className="table-responsive">
+      <table className="table table-hover">
+        <TableHeader
+          columns={columns}
+          onSort={onSort}
+          sortColumn={sortColumn}
+        />
+        <TableBody columns={columns} items={items} />
+      </table>
+    </div>
   );
 }
 

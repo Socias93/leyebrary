@@ -2,10 +2,12 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { BaseItem } from "@types";
 import { getItems } from "@/services/itemService";
+import { SearchBox } from "@/components";
 
 function ViewTypes() {
-  const { type } = useParams();
   const [items, setItems] = useState<BaseItem[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { type } = useParams();
 
   useEffect(() => {
     async function fetch() {
@@ -16,11 +18,22 @@ function ViewTypes() {
     fetch();
   }, []);
 
-  const filteredItems = items.filter((item) => item.type === type);
+  let filteredItems = items.filter((item) => item.type === type);
+  const query = searchQuery.toLowerCase();
+
+  if (query)
+    filteredItems = filteredItems.filter(
+      (item) =>
+        item.title.toLowerCase().includes(query) ||
+        item.category.name.toLowerCase().includes(query)
+    );
 
   return (
     <>
       <h1 className="text-center mb-4 mt-3">{type}s </h1>
+      <div className="d-flex justify-content-center mb-4">
+        <SearchBox onChange={setSearchQuery} value={searchQuery} />
+      </div>
       <div className="row justify-content-center g-4">
         {filteredItems.length === 0 && (
           <div className="d-grid">

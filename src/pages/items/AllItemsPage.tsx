@@ -54,13 +54,13 @@ function AllItemsPage() {
       content: (item) =>
         item.borrower ? (
           <button
-            className="btn btn-outline-dark"
+            className="btn btn-outline-dark btn-sm w-100 w-md-auto"
             onClick={() => handleReturn(item)}>
             Return
           </button>
         ) : (
           <button
-            className="btn btn-outline-info"
+            className="btn btn-outline-info btn-sm w-100 w-md-auto"
             onClick={() => navigate(`/edit-item/${item.id}?type=${item.type}`)}>
             Edit
           </button>
@@ -70,15 +70,17 @@ function AllItemsPage() {
 
   return (
     <>
-      <div className="mb-3 p-1 w-25">
+      <div className="mb-3 p-1 w-100 w-md-25">
         <SearchBox value={searchQuery} onChange={setSearchQuery} />
       </div>
-      <Table
-        columns={columns}
-        items={sortedItems}
-        onSort={setSortColumn}
-        sortColumn={sortColumn}
-      />
+      <div className="table-responsive">
+        <Table
+          columns={columns}
+          items={sortedItems}
+          onSort={setSortColumn}
+          sortColumn={sortColumn}
+        />
+      </div>
     </>
   );
 }
