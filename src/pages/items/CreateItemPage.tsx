@@ -63,6 +63,7 @@ function CreateItemPage() {
       }
 
       await saveItem({ ...data, image: imageUrl });
+      console.log("Submitted", data);
       navigate("/");
     } catch (err) {
       console.error(err);
