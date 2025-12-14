@@ -89,7 +89,8 @@ function HomePage() {
       (item) =>
         item.title.toLowerCase().includes(query) ||
         item.borrower?.toLowerCase().includes(query) ||
-        item.type.toLowerCase().includes(query)
+        item.type.toLowerCase().includes(query) ||
+        item.attributes?.author?.toLowerCase().includes(query)
     );
   }
 
