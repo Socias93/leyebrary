@@ -14,7 +14,7 @@ import {
 } from "@/components/index";
 
 const DEFAULT_CATEGORY: Category = { id: "", name: "All Categories" };
-const PAGE_SIZE = 4;
+export const PAGE_SIZE = 4;
 
 function HomePage() {
   const [selectedCategory, setSelectedCategory] = useState(DEFAULT_CATEGORY);

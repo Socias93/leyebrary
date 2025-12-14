@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import { BaseItem } from "@types";
 import { getItems } from "@/services/itemService";
-import { SearchBox } from "@/components";
+import { Pagination, SearchBox } from "@/components";
+import { PAGE_SIZE } from "@/pages/HomePage";
+import { paginate } from "@/components/utils";
 
 function ViewTypes() {
   const [items, setItems] = useState<BaseItem[]>([]);
+  const [selectedPage, setSelectedPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState("");
   const { type } = useParams();
 
@@ -18,24 +21,31 @@ function ViewTypes() {
     fetch();
   }, []);
 
-  let filteredItems = items.filter((item) => item.type === type);
+  function handleSearch(value: string) {
+    setSearchQuery(value);
+    setSelectedPage(1);
+  }
+
+  let filtredItems = items.filter((item) => item.type === type);
   const query = searchQuery.toLowerCase();
 
   if (query)
-    filteredItems = filteredItems.filter(
+    filtredItems = filtredItems.filter(
       (item) =>
         item.title.toLowerCase().includes(query) ||
         item.category.name.toLowerCase().includes(query)
     );
 
+  const paginatedItems = paginate(filtredItems, PAGE_SIZE, selectedPage);
+
   return (
     <>
       <h1 className="text-center mb-4 mt-3">{type}s </h1>
       <div className="d-flex justify-content-center mb-4">
-        <SearchBox onChange={setSearchQuery} value={searchQuery} />
+        <SearchBox onChange={handleSearch} value={searchQuery} />
       </div>
       <div className="row justify-content-center g-4">
-        {filteredItems.length === 0 && (
+        {filtredItems.length === 0 && (
           <div className="d-grid">
             <h5> There are no items in {type} </h5>
             <NavLink className={"btn btn-outline-info"} to={"/all/types"}>
@@ -43,7 +53,7 @@ function ViewTypes() {
             </NavLink>
           </div>
         )}
-        {filteredItems.map((item) => (
+        {paginatedItems.map((item) => (
           <div key={item.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
             <div className="card h-100 shadow-lg ms-4 me-4">
               <div className="card-body justify-content-center ">
@@ -83,6 +93,14 @@ function ViewTypes() {
             </div>
           </div>
         ))}
+      </div>
+      <div className="mt-3">
+        <Pagination
+          pageSize={4}
+          selectedPage={selectedPage}
+          totalCount={filtredItems.length}
+          onPageSelect={setSelectedPage}
+        />
       </div>
     </>
   );
